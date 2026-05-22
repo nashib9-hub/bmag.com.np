@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bhimbadh Multipurpose Agro Group Pvt. Ltd.</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Remix Icons for clean, modern interface design -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- Google Fonts: Inter for English, Kalimati-style sans for clean Nepali -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <i class="ri-leaf-line brand-icon"></i>
+      <span class="brand-text" data-en="Bhimbadh Agro" data-np="भिमबाध एग्रो">Bhimbadh Agro</span>
+    </div>
+
+    <nav class="sidebar-menu">
+      <a href="#home" class="menu-item active" data-target="home">
+        <i class="ri-home-4-line"></i>
+        <span data-en="Home" data-np="गृहपृष्ठ">Home</span>
+      </a>
+      <a href="#about" class="menu-item" data-target="about">
+        <i class="ri-user-organization-line"></i>
+        <span data-en="About Us" data-np="हाम्रो बारेमा">About Us</span>
+      </a>
+      <a href="#committee" class="menu-item" data-target="committee">
+        <i class="ri-team-line"></i>
+        <span data-en="Committee" data-np="कार्यसमिति">Committee</span>
+      </a>
+      <a href="#products" class="menu-item" data-target="products">
+        <i class="ri-goblet-line"></i>
+        <span data-en="Products" data-np="उत्पादनहरू">Products</span>
+      </a>
+      <a href="#contact" class="menu-item" data-target="contact">
+        <i class="ri-contacts-book-line"></i>
+        <span data-en="Contact Us" data-np="सम्पर्क गर्नुहोस्">Contact Us</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="main-wrapper" id="mainWrapper">
+    
+    <!-- TOP HEADER BAR -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="toggle-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
+          <i class="ri-menu-2-line"></i>
+        </button>
+        <h1 class="header-title" data-en="Dashboard" data-np="ड्यासबोर्ड">Dashboard</h1>
+      </div>
+      
+      <!-- LANGUAGE SWITCHER BUTTONS -->
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="btnEn">EN</button>
+        <button class="lang-btn" id="btnNp">नेपाली</button>
+      </div>
+    </header>
+
+    <!-- CONTENT VIEWS -->
+    <main class="content-container">
+      
+      <!-- HOME SECTION -->
+      <section id="home" class="content-section active-section">
+        <h2 data-en="Welcome to Bhimbadh Multipurpose Agro" data-np="भिमबाध बहुउद्देश्यीय एग्रोमा स्वागत छ">Welcome to Bhimbadh Multipurpose Agro</h2>
+        <p class="subtitle" data-en="Empowering local agriculture through modern sustainable practices." data-np="आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सबलीकरण गर्दै।">Empowering local agriculture through modern sustainable practices.</p>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <i class="ri-seedling-line card-icon"></i>
+            <h3 data-en="Active Farms" data-np="सक्रिय फार्महरू">Active Farms</h3>
+            <p class="stat-value">124+</p>
+          </div>
+          <div class="stat-card">
+            <i class="ri-group-line card-icon"></i>
+            <h3 data-en="Involved Farmers" data-np="आवद्ध कृषकहरू">Involved Farmers</h3>
+            <p class="stat-value">450+</p>
+          </div>
+          <div class="stat-card">
+            <i class="ri-hand-coin-line card-icon"></i>
+            <h3 data-en="Total Yield" data-np="कुल उत्पादन">Total Yield</h3>
+            <p class="stat-value">180 Tons</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT US SECTION -->
+      <section id="about" class="content-section">
+        <h2 data-en="About Our Organization" data-np="हाम्रो संस्थाको बारेमा">About Our Organization</h2>
+        <div class="card-large">
+          <p data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd. is dedicated to elevating Nepal's agricultural standard. We unify traditional organic methods with progressive agro-tech to optimize crop lifecycles and increase economic independence for our rural cooperative farming groups." data-np="भिमबाध बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि. नेपालको कृषि क्षेत्रको स्तर उकास्न समर्पित छ। हामी बालीचक्रलाई सुधार्न र हाम्रा ग्रामीण सहकारी खेती समूहहरूको आर्थिक आत्मनिर्भरता बढाउन परम्परागत जैविक विधिलाई आधुनिक कृषि-प्रविधिसँग जोड्छौं।">
+            Bhimbadh Multipurpose Agro Group Pvt. Ltd. is dedicated to elevating Nepal's agricultural standard. We unify traditional organic methods with progressive agro-tech to optimize crop lifecycles and increase economic independence for our rural cooperative farming groups.
+          </p>
+        </div>
+      </section>
+
+      <!-- COMMITTEE SECTION -->
+      <section id="committee" class="content-section">
+        <h2 data-en="Executive Committee" data-np="कार्यसमिति सदस्यहरू">Executive Committee</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="avatar-placeholder"><i class="ri-user-line"></i></div>
+            <h3 data-en="Ram Bahadur Thapa" data-np="राम बहादुर थापा">Ram Bahadur Thapa</h3>
+            <span class="role-badge" data-en="President" data-np="अध्यक्ष">President</span>
+          </div>
+          <div class="info-card">
+            <div class="avatar-placeholder"><i class="ri-user-line"></i></div>
+            <h3 data-en="Sita Devi Shrestha" data-np="सीता देवी श्रेष्ठ">Sita Devi Shrestha</h3>
+            <span class="role-badge" data-en="Managing Director" data-np="प्रबन्ध निर्देशक">Managing Director</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCTS SECTION -->
+      <section id="products" class="content-section">
+        <h2 data-en="Our Products" data-np="हाम्रा उत्पादनहरू">Our Products</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <i class="ri-restaurant-line product-icon"></i>
+            <h3 data-en="Organic Vegetables" data-np="जैविक तरकारीहरू">Organic Vegetables</h3>
+            <p data-en="100% pesticide-free fresh seasonal greens." data-np="१००% विषादी रहित ताजा मौसमी तरकारीहरू।">100% pesticide-free fresh seasonal greens.</p>
+          </div>
+          <div class="info-card">
+            <i class="ri-seedling-fill product-icon"></i>
+            <h3 data-en="High-Yield Seeds" data-np="उच्च उत्पादन दिने बीउहरू">High-Yield Seeds</h3>
+            <p data-en="Certified disease-resistant regional crop varieties." data-np="प्रमाणित रोग-प्रतिरोधी क्षेत्रीय बालीका बीउहरू।">Certified disease-resistant regional crop varieties.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT SECTION -->
+      <section id="contact" class="content-section">
+        <h2 data-en="Contact Us" data-np="सम्पर्क गर्नुहोस्">Contact Us</h2>
+        <div class="card-large">
+          <div class="contact-detail">
+            <p><strong><i class="ri-map-pin-line"></i> <span data-en="Location:" data-np="स्थान:">Location:</span></strong> Province 1, Nepal</p>
+            <p><strong><i class="ri-mail-line"></i> <span data-en="Email:" data-np="इमेल:">Email:</span></strong> info@bhimbadhagro.com.np</p>
+            <p><strong><i class="ri-phone-line"></i> <span data-en="Phone:" data-np="फोन:">Phone:</span></strong> +977-01-XXXXXXX</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
