@@ -396,22 +396,89 @@ h2 {
 }
 
 /* Adjust layout on mobile devices so elements do not crowd each other */
+/* ==========================================================================
+   FORCE SHOW MOBILE MARQUEE (ULTIMATE OVERRIDE)
+   ========================================================================== */
 @media (max-width: 768px) {
+  /* 1. Reset the top header to standard row, allowing layout items to fit */
   .top-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 10px;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 60px !important; /* Forces standard height layout */
+    padding: 0 10px !important;
+    gap: 8px !important;
   }
 
-  /* Make header title slightly smaller on mobile to allocate space for marquee */
+  /* 2. Shrink the left block containing the toggle button to make room */
+  .header-left {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* 3. Hide the static Dashboard title on mobile to save critical space */
+  .header-left .header-title, 
   .header-title {
-    display: none; /* Often hidden on mobile since the marquee states the company name */
+    display: none !important;
   }
 
+  /* 4. Force-rebuild the marquee element block sizes */
   .marquee-container {
-    max-width: 55%; /* Keeps it contained nicely between your toggle menu and language selectors */
-    font-size: 0.85rem; /* Slightly smaller typography for compact layouts */
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    
+    /* Layout footprint controls */
+    flex: 1 !important; 
+    min-width: 100px !important; 
+    height: 32px !important; /* Explicit vertical height */
+    
+    /* Prevent clipping and hidden breaks */
+    overflow: hidden !important;
+    position: relative !important;
+    margin: 0 4px !important;
+    
+    /* Temp diagnostics style background (You can delete background line later) */
+    background: rgba(76, 175, 80, 0.1) !important; 
+    border-radius: 4px !important;
+  }
+
+  /* 5. Re-ignite animation track structures */
+  .marquee-content {
+    display: flex !important;
+    width: max-content !important;
+    height: 100% !important;
+    align-items: center !important;
+  }
+
+  .marquee-track {
+    display: flex !important;
+    flex-direction: row !important;
+    white-space: nowrap !important;
+    align-items: center !important;
+    gap: 30px !important;
+    padding-right: 30px !important;
+  }
+
+  .marquee-track span {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 11px !important; /* Crisp, readable scale for mobile views */
+    color: #2e7d32 !important; /* Explicitly colors the text green */
+  }
+
+  /* 6. Ensure language selector buttons don't push anything out of frame */
+  .lang-switcher {
+    display: flex !important;
+    flex-shrink: 0 !important;
+    gap: 4px !important;
+  }
+  
+  .lang-btn {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
   }
 }
