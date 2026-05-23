@@ -402,18 +402,33 @@ h2 {
 }
 
 /* RESPONSIVE DESIGN FOR SMALLER VIEWPORTS */
+.marquee-container {
+  display: block !important; /* Forces visibility overriding any hidden properties */
+  flex: 1;
+  overflow: hidden;
+  margin: 0 10px;
+  background: #f4f9f4; /* Optional subtle background matching agricultural themes */
+  padding: 6px 0;
+  border-radius: 4px;
+}
+
+/* Adjust layout on mobile devices so elements do not crowd each other */
 @media (max-width: 768px) {
-  .sidebar {
-    left: -260px;
+  .top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px;
   }
-  .sidebar.mobile-show {
-    left: 0;
+
+  /* Make header title slightly smaller on mobile to allocate space for marquee */
+  .header-title {
+    display: none; /* Often hidden on mobile since the marquee states the company name */
   }
-  .main-wrapper {
-    margin-left: 0 !important;
-    width: 100% !important;
-  }
+
   .marquee-container {
-    display: none; /* Hides ticker on mobile layout screens to prevent structural compression */
+    max-width: 55%; /* Keeps it contained nicely between your toggle menu and language selectors */
+    font-size: 0.85rem; /* Slightly smaller typography for compact layouts */
   }
 }
