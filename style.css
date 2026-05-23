@@ -146,7 +146,7 @@ body {
   display: flex;
   align-items: center;
   gap: 20px;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Ensures Title Block never squeezes out layout size */
 }
 
 .toggle-btn {
@@ -210,6 +210,7 @@ body {
   display: flex;
   align-items: center;
   position: relative;
+  white-space: nowrap; /* Banish vertical lines from cascading down */
 }
 
 /* Elegant radial gradients to fade out edge text transitions smoothly */
@@ -235,7 +236,8 @@ body {
 .marquee-content {
   display: flex;
   width: max-content;
-  animation: organic-scroll 25s linear infinite;
+  white-space: nowrap; /* Forces text elements onto a single line */
+  animation: organic-scroll 25s linear infinite !important; /* Forces keyframe override loop */
 }
 
 /* Gracefully halts scroll on desktop interactions */
@@ -246,6 +248,7 @@ body {
 .marquee-track {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   min-width: 100%;
 }
 
@@ -255,10 +258,10 @@ body {
   color: var(--primary); /* Leverages design system tokens */
   font-size: 0.95rem;
   padding: 0 25px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  white-space: nowrap;
+  white-space: nowrap; /* BANS wrapping texts from breaking layout grids */
 }
 
 .marquee-track i {
@@ -272,7 +275,7 @@ body {
     transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0); /* Perfectly snaps half track without clipping frames */
   }
 }
 
@@ -414,6 +417,6 @@ h2 {
     width: 100% !important;
   }
   .marquee-container {
-    display: none; /* Hides ticker on mobile layout screens to prevent structural compression */
+    display: none !important; /* Hides ticker on mobile layout screens to prevent structural compression */
   }
 }
