@@ -130,7 +130,7 @@ body {
   width: calc(100% - var(--sidebar-collapsed));
 }
 
-/* APP TOP BAR HEADER */
+/* APP TOP BAR HEADER (DESKTOP DEFAULT) */
 .top-header {
   height: 70px;
   background-color: var(--bg-card);
@@ -170,6 +170,39 @@ body {
   font-weight: 600;
 }
 
+/* DESKTOP MARQUEE STRUCTURAL CORE */
+.marquee-container {
+  flex: 1;
+  overflow: hidden;
+  margin: 0 15px;
+  background: #f4f9f4;
+  padding: 6px 0;
+  border-radius: 6px;
+  display: block;
+}
+
+.marquee-content {
+  display: flex;
+  width: max-content;
+}
+
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  gap: 30px;
+  padding-right: 30px;
+  animation: organic-scroll 18s linear infinite; /* Wire framing baseline animation */
+}
+
+.marquee-track span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
 /* DYNAMIC SWITCH LANGUAGE CONTROLLER UI */
 .lang-switcher {
   display: flex;
@@ -195,68 +228,6 @@ body {
 .lang-btn.active {
   background-color: var(--primary);
   color: #ffffff;
-}
-
-/* ==========================================================================
-   MOBILE MARQUEE FORCE-FIX
-   ========================================================================== */
-@media (max-width: 768px) {
-  /* 1. Ensure the top header distributes elements uniformly in a flat row */
-  .top-header {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 10px !important;
-    padding: 10px !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 2. Hide the static title on mobile to free up wide horizontal screen space */
-  .header-left .header-title {
-    display: none !important;
-  }
-
-  /* 3. Force-expose the marquee container and allocate exact viewport footprint */
-  .marquee-container {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    flex: 1 !important; /* Forces it to fill the entire gap between menu & language buttons */
-    min-width: 0 !important; /* Prevents text overflow elements from fracturing layout grids */
-    margin: 0 5px !important;
-    overflow: hidden !important;
-  }
-
-  /* 4. Ensure internal layout animation structures are actively moving */
-  .marquee-content {
-    display: flex !important;
-    width: max-content !important;
-  }
-
-  .marquee-track {
-    display: flex !important;
-    white-space: nowrap !important;
-    gap: 20px !important;
-    padding-right: 20px !important;
-  }
-
-  /* 5. Keep inline text and iconography scaled nicely for tight screen resolutions */
-  .marquee-track span {
-    font-size: 12px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 4px !important;
-  }
-}
-/* Precise hardware-accelerated 50% loop tracking */
-@keyframes organic-scroll {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
 }
 
 /* CONTENT VIEW MANAGEMENT SYSTEM */
@@ -384,68 +355,89 @@ h2 {
   color: var(--primary);
 }
 
-/* RESPONSIVE DESIGN FOR SMALLER VIEWPORTS */
-.marquee-container {
-  display: block !important; /* Forces visibility overriding any hidden properties */
-  flex: 1;
-  overflow: hidden;
-  margin: 0 10px;
-  background: #f4f9f4; /* Optional subtle background matching agricultural themes */
-  padding: 6px 0;
-  border-radius: 4px;
+/* Hardware-accelerated infinite loop tracking */
+@keyframes organic-scroll {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
-/* Adjust layout on mobile devices so elements do not crowd each other */
 /* ==========================================================================
-   FORCE SHOW MOBILE MARQUEE (ULTIMATE OVERRIDE)
+   CONSOLIDATED MOBILE OVERRIDES BREAKPOINT (768px)
    ========================================================================== */
 @media (max-width: 768px) {
-  /* 1. Reset the top header to standard row, allowing layout items to fit */
-  .top-header {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    height: 60px !important; /* Forces standard height layout */
-    padding: 0 10px !important;
-    gap: 8px !important;
+  /* 1. Reset layout for mobile display viewports */
+  body {
+    flex-direction: column;
   }
 
-  /* 2. Shrink the left block containing the toggle button to make room */
+  .sidebar {
+    transform: translateX(-100%);
+    width: var(--sidebar-width) !important;
+  }
+
+  .sidebar.mobile-show {
+    transform: translateX(0);
+  }
+
+  .main-wrapper, .main-wrapper.expanded {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .content-container {
+    padding: 20px;
+  }
+
+  /* 2. Re-engineer header into a dual-row stack wrapper */
+  .top-header {
+    display: flex !important;
+    position: relative !important;
+    height: 105px !important; /* Extra padding for the absolute sub-row container */
+    align-items: flex-start !important;
+    padding: 14px 15px !important;
+    gap: 0 !important;
+  }
+
   .header-left {
     display: flex !important;
     align-items: center !important;
-    flex-shrink: 0 !important;
   }
 
-  /* 3. Hide the static Dashboard title on mobile to save critical space */
-  .header-left .header-title, 
-  .header-title {
-    display: none !important;
+  /* Keep the text title layout responsive inside your dashboard switcher */
+  .header-left .header-title {
+    display: block !important;
+    font-size: 1.15rem !important;
   }
 
-  /* 4. Force-rebuild the marquee element block sizes */
+  .lang-switcher {
+    display: flex !important;
+  }
+
+  .lang-btn {
+    padding: 5px 10px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* 3. Pull layout out of the flex row conflict and pin below header items */
   .marquee-container {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
     
-    /* Layout footprint controls */
-    flex: 1 !important; 
-    min-width: 100px !important; 
-    height: 32px !important; /* Explicit vertical height */
+    position: absolute !important;
+    bottom: 10px !important;
+    left: 15px !important;
+    right: 15px !important;
     
-    /* Prevent clipping and hidden breaks */
+    width: calc(100% - 30px) !important;
+    height: 32px !important;
+    margin: 0 !important;
+    background: rgba(30, 86, 49, 0.08) !important; /* Light agricultural container green tint */
+    border: 1px solid rgba(30, 86, 49, 0.12) !important;
+    border-radius: 6px !important;
     overflow: hidden !important;
-    position: relative !important;
-    margin: 0 4px !important;
-    
-    /* Temp diagnostics style background (You can delete background line later) */
-    background: rgba(76, 175, 80, 0.1) !important; 
-    border-radius: 4px !important;
   }
 
-  /* 5. Re-ignite animation track structures */
   .marquee-content {
     display: flex !important;
     width: max-content !important;
@@ -455,30 +447,17 @@ h2 {
 
   .marquee-track {
     display: flex !important;
-    flex-direction: row !important;
     white-space: nowrap !important;
-    align-items: center !important;
-    gap: 30px !important;
-    padding-right: 30px !important;
+    gap: 35px !important;
+    padding-right: 35px !important;
+    animation: organic-scroll 14s linear infinite !important; /* Force re-running layout animation frames */
   }
 
   .marquee-track span {
     display: inline-flex !important;
     align-items: center !important;
     gap: 6px !important;
-    font-size: 11px !important; /* Crisp, readable scale for mobile views */
-    color: #2e7d32 !important; /* Explicitly colors the text green */
-  }
-
-  /* 6. Ensure language selector buttons don't push anything out of frame */
-  .lang-switcher {
-    display: flex !important;
-    flex-shrink: 0 !important;
-    gap: 4px !important;
-  }
-  
-  .lang-btn {
-    padding: 4px 8px !important;
     font-size: 11px !important;
+    color: var(--primary) !important;
   }
 }
