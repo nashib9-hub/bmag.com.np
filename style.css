@@ -197,75 +197,58 @@ body {
   color: #ffffff;
 }
 
-/* --- FIXED HIGH-PERFORMANCE ORGANIC MARQUEE UI --- */
-.marquee-container {
-  flex: 1;
-  max-width: 50%;
-  overflow: hidden;
-  user-select: none;
-  background-color: #f1f8f4; /* Organic soft mint base */
-  border: 1px solid #d8ebd9;
-  padding: 8px 0;
-  border-radius: 30px; /* pill shape look */
-  display: flex;
-  align-items: center;
-  position: relative;
-}
+/* ==========================================================================
+   MOBILE MARQUEE FORCE-FIX
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* 1. Ensure the top header distributes elements uniformly in a flat row */
+  .top-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+  }
 
-/* Elegant radial gradients to fade out edge text transitions smoothly */
-.marquee-container::before,
-.marquee-container::after {
-  content: "";
-  position: absolute;
-  width: 25px;
-  height: 100%;
-  top: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-.marquee-container::before {
-  left: 0;
-  background: linear-gradient(to right, #f1f8f4, transparent);
-}
-.marquee-container::after {
-  right: 0;
-  background: linear-gradient(to left, #f1f8f4, transparent);
-}
+  /* 2. Hide the static title on mobile to free up wide horizontal screen space */
+  .header-left .header-title {
+    display: none !important;
+  }
 
-.marquee-content {
-  display: flex;
-  width: max-content;
-  animation: organic-scroll 25s linear infinite;
-}
+  /* 3. Force-expose the marquee container and allocate exact viewport footprint */
+  .marquee-container {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex: 1 !important; /* Forces it to fill the entire gap between menu & language buttons */
+    min-width: 0 !important; /* Prevents text overflow elements from fracturing layout grids */
+    margin: 0 5px !important;
+    overflow: hidden !important;
+  }
 
-/* Gracefully halts scroll on desktop interactions */
-.marquee-container:hover .marquee-content {
-  animation-play-state: paused;
-}
+  /* 4. Ensure internal layout animation structures are actively moving */
+  .marquee-content {
+    display: flex !important;
+    width: max-content !important;
+  }
 
-.marquee-track {
-  display: flex;
-  align-items: center;
-  min-width: 100%;
-}
+  .marquee-track {
+    display: flex !important;
+    white-space: nowrap !important;
+    gap: 20px !important;
+    padding-right: 20px !important;
+  }
 
-.marquee-track span {
-  font-family: 'Hind', sans-serif;
-  font-weight: 600;
-  color: var(--primary); /* Leverages design system tokens */
-  font-size: 0.95rem;
-  padding: 0 25px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
+  /* 5. Keep inline text and iconography scaled nicely for tight screen resolutions */
+  .marquee-track span {
+    font-size: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+  }
 }
-
-.marquee-track i {
-  color: var(--accent);
-  font-size: 1.05rem;
-}
-
 /* Precise hardware-accelerated 50% loop tracking */
 @keyframes organic-scroll {
   0% {
