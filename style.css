@@ -139,12 +139,14 @@ body {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  gap: 24px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-shrink: 0;
 }
 
 .toggle-btn {
@@ -175,6 +177,7 @@ body {
   padding: 4px;
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 }
 
 .lang-btn {
@@ -192,6 +195,85 @@ body {
 .lang-btn.active {
   background-color: var(--primary);
   color: #ffffff;
+}
+
+/* --- FIXED HIGH-PERFORMANCE ORGANIC MARQUEE UI --- */
+.marquee-container {
+  flex: 1;
+  max-width: 50%;
+  overflow: hidden;
+  user-select: none;
+  background-color: #f1f8f4; /* Organic soft mint base */
+  border: 1px solid #d8ebd9;
+  padding: 8px 0;
+  border-radius: 30px; /* pill shape look */
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Elegant radial gradients to fade out edge text transitions smoothly */
+.marquee-container::before,
+.marquee-container::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 100%;
+  top: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, #f1f8f4, transparent);
+}
+.marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, #f1f8f4, transparent);
+}
+
+.marquee-content {
+  display: flex;
+  width: max-content;
+  animation: organic-scroll 25s linear infinite;
+}
+
+/* Gracefully halts scroll on desktop interactions */
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  min-width: 100%;
+}
+
+.marquee-track span {
+  font-family: 'Hind', sans-serif;
+  font-weight: 600;
+  color: var(--primary); /* Leverages design system tokens */
+  font-size: 0.95rem;
+  padding: 0 25px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.marquee-track i {
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+
+/* Precise hardware-accelerated 50% loop tracking */
+@keyframes organic-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 /* CONTENT VIEW MANAGEMENT SYSTEM */
@@ -331,56 +413,7 @@ h2 {
     margin-left: 0 !important;
     width: 100% !important;
   }
-}
-/* --- TOP HEADER ALIGNMENT ADJUSTMENT --- */
-.top-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding: 10px 24px;
-}
-
-/* --- MARQUEE TICKER STYLING --- */
-.marquee-container {
-  flex-grow: 1;
-  overflow: hidden;
-  white-space: nowrap;
-  background-color: #f1f8f4; /* Subtle eco-green tint background */
-  border: 1px solid #e2efe7;
-  padding: 8px 0;
-  border-radius: 6px;
-  max-width: 50%; /* Adjusts dynamically to sit cleanly between dashboard text and lang toggles */
-  display: flex;
-  align-items: center;
-}
-
-.marquee-content {
-  display: inline-block;
-  padding-left: 100%;
-  animation: smooth-marquee 20s linear infinite;
-}
-
-.marquee-content span {
-  font-family: 'Hind', sans-serif;
-  font-weight: 600;
-  color: #1b5e20; /* Brand matched forest green */
-  font-size: 1rem;
-  margin-right: 50px; /* Gap between recurring texts */
-  display: inline-block;
-}
-
-/* Pause scroll when a user hovers over it */
-.marquee-container:hover .marquee-content {
-  animation-play-state: paused;
-}
-
-/* Infinite Hardware-accelerated Horizontal Loop Translation */
-@keyframes smooth-marquee {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-100%, 0, 0);
+  .marquee-container {
+    display: none; /* Hides ticker on mobile layout screens to prevent structural compression */
   }
 }
