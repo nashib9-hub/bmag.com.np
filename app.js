@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const mainWrapper = document.getElementById('mainWrapper');
   const menuItems = document.querySelectorAll('.menu-item');
   const contentSections = document.querySelectorAll('.content-section');
+  const headerTitle = document.querySelector('.header-title'); // Added Selector
   
   const btnEn = document.getElementById('btnEn');
   const btnNp = document.getElementById('btnNp');
@@ -46,6 +47,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
+      // Update Header Title depending on current active language when switching sections
+      const currentLang = localStorage.getItem('preferredLang') || 'en';
+      const itemTextSpan = item.querySelector('span');
+      if (headerTitle && itemTextSpan) {
+        // Set the active data attributes to header dynamic titles
+        headerTitle.setAttribute('data-en', itemTextSpan.getAttribute('data-en'));
+        headerTitle.setAttribute('data-np', itemTextSpan.getAttribute('data-np'));
+        headerTitle.textContent = itemTextSpan.getAttribute(`data-${currentLang}`);
+      }
+
       if (window.innerWidth <= 768) {
         sidebar.classList.remove('mobile-show');
       }
@@ -76,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.documentElement.lang = 'en';
     }
     
-    // Optional: Save preference so refresh doesn't reset language
+    // Save preference so refresh doesn't reset language
     localStorage.setItem('preferredLang', lang);
   }
 
