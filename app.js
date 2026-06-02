@@ -21,13 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const captionBox = document.getElementById('lightboxCaptionText');
 
   /* ==========================================================================
-     1. SIDEBAR TOGGLE MECHANICS
+     1. SIDEBAR TOGGLE MECHANICS (Defensive Check)
      ========================================================================== */
-  if (sidebarToggle && sidebar && mainWrapper) {
+  if (sidebarToggle && sidebar) {
     sidebarToggle.addEventListener('click', () => {
       if (window.innerWidth > 768) {
-        sidebar.classList.toggle('collapsed');
-        mainWrapper.classList.toggle('expanded');
+        if (sidebar) sidebar.classList.toggle('collapsed');
+        if (mainWrapper) mainWrapper.classList.toggle('expanded');
       } else {
         sidebar.classList.toggle('mobile-show');
       }
@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
      2. ROUTING / VIEW SWITCHING INTERACTION ENGINE
      ========================================================================== */
   function switchView(targetSectionId) {
+    if (!targetSectionId) return;
+
     // 1. Synchronize Menu Selection States
     menuItems.forEach(link => {
       if (link.getAttribute('data-target') === targetSectionId) {
@@ -62,16 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 3. Update Header Text According to Selected Element Attributes
+    // 3. Update Header Text Safely
     const activeItem = document.querySelector(`.menu-item[data-target="${targetSectionId}"]`);
     if (activeItem && headerTitle) {
       const itemTextSpan = activeItem.querySelector('span');
       if (itemTextSpan) {
-        headerTitle.setAttribute('data-en', itemTextSpan.getAttribute('data-en'));
-        headerTitle.setAttribute('data-np', itemTextSpan.getAttribute('data-np'));
+        headerTitle.setAttribute('data-en', itemTextSpan.getAttribute('data-en') || '');
+        headerTitle.setAttribute('data-np', itemTextSpan.getAttribute('data-np') || '');
         
         const currentLang = localStorage.getItem('preferredLang') || 'en';
-        headerTitle.textContent = itemTextSpan.getAttribute(`data-${currentLang}`);
+        headerTitle.textContent = itemTextSpan.getAttribute(`data-${currentLang}`) || '';
       }
     }
 
@@ -81,20 +83,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  menuItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetSectionId = item.getAttribute('data-target');
-      switchView(targetSectionId);
+  // Attach click events to menu options safely
+  if (menuItems.length > 0) {
+    menuItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetSectionId = item.getAttribute('data-target');
+        switchView(targetSectionId);
+      });
     });
-  });
+  }
 
   /* ==========================================================================
-     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER (GALLERY / SINGLE CORES)
+     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER
      ========================================================================== */
-  if (triggerCards.length && lightboxOverlay) {
+  if (triggerCards.length && lightboxOverlay && mediaContainer && captionBox) {
     
-    // Helper function to render an image node
     const appendImageNode = (url) => {
       const img = document.createElement('img');
       img.src = url;
@@ -107,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
       mediaContainer.appendChild(img);
     };
 
-    // Helper function to render a video node with forced fallback initialization
     const appendVideoNode = (url) => {
       const video = document.createElement('video');
       video.controls = true;
@@ -125,37 +128,36 @@ document.addEventListener('DOMContentLoaded', () => {
       
       video.appendChild(source);
       mediaContainer.appendChild(video);
-      video.load(); // Forces media stream context buffering to clear freezing states
+      video.load();
     };
 
     triggerCards.forEach(card => {
       card.addEventListener('click', () => {
         const type = card.getAttribute('data-type');
         const currentLang = localStorage.getItem('preferredLang') || 'en';
-        
-        // Dynamically track localized string attributes at click runtime
         const chosenCaption = card.getAttribute(`data-${currentLang}-caption`);
 
-        // Safely empty previous container content elements
         mediaContainer.innerHTML = '';
         mediaContainer.className = "lightbox-media-wrapper"; 
 
         if (type === 'gallery') {
-          const mediaAssets = JSON.parse(card.getAttribute('data-sources'));
-          mediaContainer.classList.add('gallery-layout-active');
-
-          mediaAssets.forEach(sourceUrl => {
-            if (sourceUrl.endsWith('.mp4') || sourceUrl.endsWith('.webm')) {
-              appendVideoNode(sourceUrl);
-            } else {
-              appendImageNode(sourceUrl);
-            }
-          });
+          const rawSources = card.getAttribute('data-sources');
+          if (rawSources) {
+            const mediaAssets = JSON.parse(rawSources);
+            mediaContainer.classList.add('gallery-layout-active');
+            mediaAssets.forEach(sourceUrl => {
+              if (sourceUrl.endsWith('.mp4') || sourceUrl.endsWith('.webm')) {
+                appendVideoNode(sourceUrl);
+              } else {
+                appendImageNode(sourceUrl);
+              }
+            });
+          }
         } else {
           const singleSource = card.getAttribute('data-src');
-          if (type === 'image') {
+          if (type === 'image' && singleSource) {
             appendImageNode(singleSource);
-          } else if (type === 'video') {
+          } else if (type === 'video' && singleSource) {
             appendVideoNode(singleSource);
           }
         }
@@ -209,36 +211,30 @@ document.addEventListener('DOMContentLoaded', () => {
     
     localStorage.setItem('preferredLang', lang);
 
-    // Synchronize the current header element view text string state upon language switch
     const currentActiveItem = document.querySelector('.menu-item.active');
     if (currentActiveItem && headerTitle) {
       const activeSpan = currentActiveItem.querySelector('span');
       if (activeSpan) {
-        headerTitle.textContent = activeSpan.getAttribute(`data-${lang}`);
+        headerTitle.textContent = activeSpan.getAttribute(`data-${lang}`) || '';
       }
     }
   }
 
-  if (btnEn && btnNp) {
-    btnEn.addEventListener('click', () => setLanguage('en'));
-    btnNp.addEventListener('click', () => setLanguage('np'));
-  }
+  if (btnEn) btnEn.addEventListener('click', () => setLanguage('en'));
+  if (btnNp) btnNp.addEventListener('click', () => setLanguage('np'));
 
   /* ==========================================================================
-     5. INITIALIZE DEFAULT SYSTEM LAYER ON LOAD
+     5. INITIALIZE DEFAULT NAVIGATION ROUTE Safely
      ========================================================================== */
-  // Pull default locale or set English standard
   const defaultLang = localStorage.getItem('preferredLang') || 'en';
   setLanguage(defaultLang);
 
-  // Parse window URL hashes to explicitly active corresponding dashboard segments
   const currentHash = window.location.hash.replace('#', '');
   const validSections = Array.from(contentSections).map(s => s.id);
   
   if (currentHash && validSections.includes(currentHash)) {
     switchView(currentHash);
   } else {
-    // Falls back seamlessly to home view routing baseline defaults as shown in image_58a9e9.png
-    switchView('home'); 
+    switchView('home'); // Automatically defaults to Home view on startup
   }
 });
