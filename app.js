@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER
+     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER (CORRECTED FOR VIDEO PLAYBACK)
      ========================================================================== */
   if (triggerCards.length && lightboxOverlay) {
     triggerCards.forEach(card => {
@@ -91,12 +91,35 @@ document.addEventListener('DOMContentLoaded', () => {
           imageElement.src = sourceUrl;
           imageElement.alt = 'Product Display Mode';
           mediaContainer.appendChild(imageElement);
+          
         } else if (type === 'video') {
           const videoElement = document.createElement('video');
-          videoElement.src = sourceUrl;
           videoElement.controls = true;
           videoElement.autoplay = true;
+          videoElement.muted = true; // Bypasses strict browser autoplay restrictions
+          videoElement.playsInline = true; // Prevents iOS devices from forcing fullscreen mode
+
+          // Creating a source element guarantees browser compatibility and correct MIME type handling
+          const sourceElement = document.createElement('source');
+          sourceElement.src = sourceUrl;
+          
+          // Detect encoding format dynamically if needed, defaults to mp4
+          if (sourceUrl.endsWith('.webm')) {
+            sourceElement.type = 'video/webm';
+          } else if (sourceUrl.endsWith('.ogg')) {
+            sourceElement.type = 'video/ogg';
+          } else {
+            sourceElement.type = 'video/mp4';
+          }
+
+          videoElement.appendChild(sourceElement);
           mediaContainer.appendChild(videoElement);
+          
+          // Fallback mechanism to trigger playback manually if autoplay feels stubborn
+          videoElement.load();
+          videoElement.play().catch(error => {
+            console.log("Autoplay prevented. User interaction required to play with audio:", error);
+          });
         }
 
         // Sync local caption text parameters across frames safely
@@ -107,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Dismiss lightbox framework and terminate background media audio streams
+    // Dismiss lightbox framework and terminate background media audio/video streams
     const clearAndDismissLightbox = () => {
       lightboxOverlay.classList.remove('active-view');
       mediaContainer.innerHTML = ''; 
@@ -127,49 +150,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Support accessibility hardware keyboard Escape configurations
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && lightboxOverlay.classList.contains('active-view')) {
-        clearAndDismissLightbox();
-      }
-    });
-  }
-
-  /* ==========================================================================
-     4. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
-     ========================================================================== */
-  function setLanguage(lang) {
-    const localizableElements = document.querySelectorAll('[data-en][data-np]');
-    
-    localizableElements.forEach(element => {
-      if (lang === 'np') {
-        element.textContent = element.getAttribute('data-np');
-      } else {
-        element.textContent = element.getAttribute('data-en');
-      }
-    });
-
-    if (lang === 'np') {
-      btnNp.classList.add('active');
-      btnEn.classList.remove('active');
-      document.documentElement.lang = 'ne';
-    } else {
-      btnEn.classList.add('active');
-      btnNp.classList.remove('active');
-      document.documentElement.lang = 'en';
-    }
-    
-    // Save preference so refresh doesn't reset language
-    localStorage.setItem('preferredLang', lang);
-  }
-
-  // Bind Switch Event Listeners to Language Toggle UI
-  if (btnEn && btnNp) {
-    btnEn.addEventListener('click', () => setLanguage('en'));
-    btnNp.addEventListener('click', () => setLanguage('np'));
-  }
-
-  /* ==========================================================================
-     5. INITIALIZE DEFAULT LANGUAGE ON LOAD
-     ========================================================================== */
-  const defaultLang = localStorage.getItem('preferredLang') || 'en';
-  setLanguage(defaultLang);
-});
+      if (event.key === 'Escape' && lightboxOverlay.classList
