@@ -23,59 +23,78 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      1. SIDEBAR TOGGLE MECHANICS
      ========================================================================== */
-  sidebarToggle.addEventListener('click', () => {
-    if (window.innerWidth > 768) {
-      sidebar.classList.toggle('collapsed');
-      mainWrapper.classList.toggle('expanded');
-    } else {
-      sidebar.classList.toggle('mobile-show');
-    }
-  });
+  if (sidebarToggle && sidebar && mainWrapper) {
+    sidebarToggle.addEventListener('click', () => {
+      if (window.innerWidth > 768) {
+        sidebar.classList.toggle('collapsed');
+        mainWrapper.classList.toggle('expanded');
+      } else {
+        sidebar.classList.toggle('mobile-show');
+      }
+    });
 
-  window.addEventListener('click', (e) => {
-    if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-      sidebar.classList.remove('mobile-show');
-    }
-  });
+    window.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+        sidebar.classList.remove('mobile-show');
+      }
+    });
+  }
 
   /* ==========================================================================
-     2. ROUTING / VIEW SWITCHING INTERACTION
+     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE
      ========================================================================== */
+  function switchView(targetSectionId) {
+    // 1. Synchronize Menu Selection States
+    menuItems.forEach(link => {
+      if (link.getAttribute('data-target') === targetSectionId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    // 2. Toggle Visibility of Sections
+    contentSections.forEach(section => {
+      if (section.id === targetSectionId) {
+        section.classList.add('active-section');
+      } else {
+        section.classList.remove('active-section');
+      }
+    });
+
+    // 3. Update Header Text According to Selected Element Attributes
+    const activeItem = document.querySelector(`.menu-item[data-target="${targetSectionId}"]`);
+    if (activeItem && headerTitle) {
+      const itemTextSpan = activeItem.querySelector('span');
+      if (itemTextSpan) {
+        headerTitle.setAttribute('data-en', itemTextSpan.getAttribute('data-en'));
+        headerTitle.setAttribute('data-np', itemTextSpan.getAttribute('data-np'));
+        
+        const currentLang = localStorage.getItem('preferredLang') || 'en';
+        headerTitle.textContent = itemTextSpan.getAttribute(`data-${currentLang}`);
+      }
+    }
+
+    // 4. Hide Mobile Sidebar Upon Selection
+    if (window.innerWidth <= 768 && sidebar) {
+      sidebar.classList.remove('mobile-show');
+    }
+  }
+
   menuItems.forEach(item => {
     item.addEventListener('click', (e) => {
       e.preventDefault();
-      
-      menuItems.forEach(link => link.classList.remove('active'));
-      item.classList.add('active');
-
       const targetSectionId = item.getAttribute('data-target');
-      contentSections.forEach(section => {
-        section.classList.remove('active-section');
-        if (section.id === targetSectionId) {
-          section.classList.add('active-section');
-        }
-      });
-
-      const currentLang = localStorage.getItem('preferredLang') || 'en';
-      const itemTextSpan = item.querySelector('span');
-      if (headerTitle && itemTextSpan) {
-        headerTitle.setAttribute('data-en', itemTextSpan.getAttribute('data-en'));
-        headerTitle.setAttribute('data-np', itemTextSpan.getAttribute('data-np'));
-        headerTitle.textContent = itemTextSpan.getAttribute(`data-${currentLang}`);
-      }
-
-      if (window.innerWidth <= 768) {
-        sidebar.classList.remove('mobile-show');
-      }
+      switchView(targetSectionId);
     });
   });
 
   /* ==========================================================================
-     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER (GALLERY / SINGLE RESOURCE MODES)
+     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER (GALLERY / SINGLE CORES)
      ========================================================================== */
   if (triggerCards.length && lightboxOverlay) {
     
-    // Helper function to render a single image node
+    // Helper function to render an image node
     const appendImageNode = (url) => {
       const img = document.createElement('img');
       img.src = url;
@@ -88,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mediaContainer.appendChild(img);
     };
 
-    // Helper function to render a single auto-configured video node
+    // Helper function to render a video node with forced fallback initialization
     const appendVideoNode = (url) => {
       const video = document.createElement('video');
       video.controls = true;
@@ -106,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       video.appendChild(source);
       mediaContainer.appendChild(video);
-      video.load();
+      video.load(); // Forces media stream context buffering to clear freezing states
     };
 
     triggerCards.forEach(card => {
@@ -114,18 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const type = card.getAttribute('data-type');
         const currentLang = localStorage.getItem('preferredLang') || 'en';
         
-        // Dynamic Lang Selection for Captions
+        // Dynamically track localized string attributes at click runtime
         const chosenCaption = card.getAttribute(`data-${currentLang}-caption`);
 
-        // Empty previous display node elements safely
+        // Safely empty previous container content elements
         mediaContainer.innerHTML = '';
-        mediaContainer.className = "lightbox-media-wrapper"; // Reset base class wrapper
+        mediaContainer.className = "lightbox-media-wrapper"; 
 
         if (type === 'gallery') {
-          // Parse string block back into systematic array layout
           const mediaAssets = JSON.parse(card.getAttribute('data-sources'));
-          
-          // Apply responsive layout styling programmatically depending on item lengths
           mediaContainer.classList.add('gallery-layout-active');
 
           mediaAssets.forEach(sourceUrl => {
@@ -135,9 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
               appendImageNode(sourceUrl);
             }
           });
-
         } else {
-          // Single Fallback Render Modes
           const singleSource = card.getAttribute('data-src');
           if (type === 'image') {
             appendImageNode(singleSource);
@@ -146,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        // Apply synchronized dynamic caption text block parameters safely
         captionBox.textContent = chosenCaption || '';
         lightboxOverlay.classList.add('active-view');
       });
@@ -185,16 +198,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (lang === 'np') {
-      btnNp.classList.add('active');
-      btnEn.classList.remove('active');
+      if (btnNp) btnNp.classList.add('active');
+      if (btnEn) btnEn.classList.remove('active');
       document.documentElement.lang = 'ne';
     } else {
-      btnEn.classList.add('active');
-      btnNp.classList.remove('active');
+      if (btnEn) btnEn.classList.add('active');
+      if (btnNp) btnNp.classList.remove('active');
       document.documentElement.lang = 'en';
     }
     
     localStorage.setItem('preferredLang', lang);
+
+    // Synchronize the current header element view text string state upon language switch
+    const currentActiveItem = document.querySelector('.menu-item.active');
+    if (currentActiveItem && headerTitle) {
+      const activeSpan = currentActiveItem.querySelector('span');
+      if (activeSpan) {
+        headerTitle.textContent = activeSpan.getAttribute(`data-${lang}`);
+      }
+    }
   }
 
   if (btnEn && btnNp) {
@@ -203,8 +225,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     5. INITIALIZE DEFAULT LANGUAGE ON LOAD
+     5. INITIALIZE DEFAULT SYSTEM LAYER ON LOAD
      ========================================================================== */
+  // Pull default locale or set English standard
   const defaultLang = localStorage.getItem('preferredLang') || 'en';
   setLanguage(defaultLang);
+
+  // Parse window URL hashes to explicitly active corresponding dashboard segments
+  const currentHash = window.location.hash.replace('#', '');
+  const validSections = Array.from(contentSections).map(s => s.id);
+  
+  if (currentHash && validSections.includes(currentHash)) {
+    switchView(currentHash);
+  } else {
+    // Falls back seamlessly to home view routing baseline defaults as shown in image_58a9e9.png
+    switchView('home'); 
+  }
 });
