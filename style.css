@@ -461,4 +461,116 @@ h2 {
     color: var(--primary) !important;
   }
 }
+/* Interactive Target Settings */
+.product-modal-trigger {
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+}
+
+.product-modal-trigger:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Lightbox Core Dim Backdrop Structure */
+.product-lightbox-overlay {
+  display: none; /* Initial hidden layout positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 15, 10, 0.92); /* Rich dark background tint */
+  z-index: 10000; /* Stays fixed cleanly above headers and side menus */
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+}
+
+/* Display State Activation Selector */
+.product-lightbox-overlay.active-view {
+  display: flex;
+  opacity: 1;
+}
+
+/* Internal Presentation Core Alignment Box */
+.lightbox-content-box {
+  position: relative;
+  width: 92%;
+  max-width: 800px; /* Highly portable maximum bounds */
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Portable Dynamic Media Frame Container */
+.lightbox-media-wrapper {
+  width: 100%;
+  height: auto;
+  max-height: 65vh; /* Prevents taller graphic displays from spilling over bottom edge */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+}
+
+/* Fluid Scalers for Media Components */
+.lightbox-media-wrapper img,
+.lightbox-media-wrapper video {
+  width: 100%;
+  height: auto;
+  max-height: 65vh;
+  object-fit: contain; /* Prevents distorting aspect ratios across displays */
+}
+
+/* Dynamic Caption Area Layout Configuration */
+.lightbox-caption-text {
+  margin-top: 15px;
+  color: #f5f5f5;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 10px 20px;
+  border-radius: 25px;
+  max-width: 100%;
+  line-height: 1.5;
+}
+
+/* Top Right Screen Dismissal Action Pin */
+.lightbox-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #ffffff;
+  font-size: 45px;
+  font-weight: 300;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.lightbox-close-btn:hover {
+  color: #4caf50; /* Signature organic agro green accent theme link */
+  transform: scale(1.1);
+}
+
+/* Clean Responsiveness for Small Displays */
+@media (max-width: 600px) {
+  .lightbox-close-btn {
+    top: 12px;
+    right: 18px;
+    font-size: 38px;
+  }
+  .lightbox-caption-text {
+    font-size: 0.95rem;
+    padding: 8px 15px;
+  }
+}
 
