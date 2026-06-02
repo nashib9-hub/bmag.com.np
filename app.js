@@ -1,15 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
   
-  // DOM ELEMENT SELECTORS
+  /* ==========================================================================
+     DOM ELEMENT SELECTORS
+     ========================================================================== */
   const sidebarToggle = document.getElementById('sidebarToggle');
   const sidebar = document.getElementById('sidebar');
   const mainWrapper = document.getElementById('mainWrapper');
   const menuItems = document.querySelectorAll('.menu-item');
   const contentSections = document.querySelectorAll('.content-section');
-  const headerTitle = document.querySelector('.header-title'); // Added Selector
+  const headerTitle = document.querySelector('.header-title');
   
   const btnEn = document.getElementById('btnEn');
   const btnNp = document.getElementById('btnNp');
+
+  // Product Lightbox Elements
+  const triggerCards = document.querySelectorAll('.product-modal-trigger');
+  const lightboxOverlay = document.getElementById('productMediaOverlay');
+  const closeBtn = document.getElementById('closeLightboxBtn');
+  const mediaContainer = document.getElementById('lightboxMediaWrapper');
+  const captionBox = document.getElementById('lightboxCaptionText');
 
   /* ==========================================================================
      1. SIDEBAR TOGGLE MECHANICS
@@ -64,7 +73,68 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     3. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
+     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER
+     ========================================================================== */
+  if (triggerCards.length && lightboxOverlay) {
+    triggerCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const type = card.getAttribute('data-type');
+        const sourceUrl = card.getAttribute('data-src');
+        const descriptiveText = card.getAttribute('data-caption');
+
+        // Empty previous dynamic container instances safely
+        mediaContainer.innerHTML = '';
+
+        // Construct dynamic DOM node based on active media configuration
+        if (type === 'image') {
+          const imageElement = document.createElement('img');
+          imageElement.src = sourceUrl;
+          imageElement.alt = 'Product Display Mode';
+          mediaContainer.appendChild(imageElement);
+        } else if (type === 'video') {
+          const videoElement = document.createElement('video');
+          videoElement.src = sourceUrl;
+          videoElement.controls = true;
+          videoElement.autoplay = true;
+          mediaContainer.appendChild(videoElement);
+        }
+
+        // Sync local caption text parameters across frames safely
+        captionBox.textContent = descriptiveText || '';
+
+        // Display the interactive overlay frame
+        lightboxOverlay.classList.add('active-view');
+      });
+    });
+
+    // Dismiss lightbox framework and terminate background media audio streams
+    const clearAndDismissLightbox = () => {
+      lightboxOverlay.classList.remove('active-view');
+      mediaContainer.innerHTML = ''; 
+    };
+
+    // Close button interactions
+    if (closeBtn) {
+      closeBtn.addEventListener('click', clearAndDismissLightbox);
+    }
+
+    // Dismiss when clicking outer backdrop canvas bounds
+    lightboxOverlay.addEventListener('click', (event) => {
+      if (event.target === lightboxOverlay) {
+        clearAndDismissLightbox();
+      }
+    });
+
+    // Support accessibility hardware keyboard Escape configurations
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && lightboxOverlay.classList.contains('active-view')) {
+        clearAndDismissLightbox();
+      }
+    });
+  }
+
+  /* ==========================================================================
+     4. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
      ========================================================================== */
   function setLanguage(lang) {
     const localizableElements = document.querySelectorAll('[data-en][data-np]');
@@ -91,14 +161,15 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('preferredLang', lang);
   }
 
-  // Bind Switch Event Listeners to Buttons
-  btnEn.addEventListener('click', () => setLanguage('en'));
-  btnNp.addEventListener('click', () => setLanguage('np'));
+  // Bind Switch Event Listeners to Language Toggle UI
+  if (btnEn && btnNp) {
+    btnEn.addEventListener('click', () => setLanguage('en'));
+    btnNp.addEventListener('click', () => setLanguage('np'));
+  }
 
   /* ==========================================================================
-     4. INITIALIZE DEFAULT LANGUAGE ON LOAD
+     5. INITIALIZE DEFAULT LANGUAGE ON LOAD
      ========================================================================== */
-  // Checks if user has a saved preference, otherwise defaults to English ('en')
   const defaultLang = localStorage.getItem('preferredLang') || 'en';
   setLanguage(defaultLang);
 });
