@@ -1,11 +1,13 @@
-/* DESIGN SYSTEM TOKENS */
+/* ==========================================================================
+   DESIGN SYSTEM TOKENS
+   ========================================================================== */
 :root {
-  --primary: #1e5631;       /* Deep Organic Forest Green */
-  --primary-light: #a4de02; /* Fresh Sprout Green Accents */
-  --accent: #4c9a2a;        /* Balanced Foliage Green */
-  --bg-main: #f4f7f5;       /* Off-White Clean Leaf Base */
+  --primary: #1e5631;         /* Deep Organic Forest Green */
+  --primary-light: #a4de02;   /* Fresh Sprout Green Accents */
+  --accent: #4c9a2a;          /* Balanced Foliage Green */
+  --bg-main: #f4f7f5;         /* Off-White Clean Leaf Base */
   --bg-card: #ffffff;
-  --text-dark: #1c2826;     /* Dark Charcoal for High Contrast */
+  --text-dark: #1c2826;       /* Dark Charcoal for High Contrast */
   --text-muted: #626d69;
   --sidebar-width: 260px;
   --sidebar-collapsed: 70px;
@@ -26,7 +28,9 @@ body {
   display: flex;
 }
 
-/* SIDEBAR LAYOUT */
+/* ==========================================================================
+   SIDEBAR LAYOUT
+   ========================================================================== */
 .sidebar {
   width: var(--sidebar-width);
   height: 100vh;
@@ -73,7 +77,6 @@ body {
   pointer-events: none;
 }
 
-/* NAVIGATION MENU ITEMS */
 .sidebar-menu {
   display: flex;
   flex-direction: column;
@@ -115,7 +118,9 @@ body {
   pointer-events: none;
 }
 
-/* MAIN CONTENT CONTAINER ENGINE */
+/* ==========================================================================
+   MAIN CONTENT WRAPPER & HEADER
+   ========================================================================== */
 .main-wrapper {
   margin-left: var(--sidebar-width);
   width: calc(100% - var(--sidebar-width));
@@ -130,7 +135,6 @@ body {
   width: calc(100% - var(--sidebar-collapsed));
 }
 
-/* APP TOP BAR HEADER (DESKTOP DEFAULT) */
 .top-header {
   height: 70px;
   background-color: var(--bg-card);
@@ -170,7 +174,7 @@ body {
   font-weight: 600;
 }
 
-/* DESKTOP MARQUEE STRUCTURAL CORE */
+/* MARQUEE RUNTIME CORE */
 .marquee-container {
   flex: 1;
   overflow: hidden;
@@ -191,7 +195,7 @@ body {
   white-space: nowrap;
   gap: 30px;
   padding-right: 30px;
-  animation: organic-scroll 18s linear infinite; /* Wire framing baseline animation */
+  animation: organic-scroll 18s linear infinite;
 }
 
 .marquee-track span {
@@ -203,7 +207,7 @@ body {
   color: var(--primary);
 }
 
-/* DYNAMIC SWITCH LANGUAGE CONTROLLER UI */
+/* LANGUAGE SELECTOR UI */
 .lang-switcher {
   display: flex;
   background-color: var(--bg-main);
@@ -230,7 +234,9 @@ body {
   color: #ffffff;
 }
 
-/* CONTENT VIEW MANAGEMENT SYSTEM */
+/* ==========================================================================
+   CONTENT CONTROLLER & GRIDS
+   ========================================================================== */
 .content-container {
   padding: 40px;
   flex-grow: 1;
@@ -263,7 +269,6 @@ h2 {
   font-size: 1.05rem;
 }
 
-/* CARDS AND GRIDS (ORGANIC UI SPECIFICATION) */
 .stats-grid, .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -284,6 +289,10 @@ h2 {
   transform: translateY(-4px);
   box-shadow: 0 8px 30px rgba(30, 86, 49, 0.06);
   border-color: rgba(30, 86, 49, 0.1);
+}
+
+.product-modal-trigger {
+  cursor: pointer;
 }
 
 .card-icon {
@@ -355,17 +364,123 @@ h2 {
   color: var(--primary);
 }
 
-/* Hardware-accelerated infinite loop tracking */
 @keyframes organic-scroll {
   0% { transform: translate3d(0, 0, 0); }
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
 /* ==========================================================================
+   UNIFIED INTERACTIVE PRODUCT LIGHTBOX FRAMEWORK
+   ========================================================================== */
+.product-lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.95); /* High-contrast dark charcoal window tint */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-in-out;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.product-lightbox-overlay.active-view {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-content-box {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 1100px;
+  width: 92%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.lightbox-media-wrapper {
+  width: 100%;
+  height: auto;
+  max-height: 65vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+/* Responsive Grid Engine for Multi-File (Gallery Mode) Arrays */
+.lightbox-media-wrapper.gallery-layout-active {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  max-height: 65vh;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.lightbox-media-wrapper img,
+.lightbox-media-wrapper video {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+/* Gallery Scrollbar configuration hooks */
+.lightbox-media-wrapper.gallery-layout-active::-webkit-scrollbar {
+  width: 6px;
+}
+.lightbox-media-wrapper.gallery-layout-active::-webkit-scrollbar-thumb {
+  background-color: #475569;
+  border-radius: 10px;
+}
+
+.lightbox-caption-text {
+  margin-top: 20px;
+  color: #f8fafc;
+  font-size: 1.1rem;
+  text-align: center;
+  font-weight: 500;
+  border-top: 1px solid #334155;
+  padding-top: 12px;
+  line-height: 1.5;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.lightbox-close-btn:hover {
+  color: var(--primary-light);
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
    CONSOLIDATED MOBILE OVERRIDES BREAKPOINT (768px)
    ========================================================================== */
 @media (max-width: 768px) {
-  /* 1. Reset layout for mobile display viewports */
   body {
     flex-direction: column;
   }
@@ -388,11 +503,10 @@ h2 {
     padding: 20px;
   }
 
-  /* 2. Re-engineer header into a dual-row stack wrapper */
   .top-header {
     display: flex !important;
     position: relative !important;
-    height: 105px !important; /* Extra padding for the absolute sub-row container */
+    height: 105px !important;
     align-items: flex-start !important;
     padding: 14px 15px !important;
     gap: 0 !important;
@@ -403,7 +517,6 @@ h2 {
     align-items: center !important;
   }
 
-  /* Keep the text title layout responsive inside your dashboard switcher */
   .header-left .header-title {
     display: block !important;
     font-size: 1.15rem !important;
@@ -418,21 +531,18 @@ h2 {
     font-size: 0.8rem !important;
   }
 
-  /* 3. Pull layout out of the flex row conflict and pin below header items */
   .marquee-container {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    
     position: absolute !important;
     bottom: 10px !important;
     left: 15px !important;
     right: 15px !important;
-    
     width: calc(100% - 30px) !important;
     height: 32px !important;
     margin: 0 !important;
-    background: rgba(30, 86, 49, 0.08) !important; /* Light agricultural container green tint */
+    background: rgba(30, 86, 49, 0.08) !important;
     border: 1px solid rgba(30, 86, 49, 0.12) !important;
     border-radius: 6px !important;
     overflow: hidden !important;
@@ -450,7 +560,7 @@ h2 {
     white-space: nowrap !important;
     gap: 35px !important;
     padding-right: 35px !important;
-    animation: organic-scroll 14s linear infinite !important; /* Force re-running layout animation frames */
+    animation: organic-scroll 14s linear infinite !important;
   }
 
   .marquee-track span {
@@ -460,117 +570,16 @@ h2 {
     font-size: 11px !important;
     color: var(--primary) !important;
   }
-}
-/* Interactive Target Settings */
-.product-modal-trigger {
-  cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
-}
 
-.product-modal-trigger:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
-}
-
-/* Lightbox Core Dim Backdrop Structure */
-.product-lightbox-overlay {
-  display: none; /* Initial hidden layout positioning */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(10, 15, 10, 0.92); /* Rich dark background tint */
-  z-index: 10000; /* Stays fixed cleanly above headers and side menus */
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.25s ease-in-out;
-}
-
-/* Display State Activation Selector */
-.product-lightbox-overlay.active-view {
-  display: flex;
-  opacity: 1;
-}
-
-/* Internal Presentation Core Alignment Box */
-.lightbox-content-box {
-  position: relative;
-  width: 92%;
-  max-width: 800px; /* Highly portable maximum bounds */
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Portable Dynamic Media Frame Container */
-.lightbox-media-wrapper {
-  width: 100%;
-  height: auto;
-  max-height: 65vh; /* Prevents taller graphic displays from spilling over bottom edge */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000000;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-}
-
-/* Fluid Scalers for Media Components */
-.lightbox-media-wrapper img,
-.lightbox-media-wrapper video {
-  width: 100%;
-  height: auto;
-  max-height: 65vh;
-  object-fit: contain; /* Prevents distorting aspect ratios across displays */
-}
-
-/* Dynamic Caption Area Layout Configuration */
-.lightbox-caption-text {
-  margin-top: 15px;
-  color: #f5f5f5;
-  font-family: 'Inter', sans-serif;
-  font-size: 1.05rem;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.08);
-  padding: 10px 20px;
-  border-radius: 25px;
-  max-width: 100%;
-  line-height: 1.5;
-}
-
-/* Top Right Screen Dismissal Action Pin */
-.lightbox-close-btn {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  color: #ffffff;
-  font-size: 45px;
-  font-weight: 300;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
-}
-
-.lightbox-close-btn:hover {
-  color: #4caf50; /* Signature organic agro green accent theme link */
-  transform: scale(1.1);
-}
-
-/* Clean Responsiveness for Small Displays */
-@media (max-width: 600px) {
+  /* Lightbox Mobile Adjustments */
   .lightbox-close-btn {
-    top: 12px;
-    right: 18px;
-    font-size: 38px;
+    top: -40px;
+    right: 10px;
+    font-size: 2.2rem;
   }
+  
   .lightbox-caption-text {
     font-size: 0.95rem;
     padding: 8px 15px;
   }
 }
-
