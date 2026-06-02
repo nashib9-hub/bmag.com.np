@@ -127,21 +127,35 @@
         </div>
       </section>
 
-      <section id="products" class="content-section">
-        <h2 data-en="Our Products" data-np="हाम्रा उत्पादनहरू">Our Products</h2>
-        <div class="info-grid">
-          <div class="info-card">
-            <i class="ri-restaurant-line product-icon"></i>
-            <h3 data-en="Organic Vegetables" data-np="जैविक तरकारीहरू">Organic Vegetables</h3>
-            <p data-en="100% pesticide-free fresh seasonal greens." data-np="१००% विषादी रहित ताजा मौसमी तरकारीहरू।">100% pesticide-free fresh seasonal greens.</p>
-          </div>
-          <div class="info-card">
-            <i class="ri-seedling-fill product-icon"></i>
-            <h3 data-en="High-Yield Seeds" data-np="उच्च उत्पादन दिने बीउहरू">High-Yield Seeds</h3>
-            <p data-en="Certified disease-resistant regional crop varieties." data-np="प्रमाणित रोग-प्रतिरोधी क्षेत्रीय बालीका बीउहरू।">Certified disease-resistant regional crop varieties.</p>
-          </div>
-        </div>
-      </section>
+    <section id="products" class="content-section">
+  <h2 data-en="Our Products" data-np="हाम्रा उत्पादनहरू">Our Products</h2>
+  <div class="info-grid">
+    
+    <div class="info-card product-modal-card" data-type="image" data-src="organic-vegetables.jpg" data-caption="100% pesticide-free fresh seasonal greens, sourced directly from our cooperative local farms.">
+      <i class="ri-restaurant-line product-icon"></i>
+      <h3 data-en="Organic Vegetables" data-np="जैविक तरकारीहरू">Organic Vegetables</h3>
+      <p data-en="100% pesticide-free fresh seasonal greens." data-np="१००% विषादी रहित ताजा मौसमी तरकारीहरू।">100% pesticide-free fresh seasonal greens.</p>
+    </div>
+    
+    <div class="info-card product-modal-card" data-type="video" data-src="high-yield-seeds-demo.mp4" data-caption="Watch how our certified disease-resistant regional seed varieties double seasonal crop yields.">
+      <i class="ri-seedling-fill product-icon"></i>
+      <h3 data-en="High-Yield Seeds" data-np="उच्च उत्पादन दिने बीउहरू">High-Yield Seeds</h3>
+      <p data-en="Certified disease-resistant regional crop varieties." data-np="प्रमाणित रोग-प्रतिरोधी क्षेत्रीय बालीका बीउहरू।">Certified disease-resistant regional crop varieties.</p>
+    </div>
+
+  </div>
+</section>
+
+<div id="productModal" class="product-modal">
+  <button class="modal-close" id="productModalClose" aria-label="Close Product View">&times;</button>
+  <div class="modal-content">
+    
+    <div class="modal-media-wrapper" id="productMediaWrapper">
+      </div>
+    
+    <div class="modal-caption" id="productModalCaption"></div>
+  </div>
+</div>
 
       <section id="gallery" class="content-section">
         <h2 data-en="Photo Gallery" data-np="फोटो ग्यालेरी">Photo Gallery</h2>
