@@ -56,11 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Update Header Title depending on current active language when switching sections
       const currentLang = localStorage.getItem('preferredLang') || 'en';
       const itemTextSpan = item.querySelector('span');
       if (headerTitle && itemTextSpan) {
-        // Set the active data attributes to header dynamic titles
         headerTitle.setAttribute('data-en', itemTextSpan.getAttribute('data-en'));
         headerTitle.setAttribute('data-np', itemTextSpan.getAttribute('data-np'));
         headerTitle.textContent = itemTextSpan.getAttribute(`data-${currentLang}`);
@@ -73,81 +71,140 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER (CORRECTED FOR VIDEO PLAYBACK)
+     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER (GALLERY / SINGLE RESOURCE MODES)
      ========================================================================== */
   if (triggerCards.length && lightboxOverlay) {
+    
+    // Helper function to render a single image node
+    const appendImageNode = (url) => {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = 'Gallery Display Resource';
+      img.style.width = '100%';
+      img.style.height = 'auto';
+      img.style.maxHeight = '65vh';
+      img.style.objectFit = 'contain';
+      img.style.borderRadius = '6px';
+      mediaContainer.appendChild(img);
+    };
+
+    // Helper function to render a single auto-configured video node
+    const appendVideoNode = (url) => {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = true; 
+      video.playsInline = true;
+      video.style.width = '100%';
+      video.style.maxHeight = '65vh';
+      video.style.borderRadius = '6px';
+      video.style.backgroundColor = '#000';
+
+      const source = document.createElement('source');
+      source.src = url;
+      source.type = url.endsWith('.webm') ? 'video/webm' : 'video/mp4';
+      
+      video.appendChild(source);
+      mediaContainer.appendChild(video);
+      video.load();
+    };
+
     triggerCards.forEach(card => {
       card.addEventListener('click', () => {
         const type = card.getAttribute('data-type');
-        const sourceUrl = card.getAttribute('data-src');
-        const descriptiveText = card.getAttribute('data-caption');
+        const currentLang = localStorage.getItem('preferredLang') || 'en';
+        
+        // Dynamic Lang Selection for Captions
+        const chosenCaption = card.getAttribute(`data-${currentLang}-caption`);
 
-        // Empty previous dynamic container instances safely
+        // Empty previous display node elements safely
         mediaContainer.innerHTML = '';
+        mediaContainer.className = "lightbox-media-wrapper"; // Reset base class wrapper
 
-        // Construct dynamic DOM node based on active media configuration
-        if (type === 'image') {
-          const imageElement = document.createElement('img');
-          imageElement.src = sourceUrl;
-          imageElement.alt = 'Product Display Mode';
-          mediaContainer.appendChild(imageElement);
+        if (type === 'gallery') {
+          // Parse string block back into systematic array layout
+          const mediaAssets = JSON.parse(card.getAttribute('data-sources'));
           
-        } else if (type === 'video') {
-          const videoElement = document.createElement('video');
-          videoElement.controls = true;
-          videoElement.autoplay = true;
-          videoElement.muted = true; // Bypasses strict browser autoplay restrictions
-          videoElement.playsInline = true; // Prevents iOS devices from forcing fullscreen mode
+          // Apply responsive layout styling programmatically depending on item lengths
+          mediaContainer.classList.add('gallery-layout-active');
 
-          // Creating a source element guarantees browser compatibility and correct MIME type handling
-          const sourceElement = document.createElement('source');
-          sourceElement.src = sourceUrl;
-          
-          // Detect encoding format dynamically if needed, defaults to mp4
-          if (sourceUrl.endsWith('.webm')) {
-            sourceElement.type = 'video/webm';
-          } else if (sourceUrl.endsWith('.ogg')) {
-            sourceElement.type = 'video/ogg';
-          } else {
-            sourceElement.type = 'video/mp4';
-          }
-
-          videoElement.appendChild(sourceElement);
-          mediaContainer.appendChild(videoElement);
-          
-          // Fallback mechanism to trigger playback manually if autoplay feels stubborn
-          videoElement.load();
-          videoElement.play().catch(error => {
-            console.log("Autoplay prevented. User interaction required to play with audio:", error);
+          mediaAssets.forEach(sourceUrl => {
+            if (sourceUrl.endsWith('.mp4') || sourceUrl.endsWith('.webm')) {
+              appendVideoNode(sourceUrl);
+            } else {
+              appendImageNode(sourceUrl);
+            }
           });
+
+        } else {
+          // Single Fallback Render Modes
+          const singleSource = card.getAttribute('data-src');
+          if (type === 'image') {
+            appendImageNode(singleSource);
+          } else if (type === 'video') {
+            appendVideoNode(singleSource);
+          }
         }
 
-        // Sync local caption text parameters across frames safely
-        captionBox.textContent = descriptiveText || '';
-
-        // Display the interactive overlay frame
+        // Apply synchronized dynamic caption text block parameters safely
+        captionBox.textContent = chosenCaption || '';
         lightboxOverlay.classList.add('active-view');
       });
     });
 
-    // Dismiss lightbox framework and terminate background media audio/video streams
     const clearAndDismissLightbox = () => {
       lightboxOverlay.classList.remove('active-view');
       mediaContainer.innerHTML = ''; 
     };
 
-    // Close button interactions
-    if (closeBtn) {
-      closeBtn.addEventListener('click', clearAndDismissLightbox);
-    }
+    if (closeBtn) closeBtn.addEventListener('click', clearAndDismissLightbox);
 
-    // Dismiss when clicking outer backdrop canvas bounds
     lightboxOverlay.addEventListener('click', (event) => {
-      if (event.target === lightboxOverlay) {
+      if (event.target === lightboxOverlay) clearAndDismissLightbox();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && lightboxOverlay.classList.contains('active-view')) {
         clearAndDismissLightbox();
       }
     });
+  }
 
-    // Support accessibility hardware keyboard Escape configurations
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && lightboxOverlay.classList
+  /* ==========================================================================
+     4. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
+     ========================================================================== */
+  function setLanguage(lang) {
+    const localizableElements = document.querySelectorAll('[data-en][data-np]');
+    
+    localizableElements.forEach(element => {
+      if (lang === 'np') {
+        element.textContent = element.getAttribute('data-np');
+      } else {
+        element.textContent = element.getAttribute('data-en');
+      }
+    });
+
+    if (lang === 'np') {
+      btnNp.classList.add('active');
+      btnEn.classList.remove('active');
+      document.documentElement.lang = 'ne';
+    } else {
+      btnEn.classList.add('active');
+      btnNp.classList.remove('active');
+      document.documentElement.lang = 'en';
+    }
+    
+    localStorage.setItem('preferredLang', lang);
+  }
+
+  if (btnEn && btnNp) {
+    btnEn.addEventListener('click', () => setLanguage('en'));
+    btnNp.addEventListener('click', () => setLanguage('np'));
+  }
+
+  /* ==========================================================================
+     5. INITIALIZE DEFAULT LANGUAGE ON LOAD
+     ========================================================================== */
+  const defaultLang = localStorage.getItem('preferredLang') || 'en';
+  setLanguage(defaultLang);
+});
