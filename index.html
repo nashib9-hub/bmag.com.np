@@ -8,9 +8,8 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2 family=Hind:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-  
 <body>
 
   <!-- SIDEBAR NAVIGATION -->
@@ -21,7 +20,7 @@
     </div>
 
     <nav class="sidebar-menu">
-      <a href="#home" class="menu-item active" data-target="home">
+      <a href="#home" class="menu-item" data-target="home">
         <i class="ri-home-4-line"></i>
         <span data-en="Home" data-np="गृहपृष्ठ">Home</span>
       </a>
@@ -77,7 +76,7 @@
 
       <!-- LANGUAGE SWITCHER BUTTONS -->
       <div class="lang-switcher">
-        <button class="lang-btn active" id="btnEn">EN</button>
+        <button class="lang-btn" id="btnEn">EN</button>
         <button class="lang-btn" id="btnNp">नेपाली</button>
       </div>
     </header>
@@ -85,7 +84,7 @@
     <main class="content-container">
       
       <!-- SECTION: HOME -->
-      <section id="home" class="content-section active-section">
+      <section id="home" class="content-section">
         <h2 data-en="Welcome to Bhimbadh Multipurpose Agro" data-np="भिम्वाँद बहुउद्देश्यीय एग्रोमा स्वागत छ">Welcome to Bhimbadh Multipurpose Agro</h2>
         <p class="subtitle" data-en="Empowering local agriculture through modern sustainable practices." data-np="आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सबलीकरण गर्दै।">Empowering local agriculture through modern sustainable practices.</p>
         
@@ -135,7 +134,40 @@
         </div>
       </section>
 
- 
+      <!-- SECTION: PRODUCTS -->
+      <section id="products" class="content-section">
+        <h2 data-en="Our Products" data-np="हाम्रा उत्पादनहरू">Our Products</h2>
+        <div class="info-grid">
+          
+          <!-- DOLPA APPLE CARD (With advanced triggers matching app.js) -->
+          <div class="info-card product-card product-modal-trigger" 
+               data-type="image" 
+               data-src="apple_20201001145924_EmK2KUIfU2.jpg" 
+               data-en-caption="Premium Dolpa Apples - Fresh organic harvest directly from high-altitude orchards." 
+               data-np-caption="प्रिमियम डोल्पा स्याउ - उच्च हिमाली भेगको बगैंचाबाट टिपिएका ताजा जैविक स्याउ।">
+            
+            <div class="product-image-wrapper">
+              <img src="apple_20201001145924_EmK2KUIfU2.jpg" alt="Dolpa Apple" class="product-img">
+            </div>
+            
+            <h3 data-en="Organic Dolpa Apples" data-np="जैविक डोल्पा स्याउ">Organic Dolpa Apples</h3>
+            
+            <div class="product-pricing">
+              <p>
+                <strong data-en="Standard Grade:" data-np="साधारण ग्रेड:">Standard Grade:</strong> 
+                <span data-en="Rs. 400 / kg" data-np="रु. ४०० / केजी">Rs. 400 / kg</span>
+              </p>
+              <p>
+                <strong data-en="Premium (with Delivery):" data-np="प्रिमियम (डेलिभरी सहित):">Premium (with Delivery):</strong> 
+                <span data-en="Rs. 500 / kg" data-np="रु. ५०० / केजी">Rs. 500 / kg</span>
+              </p>
+            </div>
+            
+            <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click Preview</span>
+          </div>
+
+        </div>
+      </section>
 
       <!-- SECTION: GALLERY -->
       <section id="gallery" class="content-section">
@@ -191,12 +223,12 @@
     </main>
   </div>
 
-  <!-- THE INTERACTIVE LIGHTBOX OVERLAY -->
+  <!-- INTERACTIVE LIGHTBOX OVERLAY -->
   <div id="productMediaOverlay" class="product-lightbox-overlay">
     <button class="lightbox-close-btn" id="closeLightboxBtn" aria-label="Close Preview">&times;</button>
     <div class="lightbox-content-box">
-      <div class="lightbox-media-wrapper" id="lightboxMediaWrapper"></div>
-      <div class="lightbox-caption-text" id="lightboxCaptionText"></div>
+      <div id="lightboxMediaWrapper" class="lightbox-media-wrapper"></div>
+      <div id="lightboxCaptionText" class="lightbox-caption-text"></div>
     </div>
   </div>
 
