@@ -87,6 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (menuItems.length > 0) {
     menuItems.forEach(item => {
       item.addEventListener('click', (e) => {
+        // FIX: If the element is an external link (like Facebook) targeting a new window, ignore it
+        if (item.getAttribute('target') === '_blank') {
+          return;
+        }
+
         e.preventDefault();
         const targetSectionId = item.getAttribute('data-target');
         switchView(targetSectionId);
