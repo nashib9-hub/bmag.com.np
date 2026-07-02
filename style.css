@@ -416,20 +416,16 @@ body {
     display: none;
   }
 }
-/* Circular Avatar Setup */
+
 .avatar-circle-wrapper {
   width: 80px;
-  /* Compact small size */
   height: 80px;
-  /* Matches height for perfect circle ratio */
   border-radius: 50%;
-  /* Forces circular borders */
   overflow: hidden;
-  /* Clips corners of square pictures */
+
   margin-bottom: 10px;
   border: 2px solid #e0e0e0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  /* Soft premium shadow definition */
   background: #f7f7f7;
   display: flex;
   justify-content: center;
@@ -440,7 +436,5 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Prevents face distortion stretching */
   object-position: center;
-  /* Centers crop focus directly on the face */
 }
