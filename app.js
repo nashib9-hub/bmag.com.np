@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  
+
   /* ==========================================================================
      DOM ELEMENT SELECTORS
      ========================================================================== */
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuItems = document.querySelectorAll('.menu-item');
   const contentSections = document.querySelectorAll('.content-section');
   const headerTitle = document.querySelector('.header-title');
-  
+
   const btnEn = document.getElementById('btnEn');
   const btnNp = document.getElementById('btnNp');
 
@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeBtn = document.getElementById('closeLightboxBtn');
   const mediaContainer = document.getElementById('lightboxMediaWrapper');
   const captionBox = document.getElementById('lightboxCaptionText');
+
+  // Gallery Video Reference
+  const gallerySection = document.getElementById('gallery');
 
   /* ==========================================================================
      1. SIDEBAR TOGGLE MECHANICS (Defensive Check)
@@ -46,6 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchView(targetSectionId) {
     if (!targetSectionId) return;
 
+    // [MODIFICATION]: If switching away from the gallery, pause the inline video
+    if (targetSectionId !== 'gallery' && gallerySection) {
+      const galleryVideo = gallerySection.querySelector('video');
+      if (galleryVideo) {
+        galleryVideo.pause();
+      }
+    }
+
     // 1. Synchronize Menu Selection States
     menuItems.forEach(link => {
       if (link.getAttribute('data-target') === targetSectionId) {
@@ -71,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (itemTextSpan) {
         headerTitle.setAttribute('data-en', itemTextSpan.getAttribute('data-en') || '');
         headerTitle.setAttribute('data-np', itemTextSpan.getAttribute('data-np') || '');
-        
+
         const currentLang = localStorage.getItem('preferredLang') || 'en';
         headerTitle.textContent = itemTextSpan.getAttribute(`data-${currentLang}`) || '';
       }
@@ -103,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
      3. PRODUCT LIGHTBOX OVERLAY CONTROLLER
      ========================================================================== */
   if (triggerCards.length && lightboxOverlay && mediaContainer && captionBox) {
-    
+
     const appendImageNode = (url) => {
       const img = document.createElement('img');
       img.src = url;
@@ -120,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const video = document.createElement('video');
       video.controls = true;
       video.autoplay = true;
-      video.muted = true; 
+      video.muted = true;
       video.playsInline = true;
       video.style.width = '100%';
       video.style.maxHeight = '65vh';
@@ -130,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const source = document.createElement('source');
       source.src = url;
       source.type = url.endsWith('.webm') ? 'video/webm' : 'video/mp4';
-      
+
       video.appendChild(source);
       mediaContainer.appendChild(video);
       video.load();
@@ -143,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const chosenCaption = card.getAttribute(`data-${currentLang}-caption`);
 
         mediaContainer.innerHTML = '';
-        mediaContainer.className = "lightbox-media-wrapper"; 
+        mediaContainer.className = "lightbox-media-wrapper";
 
         if (type === 'gallery') {
           const rawSources = card.getAttribute('data-sources');
@@ -174,7 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const clearAndDismissLightbox = () => {
       lightboxOverlay.classList.remove('active-view');
-      mediaContainer.innerHTML = ''; 
+      mediaContainer.innerHTML = '';
+      // FIX: Remove layout-specific class so next view isn't distorted
+      mediaContainer.classList.remove('gallery-layout-active');
     };
 
     if (closeBtn) closeBtn.addEventListener('click', clearAndDismissLightbox);
@@ -195,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   function setLanguage(lang) {
     const localizableElements = document.querySelectorAll('[data-en][data-np]');
-    
+
     localizableElements.forEach(element => {
       if (lang === 'np') {
         element.textContent = element.getAttribute('data-np');
@@ -213,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btnNp) btnNp.classList.remove('active');
       document.documentElement.lang = 'en';
     }
-    
+
     localStorage.setItem('preferredLang', lang);
 
     const currentActiveItem = document.querySelector('.menu-item.active');
@@ -236,10 +249,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const currentHash = window.location.hash.replace('#', '');
   const validSections = Array.from(contentSections).map(s => s.id);
-  
+
   if (currentHash && validSections.includes(currentHash)) {
     switchView(currentHash);
   } else {
     switchView('home'); // Automatically defaults to Home view on startup
   }
+
+  /* ==========================================================================
+     6. BACKGROUND TAB VISIBILITY MONITOR
+     ========================================================================== */
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && gallerySection) {
+      const galleryVideo = gallerySection.querySelector('video');
+      if (galleryVideo) galleryVideo.pause();
+    }
+  });
 });
