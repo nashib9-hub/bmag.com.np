@@ -49,10 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchView(targetSectionId) {
     if (!targetSectionId) return;
 
-    // [MODIFICATION]: If switching away from the gallery, pause the inline video
-    if (targetSectionId !== 'gallery' && gallerySection) {
+    // [ENHANCED FIX]: Automatically find and pause any playing video in the gallery whenever we change views
+    if (gallerySection) {
       const galleryVideo = gallerySection.querySelector('video');
-      if (galleryVideo) {
+      if (galleryVideo && !galleryVideo.paused) {
         galleryVideo.pause();
       }
     }
