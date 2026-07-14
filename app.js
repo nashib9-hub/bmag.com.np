@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchView(targetSectionId) {
     if (!targetSectionId) return;
 
-    // [MODIFICATION]: If switching away from the gallery, pause the inline video
+    // If switching away from the gallery, pause the inline video
     if (targetSectionId !== 'gallery' && gallerySection) {
       const galleryVideo = gallerySection.querySelector('video');
       if (galleryVideo) {
@@ -101,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Attach click events to menu options safely
   if (menuItems.length > 0) {
     menuItems.forEach(item => {
-      item.addEventListener('click', (e) => {
-        // FIX: If the element is an external link (like Facebook) targeting a new window, ignore it
-        if (item.getAttribute('target') === '_blank') {
-          return;
-        }
+      // If the element is an external link (like Facebook) targeting a new window, ignore it
+      if (item.getAttribute('target') === '_blank') {
+        return;
+      }
 
+      item.addEventListener('click', (e) => {
         e.preventDefault();
         const targetSectionId = item.getAttribute('data-target');
         switchView(targetSectionId);
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearAndDismissLightbox = () => {
       lightboxOverlay.classList.remove('active-view');
       mediaContainer.innerHTML = '';
-      // FIX: Remove layout-specific class so next view isn't distorted
+      // Remove layout-specific class so next view isn't distorted
       mediaContainer.classList.remove('gallery-layout-active');
     };
 
@@ -214,10 +214,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const localizableElements = document.querySelectorAll('[data-en][data-np]');
 
     localizableElements.forEach(element => {
-      if (lang === 'np') {
-        element.textContent = element.getAttribute('data-np');
+      const translation = lang === 'np' ? element.getAttribute('data-np') : element.getAttribute('data-en');
+      
+      // If the localizable item is an image, translate its alternate (alt) attribute
+      if (element.tagName.toLowerCase() === 'img') {
+        element.setAttribute('alt', translation);
       } else {
-        element.textContent = element.getAttribute('data-en');
+        element.textContent = translation;
       }
     });
 
@@ -274,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
      7. ENTRY ADVERTISEMENT POPUP MODAL CONTROLLER
      ========================================================================== */
   if (adModal) {
-    // Automatically trigger visual display with an elegant delay sequence
+    // Elegant entry delay before revealing the visual ad overlay
     setTimeout(() => {
       adModal.classList.add('show');
     }, 600); // 0.6 seconds delay
