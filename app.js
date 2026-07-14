@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Gallery Video Reference
   const gallerySection = document.getElementById('gallery');
 
+  // Entry Advertisement Modal Elements
+  const adModal = document.getElementById('entryAdModal');
+  const closeAdBtn = document.getElementById('closeAdBtn');
+
   /* ==========================================================================
      1. SIDEBAR TOGGLE MECHANICS (Defensive Check)
      ========================================================================== */
@@ -49,10 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchView(targetSectionId) {
     if (!targetSectionId) return;
 
-    // [ENHANCED FIX]: Automatically find and pause any playing video in the gallery whenever we change views
-    if (gallerySection) {
+    // [MODIFICATION]: If switching away from the gallery, pause the inline video
+    if (targetSectionId !== 'gallery' && gallerySection) {
       const galleryVideo = gallerySection.querySelector('video');
-      if (galleryVideo && !galleryVideo.paused) {
+      if (galleryVideo) {
         galleryVideo.pause();
       }
     }
@@ -265,4 +269,37 @@ document.addEventListener('DOMContentLoaded', () => {
       if (galleryVideo) galleryVideo.pause();
     }
   });
+
+  /* ==========================================================================
+     7. ENTRY ADVERTISEMENT POPUP MODAL CONTROLLER
+     ========================================================================== */
+  if (adModal) {
+    // Automatically trigger visual display with an elegant delay sequence
+    setTimeout(() => {
+      adModal.classList.add('show');
+    }, 600); // 0.6 seconds delay
+
+    const dismissAdModal = () => {
+      adModal.classList.remove('show');
+    };
+
+    // Close modal when close trigger button is pressed
+    if (closeAdBtn) {
+      closeAdBtn.addEventListener('click', dismissAdModal);
+    }
+
+    // Close modal when clicking on background backdrop areas
+    adModal.addEventListener('click', (e) => {
+      if (e.target === adModal) {
+        dismissAdModal();
+      }
+    });
+
+    // Close modal when 'Escape' key is pressed
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && adModal.classList.contains('show')) {
+        dismissAdModal();
+      }
+    });
+  }
 });
