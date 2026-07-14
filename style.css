@@ -448,7 +448,7 @@ body {
 }
 
 /* ==========================================================================
-   ENTRY ADVERTISEMENT POPUP MODAL STYLES 
+   ENTRY ADVERTISEMENT POPUP MODAL STYLES (Perfect Match)
    ========================================================================== */
 .ad-modal-overlay {
   position: fixed;
@@ -456,9 +456,9 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.75); /* Deep backdrop tint matching system theme */
-  backdrop-filter: blur(4px);
-  z-index: 9999; /* Higher priority to sit over standard sidebars and headers */
+  background: rgba(15, 23, 42, 0.65); /* Soft dark background tint */
+  backdrop-filter: blur(4px); /* Blur effect matching screenshot */
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -475,56 +475,60 @@ body {
 
 .ad-modal-content {
   position: relative;
-  background: #000;
-  border-radius: 16px;
-  max-width: 480px; /* Fits portrait layout perfectly */
+  background: #000000; /* Black frame base */
+  border-radius: 20px; /* Rounded corners matching screenshot frame */
   width: 90%;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  max-width: 650px; /* Wider limit to produce the empty side margins for portrait flyers */
+  height: 80vh; /* Keeps it perfectly proportioned inside the viewport */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
   overflow: hidden;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   animation: zoomInAd 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ad-media-container {
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .ad-image {
-  width: 100%;
-  height: auto;
-  max-height: 85vh; /* Standard mobile restriction */
-  object-fit: contain;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain; /* Retains actual vertical aspect ratio on any display layout */
   display: block;
 }
 
-/* Close Button Styling */
+/* Circular Floating Close Button Style */
 .ad-modal-close {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  background: rgba(15, 23, 42, 0.65);
+  top: 16px;
+  right: 16px;
+  background: #000000; /* Dark frame matching visual theme */
   color: #ffffff;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Clean overlay stroke */
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 24px;
+  width: 38px;
+  height: 38px;
+  font-size: 22px;
   font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.3s ease, transform 0.2s;
+  transition: background 0.3s ease, transform 0.2s, border-color 0.3s;
   z-index: 10001;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   line-height: 1;
 }
 
 .ad-modal-close:hover {
-  background: #c62828; /* Highlighting close element on hover */
+  background: #111111;
+  border-color: rgba(255, 255, 255, 0.5);
   transform: scale(1.08);
 }
 
