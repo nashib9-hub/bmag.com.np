@@ -30,7 +30,8 @@ body {
   height: 100vh;
   background: var(--bg-card);
   position: fixed;
-  left: 0; top: 0;
+  left: 0;
+  top: 0;
   border-right: 1px solid #e2e8f0;
   transition: var(--transition);
   z-index: 1000;
@@ -78,7 +79,8 @@ body {
   font-size: 1.2rem;
 }
 
-.menu-item:hover, .menu-item.active {
+.menu-item:hover,
+.menu-item.active {
   background: var(--primary-light);
   color: var(--primary);
 }
@@ -162,8 +164,13 @@ body {
 }
 
 @keyframes scrollTicker {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-50%, 0, 0); }
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 /* LANGUAGE PICKER */
@@ -189,7 +196,7 @@ body {
 .lang-btn.active {
   background: var(--bg-card);
   color: var(--primary);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* PANELS & COMPONENT GRIDS */
@@ -216,13 +223,24 @@ body {
   margin-bottom: 32px;
 }
 
-.stats-grid, .info-grid {
+.stats-grid,
+.info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
 }
 
-.stat-card, .info-card {
+/* COMMITTEE CARDS CONTAINER (Fixed Row Shifting Bug) */
+.committee-cards-container,
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.stat-card,
+.info-card {
   background: var(--bg-card);
   padding: 24px;
   border-radius: 12px;
@@ -281,7 +299,7 @@ body {
 
 .product-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
 .product-card h3 {
@@ -290,7 +308,7 @@ body {
 
 .product-image-wrapper {
   width: 100%;
-  height: 160px;            /* Clean downsized height frame */
+  height: 160px;
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 16px;
@@ -304,7 +322,7 @@ body {
 .product-img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain;      /* Ensures graphic scales cleanly inside its box frame */
+  object-fit: contain;
 }
 
 .product-pricing {
@@ -322,8 +340,11 @@ body {
 /* LIGHTBOX INTERACTIVE OVERLAY */
 .product-lightbox-overlay {
   position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(15, 23, 42, 0.6); /* Semi-transparent dimming backdrop overlay */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(4px);
   z-index: 2000;
   display: flex;
@@ -340,10 +361,10 @@ body {
 }
 
 .lightbox-content-box {
-  background: var(--bg-card); /* Bright clean background card panel */
+  background: var(--bg-card);
   padding: 24px;
   border-radius: 16px;
-  max-width: 460px;         /* Compact downsized window scale */
+  max-width: 460px;
   width: 90%;
   position: relative;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
@@ -354,8 +375,9 @@ body {
 
 .lightbox-close-btn {
   position: absolute;
-  top: 12px; right: 16px;
-  background: none; 
+  top: 12px;
+  right: 16px;
+  background: none;
   border: none;
   color: var(--muted);
   font-size: 1.75rem;
@@ -370,7 +392,7 @@ body {
 
 .lightbox-media-wrapper {
   width: 100%;
-  height: 200px;            /* Clean height matching structural constraints */
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -384,14 +406,14 @@ body {
 .lightbox-media-wrapper img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain;      /* Handles full layout image downsizing cleanly */
+  object-fit: contain;
 }
 
 .lightbox-caption-text {
   margin-top: 18px;
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--dark);       /* Dark slate text for flawless white card contrast reading */
+  color: var(--dark);
   text-align: center;
   line-height: 1.6;
   padding: 0 8px;
@@ -402,27 +424,31 @@ body {
   .sidebar {
     transform: translateX(-100%);
   }
+
   .sidebar.mobile-show {
     transform: translateX(0);
   }
+
   .main-wrapper {
     margin-left: 0;
     width: 100%;
   }
+
   .top-header {
     padding: 0 16px;
   }
+
   .marquee-container {
     display: none;
   }
 }
 
+/* Circular Avatar Setup */
 .avatar-circle-wrapper {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
-
   margin-bottom: 10px;
   border: 2px solid #e0e0e0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -437,4 +463,103 @@ body {
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+/* ==========================================
+   ENTRY ADVERTISEMENT POPUP MODAL STYLES 
+   ========================================== */
+.ad-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.75);
+  /* Deep backdrop tint matching system theme */
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  /* Higher priority to sit over standard sidebars and headers */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* Class triggered by JS to display advertisement modal */
+.ad-modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ad-modal-content {
+  position: relative;
+  background: #000;
+  border-radius: 16px;
+  max-width: 480px;
+  /* Fits portrait layout perfectly */
+  width: 90%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: zoomInAd 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ad-media-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ad-image {
+  width: 100%;
+  height: auto;
+  max-height: 85vh;
+  /* Standard mobile restriction */
+  object-fit: contain;
+  display: block;
+}
+
+/* Close Button Styling */
+.ad-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(15, 23, 42, 0.65);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s;
+  z-index: 10001;
+  line-height: 1;
+}
+
+.ad-modal-close:hover {
+  background: #c62828;
+  /* Highlighting close element on hover */
+  transform: scale(1.08);
+}
+
+/* Animation sequence for modal overlay entry */
+@keyframes zoomInAd {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
