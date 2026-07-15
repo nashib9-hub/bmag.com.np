@@ -95,6 +95,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // NEW FIX: Silently update the URL hash in the browser address bar without triggering a page reload.
+    // This guarantees window.location.href always has the active section (e.g. yoursite.com/#gallery)
+    if (history.pushState) {
+      history.pushState(null, null, `#${targetSectionId}`);
+    } else {
+      window.location.hash = targetSectionId;
+    }
+
     // 4. Hide Mobile Sidebar Upon Selection
     if (window.innerWidth <= 768 && sidebar) {
       sidebar.classList.remove('mobile-show');
@@ -218,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
      4. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
      ========================================================================== */
   function setLanguage(lang) {
-    // FIX: We select localizable elements but EXCLUDE the header title. 
+    // We select localizable elements but EXCLUDE the header title. 
     // Otherwise, the general translation loop overwrites the header title completely, breaking dynamic page title switches!
     const localizableElements = document.querySelectorAll('[data-en][data-np]:not(.header-title)');
 
@@ -321,15 +329,21 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   if (fbShareBtn) {
     fbShareBtn.addEventListener('click', () => {
-      // Captures the current browser link, complete with its hash location
+      // Grab the exact active URL (including the newly updated hash from switchView!)
       const currentUrl = encodeURIComponent(window.location.href);
       const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+
+      // Calculate centering for the pop-up window
+      const width = 626;
+      const height = 436;
+      const left = (screen.width / 2) - (width / 2);
+      const top = (screen.height / 2) - (height / 2);
 
       // Spawns a dedicated sharing window centered nicely for user experience
       window.open(
         facebookShareUrl,
         'facebook-share-dialog',
-        'width=626,height=436,resizable=yes,scrollbars=yes'
+        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
       );
     });
   }
