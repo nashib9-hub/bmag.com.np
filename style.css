@@ -1,6 +1,4 @@
-/* ==========================================================================
-   GLOBAL SETTINGS & VARIABLES
-   ========================================================================== */
+/* GLOBAL SETTINGS */
 :root {
   --primary: #2e7d32;
   --primary-light: #e8f5e9;
@@ -26,9 +24,7 @@ body {
   display: flex;
 }
 
-/* ==========================================================================
-   SIDEBAR LAYOUT
-   ========================================================================== */
+/* SIDEBAR LAYOUT */
 .sidebar {
   width: var(--sidebar-width);
   height: 100vh;
@@ -89,9 +85,7 @@ body {
   color: var(--primary);
 }
 
-/* ==========================================================================
-   MAIN VIEWPORT & CONTAINERS
-   ========================================================================== */
+/* MAIN VIEWPORT */
 .main-wrapper {
   margin-left: var(--sidebar-width);
   width: calc(100% - var(--sidebar-width));
@@ -104,32 +98,7 @@ body {
   width: 100%;
 }
 
-.content-container {
-  padding: 32px;
-}
-
-.content-section {
-  display: none;
-}
-
-.content-section.active-section {
-  display: block;
-}
-
-.content-section h2 {
-  color: var(--dark);
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: var(--muted);
-  margin-top: 4px;
-  margin-bottom: 32px;
-}
-
-/* ==========================================================================
-   HEADER NAVIGATION & MARQUEE
-   ========================================================================== */
+/* HEADER NAVIGATION */
 .top-header {
   height: 70px;
   background: var(--bg-card);
@@ -164,7 +133,7 @@ body {
   padding: 4px;
 }
 
-/* Running Ticker Marquee Animation */
+/* RUNNING TICKER MARQUEE */
 .marquee-container {
   flex: 1;
   margin: 0 32px;
@@ -198,12 +167,13 @@ body {
   0% {
     transform: translate3d(0, 0, 0);
   }
+
   100% {
     transform: translate3d(-50%, 0, 0);
   }
 }
 
-/* Language Picker Buttons */
+/* LANGUAGE PICKER */
 .lang-switcher {
   display: flex;
   background: #f1f5f9;
@@ -229,12 +199,40 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* ==========================================================================
-   PANELS & COMPONENT GRIDS
-   ========================================================================== */
+/* PANELS & COMPONENT GRIDS */
+.content-container {
+  padding: 32px;
+}
+
+.content-section {
+  display: none;
+}
+
+.content-section.active-section {
+  display: block;
+}
+
+.content-section h2 {
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: 4px;
+  margin-bottom: 32px;
+}
+
 .stats-grid,
-.info-grid,
-.committee-cards-container {
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* COMMITTEE CARDS CONTAINER (Fixed Row Shifting Bug) */
+.committee-cards-container,
+.info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
@@ -293,31 +291,7 @@ body {
   margin-top: 16px;
 }
 
-/* Circular Avatar Setup */
-.avatar-circle-wrapper {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 10px;
-  border: 2px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  background: #f7f7f7;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.committee-circle-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* ==========================================================================
-   PRODUCT CARDS SETUP
-   ========================================================================== */
+/* PRODUCT CARDS SETUP */
 .product-card {
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
@@ -363,9 +337,7 @@ body {
   margin-bottom: 6px;
 }
 
-/* ==========================================================================
-   PRODUCT LIGHTBOX OVERLAY SYSTEM
-   ========================================================================== */
+/* LIGHTBOX INTERACTIVE OVERLAY */
 .product-lightbox-overlay {
   position: fixed;
   top: 0;
@@ -447,106 +419,7 @@ body {
   padding: 0 8px;
 }
 
-/* ==========================================================================
-   ENTRY ADVERTISEMENT POPUP MODAL STYLES (Perfect Match)
-   ========================================================================== */
-.ad-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(15, 23, 42, 0.65); /* Soft dark background tint */
-  backdrop-filter: blur(4px); /* Blur effect matching screenshot */
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-
-/* Class triggered by JS to display advertisement modal */
-.ad-modal-overlay.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.ad-modal-content {
-  position: relative;
-  background: #000000; /* Black frame base */
-  border-radius: 20px; /* Rounded corners matching screenshot frame */
-  width: 90%;
-  max-width: 650px; /* Wider limit to produce the empty side margins for portrait flyers */
-  height: 80vh; /* Keeps it perfectly proportioned inside the viewport */
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: zoomInAd 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ad-media-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.ad-image {
-  max-width: 100%;
-  height: 100%;
-  object-fit: contain; /* Retains actual vertical aspect ratio on any display layout */
-  display: block;
-}
-
-/* Circular Floating Close Button Style */
-.ad-modal-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: #000000; /* Dark frame matching visual theme */
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Clean overlay stroke */
-  border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  font-size: 22px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s ease, transform 0.2s, border-color 0.3s;
-  z-index: 10001;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  line-height: 1;
-}
-
-.ad-modal-close:hover {
-  background: #111111;
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: scale(1.08);
-}
-
-/* Animation sequence for modal overlay entry */
-@keyframes zoomInAd {
-  from {
-    transform: scale(0.92);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* ==========================================================================
-   SYSTEM SCREEN RESPONSIVENESS
-   ========================================================================== */
+/* SYSTEM SCREEN RESPONSIVENESS */
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
@@ -568,4 +441,159 @@ body {
   .marquee-container {
     display: none;
   }
+}
+
+/* Circular Avatar Setup */
+.avatar-circle-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: #f7f7f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.committee-circle-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ==========================================
+   ENTRY ADVERTISEMENT POPUP MODAL STYLES 
+   ========================================== */
+.ad-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.75);
+  /* Deep backdrop tint matching system theme */
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  /* Higher priority to sit over standard sidebars and headers */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* Class triggered by JS to display advertisement modal */
+.ad-modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ad-modal-content {
+  position: relative;
+  background: #000;
+  border-radius: 16px;
+  max-width: 480px;
+  /* Fits portrait layout perfectly */
+  width: 90%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: zoomInAd 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ad-media-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ad-image {
+  width: 100%;
+  height: auto;
+  max-height: 85vh;
+  /* Standard mobile restriction */
+  object-fit: contain;
+  display: block;
+}
+
+/* Close Button Styling */
+.ad-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(15, 23, 42, 0.65);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s;
+  z-index: 10001;
+  line-height: 1;
+}
+
+.ad-modal-close:hover {
+  background: #c62828;
+  /* Highlighting close element on hover */
+  transform: scale(1.08);
+}
+
+/* Animation sequence for modal overlay entry */
+@keyframes zoomInAd {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Floating Facebook Share Button */
+.fb-share-floating-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 50px;
+  height: 50px;
+  background-color: #1877F2;
+  /* Official Facebook Blue */
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  z-index: 9999;
+  /* Ensures it sits on top of all other content */
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fb-share-floating-btn:hover {
+  background-color: #166FE5;
+  /* Darker blue on hover */
+  transform: scale(1.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.fb-share-floating-btn:active {
+  transform: scale(0.95);
 }
