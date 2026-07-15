@@ -553,51 +553,69 @@ body {
     transform: scale(1);
     opacity: 1;
   }
-}/* Floating Facebook Share Button */
+}
+/* ==========================================================================
+   FLOATING FACEBOOK SHARE BUTTON
+   ========================================================================== */
 .fb-share-btn {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 999; /* Ensures it sits above other page content */
-    background-color: #1877F2; /* Facebook Blue */
-    color: #ffffff;
-    border: none;
-    border-radius: 50px; /* Rounded pill shape */
-    padding: 12px 20px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999; /* Sits below modal overlays (z-index 2000/9999) but above content */
+  background-color: #1877f2; /* Official Facebook Blue */
+  color: #ffffff;
+  border: none;
+  border-radius: 50px; /* Pill profile */
+  padding: 12px 22px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.25), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  backface-visibility: hidden; /* Prevents text jitter during transform scale/shifts */
 }
 
-/* Hover effects */
+/* Hover State */
 .fb-share-btn:hover {
-    background-color: #166FE5; /* Slightly darker Facebook blue */
-    transform: translateY(-3px); /* Gently floats up */
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  background-color: #166fe5; /* Slightly darker shade */
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(24, 119, 242, 0.35), 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Click effect */
+/* Click/Active State */
 .fb-share-btn:active {
-    transform: translateY(-1px);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(24, 119, 242, 0.25);
 }
 
-/* Ensure the icon size is correct */
+/* Accessible Keyboard Focus State */
+.fb-share-btn:focus-visible {
+  outline: 3px solid rgba(24, 119, 242, 0.5);
+  outline-offset: 2px;
+}
+
+/* Icon Alignment */
 .fb-share-btn i {
-    font-size: 18px;
+  font-size: 1.15rem;
+  line-height: 1;
 }
 
-/* Make it slightly more compact on mobile screens */
+/* Responsive Mobile Rules */
 @media (max-width: 768px) {
-    .fb-share-btn {
-        bottom: 16px;
-        right: 16px;
-        padding: 10px 16px;
-        font-size: 13px;
-    }
+  .fb-share-btn {
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 18px;
+    font-size: 0.8rem;
+    box-shadow: 0 4px 10px rgba(24, 119, 242, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fb-share-btn i {
+    font-size: 1rem;
+  }
 }
