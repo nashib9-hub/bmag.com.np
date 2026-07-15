@@ -230,9 +230,8 @@ body {
   gap: 24px;
 }
 
-/* COMMITTEE CARDS CONTAINER (Fixed Row Shifting Bug) */
-.committee-cards-container,
-.info-grid {
+/* COMMITTEE CARDS CONTAINER */
+.committee-cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
@@ -475,10 +474,8 @@ body {
   width: 100vw;
   height: 100vh;
   background: rgba(15, 23, 42, 0.75);
-  /* Deep backdrop tint matching system theme */
   backdrop-filter: blur(4px);
   z-index: 9999;
-  /* Higher priority to sit over standard sidebars and headers */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -487,7 +484,6 @@ body {
   transition: opacity 0.4s ease;
 }
 
-/* Class triggered by JS to display advertisement modal */
 .ad-modal-overlay.show {
   opacity: 1;
   pointer-events: auto;
@@ -498,7 +494,6 @@ body {
   background: #000;
   border-radius: 16px;
   max-width: 480px;
-  /* Fits portrait layout perfectly */
   width: 90%;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   overflow: hidden;
@@ -518,12 +513,10 @@ body {
   width: 100%;
   height: auto;
   max-height: 85vh;
-  /* Standard mobile restriction */
   object-fit: contain;
   display: block;
 }
 
-/* Close Button Styling */
 .ad-modal-close {
   position: absolute;
   top: 14px;
@@ -547,11 +540,9 @@ body {
 
 .ad-modal-close:hover {
   background: #c62828;
-  /* Highlighting close element on hover */
   transform: scale(1.08);
 }
 
-/* Animation sequence for modal overlay entry */
 @keyframes zoomInAd {
   from {
     transform: scale(0.92);
@@ -564,15 +555,15 @@ body {
   }
 }
 
-/* Floating Facebook Share Button */
-.fb-share-floating-btn {
+/* Floating Facebook Share Button (Targets Class OR explicit ID) */
+.fb-share-floating-btn,
+#fbShareBtn {
   position: fixed;
   bottom: 24px;
   right: 24px;
   width: 50px;
   height: 50px;
   background-color: #1877F2;
-  /* Official Facebook Blue */
   color: #ffffff;
   border: none;
   border-radius: 50%;
@@ -582,23 +573,19 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  z-index: 9999;
-  /* Ensures it sits on top of all other content */
+  z-index: 20000;
+  /* Brought explicitly over the top of lightbox/ad modals */
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.fb-share-floating-btn:hover {
+.fb-share-floating-btn:hover,
+#fbShareBtn:hover {
   background-color: #166FE5;
-  /* Darker blue on hover */
   transform: scale(1.1);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
 }
 
-.fb-share-floating-btn:active {
+.fb-share-floating-btn:active,
+#fbShareBtn:active {
   transform: scale(0.95);
-}
-#fbShareBtn {
-  position: fixed;
-  bottom: 24px;
-  /* ... rest of the code ... */
 }
