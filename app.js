@@ -166,15 +166,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (type === 'gallery') {
           const rawSources = card.getAttribute('data-sources');
           if (rawSources) {
-            const mediaAssets = JSON.parse(rawSources);
-            mediaContainer.classList.add('gallery-layout-active');
-            mediaAssets.forEach(sourceUrl => {
-              if (sourceUrl.endsWith('.mp4') || sourceUrl.endsWith('.webm')) {
-                appendVideoNode(sourceUrl);
-              } else {
-                appendImageNode(sourceUrl);
-              }
-            });
+            try {
+              const mediaAssets = JSON.parse(rawSources);
+              mediaContainer.classList.add('gallery-layout-active');
+              mediaAssets.forEach(sourceUrl => {
+                if (sourceUrl.endsWith('.mp4') || sourceUrl.endsWith('.webm')) {
+                  appendVideoNode(sourceUrl);
+                } else {
+                  appendImageNode(sourceUrl);
+                }
+              });
+            } catch (error) {
+              console.error("Error parsing gallery data-sources JSON:", error);
+            }
           }
         } else {
           const singleSource = card.getAttribute('data-src');
@@ -214,7 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
      4. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
      ========================================================================== */
   function setLanguage(lang) {
-    const localizableElements = document.querySelectorAll('[data-en][data-np]');
+    // FIX: We select localizable elements but EXCLUDE the header title. 
+    // Otherwise, the general translation loop overwrites the header title completely, breaking dynamic page title switches!
+    const localizableElements = document.querySelectorAll('[data-en][data-np]:not(.header-title)');
 
     localizableElements.forEach(element => {
       const translation = lang === 'np' ? element.getAttribute('data-np') : element.getAttribute('data-en');
@@ -239,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     localStorage.setItem('preferredLang', lang);
 
+    // Update Header Title dynamically based on current selected page
     const currentActiveItem = document.querySelector('.menu-item.active');
     if (currentActiveItem && headerTitle) {
       const activeSpan = currentActiveItem.querySelector('span');
