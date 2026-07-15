@@ -597,3 +597,8 @@ body {
 .fb-share-floating-btn:active {
   transform: scale(0.95);
 }
+#fbShareBtn {
+  position: fixed;
+  bottom: 24px;
+  /* ... rest of the code ... */
+}
