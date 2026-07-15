@@ -17,46 +17,61 @@
 <body>
 
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
-            <i class="ri-leaf-line brand-icon"></i>
-            <span class="brand-text" data-en="Bhimbadh Agro" data-np="भिम्वाँद एग्रो">Bhimbadh Agro</span>
-        </div>
+    <div class="sidebar-brand">
+        <i class="ri-leaf-line brand-icon"></i>
+        <span class="brand-text" data-en="Bhimbadh Agro" data-np="भिम्वाँद एग्रो">Bhimbadh Agro</span>
+    </div>
 
-        <nav class="sidebar-menu">
-            <a href="#home" class="menu-item" data-target="home">
-                <i class="ri-home-4-line"></i>
-                <span data-en="Home" data-np="गृहपृष्ठ">Home</span>
-            </a>
-            <a href="#about" class="menu-item" data-target="about">
-                <i class="ri-user-organization-line"></i>
-                <span data-en="About Us" data-np="हाम्रो बारेमा">About Us</span>
-            </a>
-            <a href="#committee" class="menu-item" data-target="committee">
-                <i class="ri-team-line"></i>
-                <span data-en="Committee" data-np="कार्यसमिति">Committee</span>
-            </a>
-            <a href="#products" class="menu-item" data-target="products">
-                <i class="ri-goblet-line"></i>
-                <span data-en="Products" data-np="उत्पादनहरू">Products</span>
-            </a>
-            <a href="#gallery" class="menu-item" data-target="gallery">
-                <i class="ri-image-line"></i>
-                <span data-en="Gallery" data-np="ग्यालेरी">Gallery</span>
-            </a>
-            <a href="#contact" class="menu-item" data-target="contact">
-                <i class="ri-contacts-book-line"></i>
-                <span data-en="Contact Us" data-np="सम्पर्क गर्नुहोस्">Contact Us</span>
-            </a>
+    <nav class="sidebar-menu">
+        <a href="#home" class="menu-item" data-target="home">
+            <i class="ri-home-4-line"></i>
+            <span data-en="Home" data-np="गृहपृष्ठ">Home</span>
+        </a>
+        <a href="#about" class="menu-item" data-target="about">
+            <i class="ri-user-organization-line"></i>
+            <span data-en="About Us" data-np="हाम्रो बारेमा">About Us</span>
+        </a>
+        <a href="#committee" class="menu-item" data-target="committee">
+            <i class="ri-team-line"></i>
+            <span data-en="Committee" data-np="कार्यसमिति">Committee</span>
+        </a>
+        <a href="#products" class="menu-item" data-target="products">
+            <i class="ri-goblet-line"></i>
+            <span data-en="Products" data-np="उत्पादनहरू">Products</span>
+        </a>
+        <a href="#gallery" class="menu-item" data-target="gallery">
+            <i class="ri-image-line"></i>
+            <span data-en="Gallery" data-np="ग्यालेरी">Gallery</span>
+        </a>
+        <a href="#contact" class="menu-item" data-target="contact">
+            <i class="ri-contacts-book-line"></i>
+            <span data-en="Contact Us" data-np="सम्पर्क गर्नुहोस्">Contact Us</span>
+        </a>
 
-            <!-- Icon-only Facebook Link with utility styling for padding and alignment -->
-            <!-- Changed class from "menu-item" to "sidebar-social-link" -->
-            <a href="https://www.facebook.com/profile.php?id=61579631073984" class="sidebar-social-link" target="_blank"
-                rel="noopener noreferrer"
-                style="display: flex; justify-content: center; padding-top: 25px; font-size: 1.5rem; color: inherit; text-decoration: none;">
+        <!-- Centered row wrapper containing Facebook, with YouTube placed immediately to its right -->
+        <div class="sidebar-social-wrapper" style="display: flex; justify-content: center; align-items: center; gap: 24px; padding-top: 25px; width: 100%;">
+            
+            <!-- Left Icon: Facebook -->
+            <a href="https://www.facebook.com/profile.php?id=61579631073984" 
+               class="sidebar-social-link" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               style="font-size: 1.5rem; color: inherit; text-decoration: none; display: inline-flex;">
                 <i class="ri-facebook-box-line"></i>
             </a>
-        </nav>
-    </aside>
+
+            <!-- Right Icon: YouTube -->
+            <a href="https://www.youtube.com/@YOUR_CHANNEL_HERE" 
+               class="sidebar-social-link" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               style="font-size: 1.5rem; color: inherit; text-decoration: none; display: inline-flex;">
+                <i class="ri-youtube-line"></i>
+            </a>
+            
+        </div>
+    </nav>
+</aside>
 
     <div class="main-wrapper" id="mainWrapper">
 
