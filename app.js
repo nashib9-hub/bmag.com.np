@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const adModal = document.getElementById('entryAdModal');
   const closeAdBtn = document.getElementById('closeAdBtn');
 
+  // Floating Facebook Share Button
+  const fbShareBtn = document.getElementById('fbShareBtn');
+
   /* ==========================================================================
      1. SIDEBAR TOGGLE MECHANICS (Defensive Check)
      ========================================================================== */
@@ -215,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     localizableElements.forEach(element => {
       const translation = lang === 'np' ? element.getAttribute('data-np') : element.getAttribute('data-en');
-      
+
       // If the localizable item is an image, translate its alternate (alt) attribute
       if (element.tagName.toLowerCase() === 'img') {
         element.setAttribute('alt', translation);
@@ -303,6 +306,24 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'Escape' && adModal.classList.contains('show')) {
         dismissAdModal();
       }
+    });
+  }
+
+  /* ==========================================================================
+     8. FLOATING FACEBOOK SHARE CONTROLLER
+     ========================================================================== */
+  if (fbShareBtn) {
+    fbShareBtn.addEventListener('click', () => {
+      // Captures the current browser link, complete with its hash location
+      const currentUrl = encodeURIComponent(window.location.href);
+      const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+
+      // Spawns a dedicated sharing window centered nicely for user experience
+      window.open(
+        facebookShareUrl,
+        'facebook-share-dialog',
+        'width=626,height=436,resizable=yes,scrollbars=yes'
+      );
     });
   }
 });
