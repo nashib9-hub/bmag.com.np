@@ -21,7 +21,7 @@
         </div>
 
         <nav class="sidebar-menu">
-            <a href="#home" class="menu-item" data-target="home">
+            <a href="#home" class="menu-item active" data-target="home">
                 <i class="ri-home-4-line"></i>
                 <span data-en="Home" data-np="गृहपृष्ठ">Home</span>
             </a>
@@ -104,7 +104,8 @@
 
         <main class="content-container">
 
-            <section id="home" class="content-section">
+            <!-- Initial Active View: Home (Visible) -->
+            <section id="home" class="content-section active" style="display: block;">
                 <h2 data-en="Welcome to Bhimbadh Multipurpose Agro" data-np="भिम्वाँद बहुउद्देश्यीय एग्रोमा स्वागत छ">Welcome to Bhimbadh Multipurpose Agro</h2>
                 <p class="subtitle" data-en="Empowering local agriculture through modern sustainable practices." data-np="आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सबलीकरण गर्दै।">Empowering local agriculture through modern sustainable practices.</p>
 
@@ -127,7 +128,8 @@
                 </div>
             </section>
 
-            <section id="about" class="content-section">
+            <!-- About Section (Hidden by default) -->
+            <section id="about" class="content-section" style="display: none;">
                 <h2 data-en="About Our Organization" data-np="हाम्रो संस्थाको बारेमा">About Our Organization</h2>
                 <div class="card-large">
                     <p data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd. is dedicated to elevating Nepal's agricultural standard. We unify traditional organic methods with progressive agro-tech to optimize crop lifecycles and increase economic independence for our rural cooperative farming groups."
@@ -137,7 +139,8 @@
                 </div>
             </section>
 
-            <section id="committee" class="content-section">
+            <!-- Committee Section (Hidden by default) -->
+            <section id="committee" class="content-section" style="display: none;">
                 <h2 data-en="Executive Committee" data-np="कार्यसमिति सदस्यहरू">Executive Committee</h2>
 
                 <!-- President Card -->
@@ -222,7 +225,8 @@
                 </div>
             </section>
 
-            <section id="products" class="content-section">
+            <!-- Products Section (Hidden by default) -->
+            <section id="products" class="content-section" style="display: none;">
                 <h2 data-en="Our Products" data-np="हाम्रा उत्पादनहरू">Our Products</h2>
                 <div class="info-grid">
 
@@ -347,7 +351,8 @@
                 </div>
             </section>
 
-            <section id="gallery" class="content-section">
+            <!-- Gallery Section (Hidden by default) -->
+            <section id="gallery" class="content-section" style="display: none;">
                 <h2 data-en="Photo & Video Gallery" data-np="फोटो तथा भिडियो ग्यालेरी">Photo Gallery</h2>
                 <div class="info-grid gallery-grid">
                     <!-- Video Card Element -->
@@ -379,7 +384,8 @@
                 </div>
             </section>
 
-            <section id="contact" class="content-section">
+            <!-- Contact Section (Hidden by default) -->
+            <section id="contact" class="content-section" style="display: none;">
                 <h2 data-en="Contact Us" data-np="सम्पर्क गर्नुहोस्">Contact Us</h2>
                 <div class="card-large">
                     <div class="contact-detail">
@@ -435,7 +441,7 @@
         </div>
     </div>
     
-    <!-- Floating Universal Share Button -->
+  <!-- Floating Universal Share Button -->
 <button id="fbShareBtn" class="fb-share-btn" aria-label="Share this page">
     <i class="ri-share-forward-line"></i>
     <button class="share-text" data-en="Share" data-np="सेयर गर्नुहोस्">Share</button>
