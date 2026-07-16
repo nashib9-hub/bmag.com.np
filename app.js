@@ -325,21 +325,48 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     8. FLOATING FACEBOOK SHARE CONTROLLER
+     8. FLOATING FACEBOOK SHARE CONTROLLER (Mobile / Deep-Link Optimization)
      ========================================================================== */
   if (fbShareBtn) {
-    fbShareBtn.addEventListener('click', () => {
-      // Grab the exact active URL (including the newly updated hash from switchView!)
-      const currentUrl = encodeURIComponent(window.location.href);
-      const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+    fbShareBtn.addEventListener('click', async () => {
+      const currentUrl = window.location.href;
+      const currentLang = localStorage.getItem('preferredLang') || 'en';
+      
+      // Setup text variants based on system preference language
+      const shareTitle = 'Bhimbadh Multipurpose Agro';
+      const shareText = currentLang === 'np' 
+        ? 'आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सशक्त बनाउँदै।' 
+        : 'Empowering local agriculture through modern sustainable practices.';
 
-      // Calculate centering for the pop-up window
+      // MOBILE OPTIMIZATION: Use Native System Web Share API if running on mobile device browsers
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: shareTitle,
+            text: shareText,
+            url: currentUrl
+          });
+          console.log('Successfully shared natively.');
+          return; // Stop implementation here if successful execution occurs
+        } catch (error) {
+          // Fall back gracefully if user cancels native sheet instead of throwing error breaker
+          if (error.name === 'AbortError') {
+            console.log('Share action cancelled by user.');
+            return;
+          }
+          console.error('Native web share failed, launching fallback popup...', error);
+        }
+      }
+
+      // DESKTOP / FALLBACK MECHANICS: Centered Popup Context
+      const encodedUrl = encodeURIComponent(currentUrl);
+      const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+
       const width = 626;
       const height = 436;
       const left = (screen.width / 2) - (width / 2);
       const top = (screen.height / 2) - (height / 2);
 
-      // Spawns a dedicated sharing window centered nicely for user experience
       window.open(
         facebookShareUrl,
         'facebook-share-dialog',
