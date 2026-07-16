@@ -51,12 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE
+     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE (Fixed Display Stack)
      ========================================================================== */
   function switchView(targetSectionId) {
     if (!targetSectionId) return;
 
-    // If switching away from the gallery, pause the inline video
+    // If switching away from the gallery, pause the inline video safely
     if (targetSectionId !== 'gallery' && gallerySection) {
       const galleryVideo = gallerySection.querySelector('video');
       if (galleryVideo) {
@@ -73,12 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 2. Toggle Visibility of Sections
+    // 2. Toggle Visibility of Sections (CSS Classes + Inline Display styles to prevent stacking)
     contentSections.forEach(section => {
       if (section.id === targetSectionId) {
         section.classList.add('active-section');
+        section.style.display = 'block'; // Force display on active section
       } else {
         section.classList.remove('active-section');
+        section.style.display = 'none'; // Force hide on inactive sections
       }
     });
 
@@ -95,8 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // NEW FIX: Silently update the URL hash in the browser address bar without triggering a page reload.
-    // This guarantees window.location.href always has the active section (e.g. yoursite.com/#gallery)
+    // Update the URL hash in the browser address bar without triggering a page reload.
     if (history.pushState) {
       history.pushState(null, null, `#${targetSectionId}`);
     } else {
@@ -331,11 +332,11 @@ document.addEventListener('DOMContentLoaded', () => {
     fbShareBtn.addEventListener('click', async () => {
       const currentUrl = window.location.href;
       const currentLang = localStorage.getItem('preferredLang') || 'en';
-      
+
       // Setup text variants based on system preference language
       const shareTitle = 'Bhimbadh Multipurpose Agro';
-      const shareText = currentLang === 'np' 
-        ? 'आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सशक्त बनाउँदै।' 
+      const shareText = currentLang === 'np'
+        ? 'आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सशक्त बनाउँदै।'
         : 'Empowering local agriculture through modern sustainable practices.';
 
       // MOBILE OPTIMIZATION: Use Native System Web Share API if running on mobile device browsers
