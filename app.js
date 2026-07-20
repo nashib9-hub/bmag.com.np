@@ -292,38 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* ==========================================================================
-     7. ENTRY ADVERTISEMENT POPUP MODAL CONTROLLER
-     ========================================================================== */
-  if (adModal) {
-    // Elegant entry delay before revealing the visual ad overlay
-    setTimeout(() => {
-      adModal.classList.add('show');
-    }, 600); // 0.6 seconds delay
-
-    const dismissAdModal = () => {
-      adModal.classList.remove('show');
-    };
-
-    // Close modal when close trigger button is pressed
-    if (closeAdBtn) {
-      closeAdBtn.addEventListener('click', dismissAdModal);
-    }
-
-    // Close modal when clicking on background backdrop areas
-    adModal.addEventListener('click', (e) => {
-      if (e.target === adModal) {
-        dismissAdModal();
-      }
-    });
-
-    // Close modal when 'Escape' key is pressed
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && adModal.classList.contains('show')) {
-        dismissAdModal();
-      }
-    });
-  }
 
   /* ==========================================================================
      8. FLOATING FACEBOOK SHARE CONTROLLER (Mobile / Deep-Link Optimization)
