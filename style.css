@@ -497,17 +497,18 @@ body {
 }
 
 .lightbox-content-box {
-  background: var(--bg-card);
-  padding: 24px;
-  border-radius: 16px;
-  width: min(92vw, 650px);
-  max-height: 90vh;
+  background: var(--bg-card) !important;
+  padding: 24px !important;
+  border-radius: 16px !important;
+  width: auto !important;
+  max-width: min(90vw, 650px) !important;
+  max-height: 90vh !important;
   position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  overflow-y: auto !important;
 }
 
 .lightbox-close-btn {
@@ -531,7 +532,6 @@ body {
 .lightbox-media-wrapper {
   width: 100% !important;
   height: auto !important;
-  max-height: none !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -542,13 +542,16 @@ body {
   margin-top: 8px;
 }
 
-.lightbox-media-wrapper img {
-  width: 100% !important;
-  height: auto !important;
+.lightbox-media-wrapper img,
+.lightbox-media-wrapper video {
+  max-width: 100% !important;
   max-height: 70vh !important;
+  width: auto !important;
+  height: auto !important;
   object-fit: contain !important;
   border-radius: 8px;
   display: block !important;
+  margin: 0 auto !important;
 }
 
 .lightbox-caption-text {
@@ -559,23 +562,6 @@ body {
   text-align: center !important;
   line-height: 1.5 !important;
   text-shadow: none !important;
-}
-
-/* Force-remove white container backgrounds inside specific modal overlay IDs */
-#productMediaOverlay * {
-  box-shadow: none !important;
-}
-
-#productMediaOverlay > div,
-.lightbox-modal-card,
-.modal-content {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  max-width: none !important;
-  width: auto !important;
 }
 
 /* ==========================================================================
