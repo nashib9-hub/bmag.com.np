@@ -212,7 +212,6 @@ body {
   0% {
     transform: translate3d(0, 0, 0);
   }
-
   100% {
     transform: translate3d(-50%, 0, 0);
   }
@@ -273,7 +272,6 @@ body {
     opacity: 0;
     transform: translateY(8px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -449,6 +447,28 @@ body {
   color: var(--primary);
 }
 
+/* Circular Avatar Setup */
+.avatar-circle-wrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: #f7f7f7;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.committee-circle-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 /* ==========================================================================
    LIGHTBOX INTERACTIVE OVERLAY
    ========================================================================== */
@@ -458,12 +478,14 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(4px);
   z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -478,8 +500,8 @@ body {
   background: var(--bg-card);
   padding: 24px;
   border-radius: 16px;
-  max-width: 460px;
-  width: 90%;
+  max-width: 90vw;
+  max-height: 90vh;
   position: relative;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -507,31 +529,179 @@ body {
 
 .lightbox-media-wrapper {
   width: 100%;
-  height: 240px;
+  max-height: 75vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f8fafc;
+  background: transparent;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
   overflow: hidden;
   margin-top: 16px;
 }
 
 .lightbox-media-wrapper img {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
   object-fit: contain;
+  border-radius: 8px;
 }
 
 .lightbox-caption-text {
-  margin-top: 18px;
+  margin-top: 14px;
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--dark);
   text-align: center;
   line-height: 1.6;
   padding: 0 8px;
+}
+
+/* Force-remove white container backgrounds inside specific modal overlay IDs */
+#productMediaOverlay * {
+  box-shadow: none !important;
+}
+
+#productMediaOverlay > div,
+.lightbox-modal-card,
+.modal-content {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  max-width: none !important;
+  width: auto !important;
+}
+
+/* Flex setup to keep caption right under the uncropped image */
+#lightboxMediaWrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+}
+
+/* Formatting for caption below poster */
+#lightboxCaptionText {
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  text-align: center !important;
+  margin-top: 12px !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* ==========================================================================
+   POPUP ADVERTISEMENT MODAL STYLES
+   ========================================================================== */
+.ad-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.ad-modal-container {
+  position: relative;
+  max-width: 90%;
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.ad-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.ad-close-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.ad-modal-content img.ad-image {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   FLOATING UNIVERSAL SHARE BUTTON
+   ========================================================================== */
+.fb-share-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  background-color: var(--primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+  padding: 8px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  backface-visibility: hidden;
+  white-space: nowrap;
+}
+
+.fb-share-btn:hover {
+  background-color: #226226;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(46, 125, 50, 0.28), 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.fb-share-btn:active {
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 6px rgba(46, 125, 50, 0.2);
+}
+
+.fb-share-btn:focus-visible {
+  outline: 2px solid rgba(46, 125, 50, 0.5);
+  outline-offset: 2px;
+}
+
+.fb-share-btn i {
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 /* ==========================================================================
@@ -562,85 +732,7 @@ body {
   .content-container {
     padding: 20px 16px;
   }
-}
 
-/* Circular Avatar Setup */
-.avatar-circle-wrapper {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 10px;
-  border: 2px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  background: #f7f7f7;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.committee-circle-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* ==========================================================================
-   FLOATING UNIVERSAL SHARE BUTTON
-   ========================================================================== */
-.fb-share-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 999;
-  background-color: var(--primary);
-  /* Integrated with your main site color */
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  width: auto;
-  height: auto;
-  aspect-ratio: auto;
-  padding: 8px 16px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: var(--transition);
-  backface-visibility: hidden;
-  white-space: nowrap;
-}
-
-.fb-share-btn:hover {
-  background-color: #226226;
-  /* Darker green fallback match for interactive hover state */
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(46, 125, 50, 0.28), 0 2px 4px rgba(0, 0, 0, 0.12);
-}
-
-.fb-share-btn:active {
-  transform: translateY(-0.5px);
-  box-shadow: 0 2px 6px rgba(46, 125, 50, 0.2);
-}
-
-.fb-share-btn:focus-visible {
-  outline: 2px solid rgba(46, 125, 50, 0.5);
-  outline-offset: 2px;
-}
-
-.fb-share-btn i {
-  font-size: 0.95rem;
-  line-height: 1;
-}
-
-@media (max-width: 768px) {
   .fb-share-btn {
     bottom: 20px;
     right: 20px;
@@ -651,96 +743,4 @@ body {
   .fb-share-btn i {
     font-size: 0.85rem;
   }
-}
-
-/* Force-remove white container backgrounds inside the modal overlay */
-#productMediaOverlay * {
-  box-shadow: none !important;
-}
-
-#productMediaOverlay > div,
-.lightbox-content-box,
-.lightbox-modal-card,
-.modal-content {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  max-width: none !important;
-  width: auto !important;
-}
-
-/* Flex setup to keep caption right under the uncropped image */
-#lightboxMediaWrapper {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: transparent !important;
-}
-
-/* Formatting for caption below poster */
-#lightboxCaptionText {
-  color: #ffffff !important;
-  font-size: 1rem !important;
-  text-align: center !important;
-  margin-top: 12px !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-}
-/* Popup Advertisement Modal Styles */
-.ad-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.75);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-.ad-modal-container {
-    position: relative;
-    max-width: 90%;
-    max-height: 90vh;
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.ad-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    border: none;
-    font-size: 2rem;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1;
-    z-index: 10;
-    transition: background 0.2s;
-}
-
-.ad-close-btn:hover {
-    background: rgba(0, 0, 0, 0.9);
-}
-
-.ad-modal-content img.ad-image {
-    display: block;
-    max-width: 100%;
-    max-height: 80vh;
-    object-fit: contain;
 }
