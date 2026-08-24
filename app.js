@@ -123,27 +123,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER (Full Uncropped Image)
+     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER (Full Dynamic Resizing)
      ========================================================================== */
   if (lightboxOverlay && mediaContainer && captionBox) {
 
-    // Helper to format source paths with relative fallback
     const formatSrc = (src) => {
       if (!src) return '';
       return (src.startsWith('./') || src.startsWith('http') || src.startsWith('/')) ? src : `./${src}`;
     };
 
-    // Append full image bounded by viewport height so the whole poster fits
     const appendImageNode = (url) => {
       const img = document.createElement('img');
       img.src = formatSrc(url);
       img.alt = 'Gallery Display Resource';
-      img.style.maxWidth = '90vw';
-      img.style.maxHeight = '75vh';
+      img.style.maxWidth = '100%';
+      img.style.maxHeight = '80vh';
       img.style.width = 'auto';
       img.style.height = 'auto';
       img.style.objectFit = 'contain';
-      img.style.borderRadius = '6px';
+      img.style.borderRadius = '8px';
       img.style.display = 'block';
       img.style.margin = '0 auto';
       mediaContainer.appendChild(img);
@@ -155,9 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
       video.autoplay = true;
       video.muted = true;
       video.playsInline = true;
-      video.style.maxWidth = '90vw';
-      video.style.maxHeight = '75vh';
-      video.style.borderRadius = '6px';
+      video.style.maxWidth = '100%';
+      video.style.maxHeight = '80vh';
+      video.style.borderRadius = '8px';
       video.style.backgroundColor = '#000';
 
       const source = document.createElement('source');
@@ -185,34 +183,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentLang = localStorage.getItem('preferredLang') || 'en';
       const chosenCaption = card.getAttribute(`data-${currentLang}-caption`) || card.getAttribute('data-en-caption') || '';
 
-      // Clean lightbox overlay wrapper styles
       lightboxOverlay.style.display = 'flex';
       lightboxOverlay.style.justifyContent = 'center';
       lightboxOverlay.style.alignItems = 'center';
 
-      // Strip container boxes, fixed sizes, borders, and shadows from all parent cards inside overlay
-      const allModalContainers = lightboxOverlay.querySelectorAll('div');
-      allModalContainers.forEach(container => {
-        container.style.background = 'transparent';
-        container.style.backgroundColor = 'transparent';
-        container.style.boxShadow = 'none';
-        container.style.border = 'none';
-        container.style.padding = '0';
-        container.style.margin = '0';
-        container.style.width = 'auto';
-        container.style.maxWidth = 'none';
-        container.style.height = 'auto';
-        container.style.maxHeight = 'none';
-        container.style.overflow = 'visible';
-      });
-
-      // Clear previous media and setup layout wrapper
       mediaContainer.innerHTML = '';
       mediaContainer.className = "lightbox-media-wrapper";
       mediaContainer.style.display = 'flex';
       mediaContainer.style.flexDirection = 'column';
       mediaContainer.style.alignItems = 'center';
       mediaContainer.style.justifyContent = 'center';
+      mediaContainer.style.width = 'auto';
+      mediaContainer.style.maxWidth = '90vw';
 
       if (type === 'gallery') {
         const rawSources = card.getAttribute('data-sources');
@@ -242,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Append caption element directly beneath media
       captionBox.textContent = chosenCaption || '';
       captionBox.style.color = '#ffffff';
       captionBox.style.textAlign = 'center';
@@ -267,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     4. ENTRY ADVERTISEMENT MODAL CONTROLLER (With 3rdbmagcup.jpg Display)
+     4. ENTRY ADVERTISEMENT MODAL CONTROLLER
      ========================================================================== */
   if (adModal) {
     if (!sessionStorage.getItem('adShown')) {
