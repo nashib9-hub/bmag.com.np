@@ -127,10 +127,16 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   if (lightboxOverlay && mediaContainer && captionBox) {
 
+    // Helper to format source paths with relative fallback
+    const formatSrc = (src) => {
+      if (!src) return '';
+      return (src.startsWith('./') || src.startsWith('http') || src.startsWith('/')) ? src : `./${src}`;
+    };
+
     // Append full image bounded by viewport height so the whole poster fits
     const appendImageNode = (url) => {
       const img = document.createElement('img');
-      img.src = url;
+      img.src = formatSrc(url);
       img.alt = 'Gallery Display Resource';
       img.style.maxWidth = '90vw';
       img.style.maxHeight = '75vh';
@@ -155,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
       video.style.backgroundColor = '#000';
 
       const source = document.createElement('source');
-      source.src = url;
+      source.src = formatSrc(url);
       source.type = url.endsWith('.webm') ? 'video/webm' : 'video/mp4';
 
       video.appendChild(source);
@@ -231,6 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
           appendImageNode(singleSource);
         } else if (type === 'video' && singleSource) {
           appendVideoNode(singleSource);
+        } else if (singleSource) {
+          appendImageNode(singleSource);
         }
       }
 
@@ -262,7 +270,6 @@ document.addEventListener('DOMContentLoaded', () => {
      4. ENTRY ADVERTISEMENT MODAL CONTROLLER (With 3rdbmagcup.jpg Display)
      ========================================================================== */
   if (adModal) {
-    // Show advertisement modal on initial site launch (uncomment session check if desired)
     if (!sessionStorage.getItem('adShown')) {
       adModal.style.display = 'flex';
       adModal.classList.add('active-view');
