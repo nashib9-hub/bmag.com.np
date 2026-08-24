@@ -351,11 +351,40 @@
                 </div>
             </section>
 
-            <!-- Gallery Section (Hidden by default) -->
+        <!-- Gallery Section (Hidden by default) -->
             <section id="gallery" class="content-section" style="display: none;">
-                <h2 data-en="Photo & Video Gallery" data-np="फोटो तथा भिडियो ग्यालेरी">Photo Gallery</h2>
+                <h2 data-en="Photo & Video Gallery" data-np="फोटो तथा भिडियो ग्यालेरी">Photo & Video Gallery</h2>
                 <div class="info-grid gallery-grid">
-                    <!-- Video Card Element -->
+<!-- Tournament Card 1 -->
+        <div class="info-card gallery-card product-modal-trigger" 
+             data-type="image" 
+             data-src="3rdbmagcup.jpg"
+             data-en-caption="3rd Bhimbadh Multipurpose Cup-2083 Ward Level Male Volleyball Cup"
+             data-np-caption="तेस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८३वडा स्तरीय पुरुष भलिबल प्रतियोगिता  "
+             style="cursor: pointer;">
+            <div class="product-image-wrapper">
+                <img src="3rdbmagcup.jpg" alt="3rd BMAG Volleyball" class="product-img" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
+            </div>
+            <h3 style="margin-top: 12px;" data-en="3rd Bhimbadh Multipurpose Cup-2083" data-np="तेस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८३ ">
+                3rd Bhimbadh Volleyball Cup
+            </h3>
+        </div>
+
+        <!-- Tournament Card 2 -->
+        <div class="info-card gallery-card product-modal-trigger" 
+             data-type="image" 
+             data-src="footballbmag.jpg"
+             data-en-caption="Bhimbadh Multipurpose Agro Group U14 Football Tournament"
+             data-np-caption="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप यु-१४ फुटबल प्रतियोगिता"
+             style="cursor: pointer;">
+            <div class="product-image-wrapper">
+                <img src="footballbmag.jpg" alt="U14 Football" class="product-img" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
+            </div>
+            <h3 style="margin-top: 12px;" data-en="U14 Football Tournament" data-np="यु-१४ फुटबल प्रतियोगिता">
+                U14 Football Tournament
+            </h3>
+        </div>
+           <!-- Video Card Element -->
                     <div class="info-card gallery-card video-card">
                         <div class="video-container" style="margin-bottom: 15px;">
                             <video controls width="100%" style="border-radius: 8px; max-height: 250px; background: #000;">
@@ -363,25 +392,11 @@
                                 Your browser does not support the video tag.
                             </video>
                         </div>
-                        <h3 data-en="Interview - Volleyball Tournament Preparation" data-np="अन्तर्वार्ता - भलिबल प्रतियोगिता तयारी">Interview - Tournament</h3>
+                        <h3 data-en="Interview - Volleyball Tournament Preparation" data-np="अन्तर्वार्ता - दोस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८२ वडा स्तरीय पुरुष  भलिबल प्रतियोगिता तयारी">Interview - 2nd Bhimbadh Multipurpose Agro Cup-2082 Male Volleyball Tournament Preparation</h3>
                         <p class="video-caption" style="font-size: 0.9rem; color: #555; margin-top: 8px; text-align: justify; line-height: 1.4;">
-                            भिम्वाँद बहुउद्देश्यीय एग्रो समुह द्वारा वि स २०८२ भाद्र २९ गतेदेखि असोज ०३ गते सम्म आयोजना गरियको वडा स्तरीय पुरुष भलिबल प्रतियोगिताको तयारीको विषयमा एग्रो समुहका अध्यक्ष डिजन राना, सहसचिव सुरज विकसँगको भिमाद एफ.एम १००.९ मेगाहर्ज सग कुराकानि ।
+                            भिम्वाँद बहुउद्देश्यीय एग्रो समुह द्वारा वि.स २०८२ भाद्र २९ गतेदेखि असोज ०३ गते सम्म आयोजना गरियको दोस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८२ वडा स्तरीय पुरुष भलिबल प्रतियोगिताको तयारीको विषयमा एग्रो समुहका अध्यक्ष डिजन राना, सहसचिव सुरज विकसँगको भिमाद एफ.एम १००.९ मेगाहर्ज सग कुराकानि ।
                         </p>
                     </div>
-                    <!-- Existing Gallery Items -->
-                    <div class="info-card gallery-card">
-                        <div class="avatar-placeholder"><i class="ri-image-2-line"></i></div>
-                        <h3 data-en="Farm View 1" data-np="फार्म दृश्य १">Farm View 1</h3>
-                    </div>
-                    <div class="info-card gallery-card">
-                        <div class="avatar-placeholder"><i class="ri-image-2-line"></i></div>
-                        <h3 data-en="Our Crops" data-np="हाम्रो बाली">Our Crops</h3>
-                    </div>
-                    <div class="info-card gallery-card">
-                        <div class="avatar-placeholder"><i class="ri-image-2-line"></i></div>
-                        <h3 data-en="Farmer Training" data-np="कृषक तालिम">Farmer Training</h3>
-                    </div>
-                </div>
             </section>
 
             <!-- Contact Section (Hidden by default) -->
@@ -427,6 +442,15 @@
             <div id="lightboxCaptionText" class="lightbox-caption-text"></div>
         </div>
     </div>
+    <!-- Popup Advertisement Modal -->
+<div id="adModalOverlay" class="ad-modal-overlay">
+    <div class="ad-modal-container">
+        <button id="closeAdBtn" class="ad-close-btn" aria-label="Close Advertisement">&times;</button>
+        <div class="ad-modal-content">
+            <img src="3rdbmagcup.jpg" alt="3rd Bhimbadh Volleyball Tournament Advertisement" class="ad-image">
+        </div>
+    </div>
+</div>
 
     
   <!-- Floating Universal Share Button -->
