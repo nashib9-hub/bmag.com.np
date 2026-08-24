@@ -13,8 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnEn = document.getElementById('btnEn');
   const btnNp = document.getElementById('btnNp');
 
-  // Product Lightbox Elements
-  const triggerCards = document.querySelectorAll('.product-modal-trigger');
+  // Product & Gallery Lightbox Elements
   const lightboxOverlay = document.getElementById('productMediaOverlay');
   const closeBtn = document.getElementById('closeLightboxBtn');
   const mediaContainer = document.getElementById('lightboxMediaWrapper');
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gallerySection = document.getElementById('gallery');
 
   // Entry Advertisement Modal Elements
-  const adModal = document.getElementById('entryAdModal');
+  const adModal = document.getElementById('entryAdModal') || document.getElementById('adModalOverlay');
   const closeAdBtn = document.getElementById('closeAdBtn');
 
   // Floating Facebook Share Button
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchView(targetSectionId) {
     if (!targetSectionId) return;
 
-    // If switching away from the gallery, pause the inline video safely
+    // Pause gallery video if switching away from the gallery section
     if (targetSectionId !== 'gallery' && gallerySection) {
       const galleryVideo = gallerySection.querySelector('video');
       if (galleryVideo) {
@@ -73,14 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 2. Toggle Visibility of Sections (CSS Classes + Inline Display styles to prevent stacking)
+    // 2. Toggle Visibility of Sections
     contentSections.forEach(section => {
       if (section.id === targetSectionId) {
         section.classList.add('active-section');
-        section.style.display = 'block'; // Force display on active section
+        section.style.display = 'block';
       } else {
         section.classList.remove('active-section');
-        section.style.display = 'none'; // Force hide on inactive sections
+        section.style.display = 'none';
       }
     });
 
@@ -97,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Update the URL hash in the browser address bar without triggering a page reload.
+    // Update URL hash safely without triggering page reloads
     if (history.pushState) {
       history.pushState(null, null, `#${targetSectionId}`);
     } else {
@@ -110,13 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Attach click events to menu options safely
+  // Attach click listeners to menu items
   if (menuItems.length > 0) {
     menuItems.forEach(item => {
-      // If the element is an external link (like Facebook) targeting a new window, ignore it
-      if (item.getAttribute('target') === '_blank') {
-        return;
-      }
+      if (item.getAttribute('target') === '_blank') return;
 
       item.addEventListener('click', (e) => {
         e.preventDefault();
@@ -127,19 +123,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     3. PRODUCT LIGHTBOX OVERLAY CONTROLLER
+     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER (Full Uncropped Image)
      ========================================================================== */
-  if (triggerCards.length && lightboxOverlay && mediaContainer && captionBox) {
+  if (lightboxOverlay && mediaContainer && captionBox) {
 
+    // Append full image bounded by viewport height so the whole poster fits
     const appendImageNode = (url) => {
       const img = document.createElement('img');
       img.src = url;
       img.alt = 'Gallery Display Resource';
-      img.style.width = '100%';
+      img.style.maxWidth = '90vw';
+      img.style.maxHeight = '75vh';
+      img.style.width = 'auto';
       img.style.height = 'auto';
-      img.style.maxHeight = '65vh';
       img.style.objectFit = 'contain';
       img.style.borderRadius = '6px';
+      img.style.display = 'block';
+      img.style.margin = '0 auto';
       mediaContainer.appendChild(img);
     };
 
@@ -149,8 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
       video.autoplay = true;
       video.muted = true;
       video.playsInline = true;
-      video.style.width = '100%';
-      video.style.maxHeight = '65vh';
+      video.style.maxWidth = '90vw';
+      video.style.maxHeight = '75vh';
       video.style.borderRadius = '6px';
       video.style.backgroundColor = '#000';
 
@@ -163,52 +163,87 @@ document.addEventListener('DOMContentLoaded', () => {
       video.load();
     };
 
-    triggerCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const type = card.getAttribute('data-type');
-        const currentLang = localStorage.getItem('preferredLang') || 'en';
-        const chosenCaption = card.getAttribute(`data-${currentLang}-caption`);
-
-        mediaContainer.innerHTML = '';
-        mediaContainer.className = "lightbox-media-wrapper";
-
-        if (type === 'gallery') {
-          const rawSources = card.getAttribute('data-sources');
-          if (rawSources) {
-            try {
-              const mediaAssets = JSON.parse(rawSources);
-              mediaContainer.classList.add('gallery-layout-active');
-              mediaAssets.forEach(sourceUrl => {
-                if (sourceUrl.endsWith('.mp4') || sourceUrl.endsWith('.webm')) {
-                  appendVideoNode(sourceUrl);
-                } else {
-                  appendImageNode(sourceUrl);
-                }
-              });
-            } catch (error) {
-              console.error("Error parsing gallery data-sources JSON:", error);
-            }
-          }
-        } else {
-          const singleSource = card.getAttribute('data-src');
-          if (type === 'image' && singleSource) {
-            appendImageNode(singleSource);
-          } else if (type === 'video' && singleSource) {
-            appendVideoNode(singleSource);
-          }
-        }
-
-        captionBox.textContent = chosenCaption || '';
-        lightboxOverlay.classList.add('active-view');
-      });
-    });
-
     const clearAndDismissLightbox = () => {
       lightboxOverlay.classList.remove('active-view');
+      lightboxOverlay.style.display = 'none';
       mediaContainer.innerHTML = '';
-      // Remove layout-specific class so next view isn't distorted
       mediaContainer.classList.remove('gallery-layout-active');
     };
+
+    // Event Delegation
+    document.addEventListener('click', (event) => {
+      const card = event.target.closest('.product-modal-trigger');
+      if (!card) return;
+
+      const type = card.getAttribute('data-type');
+      const currentLang = localStorage.getItem('preferredLang') || 'en';
+      const chosenCaption = card.getAttribute(`data-${currentLang}-caption`) || card.getAttribute('data-en-caption') || '';
+
+      // Clean lightbox overlay wrapper styles
+      lightboxOverlay.style.display = 'flex';
+      lightboxOverlay.style.justifyContent = 'center';
+      lightboxOverlay.style.alignItems = 'center';
+
+      // Strip container boxes, fixed sizes, borders, and shadows from all parent cards inside overlay
+      const allModalContainers = lightboxOverlay.querySelectorAll('div');
+      allModalContainers.forEach(container => {
+        container.style.background = 'transparent';
+        container.style.backgroundColor = 'transparent';
+        container.style.boxShadow = 'none';
+        container.style.border = 'none';
+        container.style.padding = '0';
+        container.style.margin = '0';
+        container.style.width = 'auto';
+        container.style.maxWidth = 'none';
+        container.style.height = 'auto';
+        container.style.maxHeight = 'none';
+        container.style.overflow = 'visible';
+      });
+
+      // Clear previous media and setup layout wrapper
+      mediaContainer.innerHTML = '';
+      mediaContainer.className = "lightbox-media-wrapper";
+      mediaContainer.style.display = 'flex';
+      mediaContainer.style.flexDirection = 'column';
+      mediaContainer.style.alignItems = 'center';
+      mediaContainer.style.justifyContent = 'center';
+
+      if (type === 'gallery') {
+        const rawSources = card.getAttribute('data-sources');
+        if (rawSources) {
+          try {
+            const mediaAssets = JSON.parse(rawSources);
+            mediaContainer.classList.add('gallery-layout-active');
+            mediaAssets.forEach(sourceUrl => {
+              if (sourceUrl.endsWith('.mp4') || sourceUrl.endsWith('.webm')) {
+                appendVideoNode(sourceUrl);
+              } else {
+                appendImageNode(sourceUrl);
+              }
+            });
+          } catch (error) {
+            console.error("Error parsing gallery data-sources JSON:", error);
+          }
+        }
+      } else {
+        const singleSource = card.getAttribute('data-src');
+        if (type === 'image' && singleSource) {
+          appendImageNode(singleSource);
+        } else if (type === 'video' && singleSource) {
+          appendVideoNode(singleSource);
+        }
+      }
+
+      // Append caption element directly beneath media
+      captionBox.textContent = chosenCaption || '';
+      captionBox.style.color = '#ffffff';
+      captionBox.style.textAlign = 'center';
+      captionBox.style.marginTop = '12px';
+      captionBox.style.fontSize = '1rem';
+      mediaContainer.appendChild(captionBox);
+
+      lightboxOverlay.classList.add('active-view');
+    });
 
     if (closeBtn) closeBtn.addEventListener('click', clearAndDismissLightbox);
 
@@ -217,24 +252,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && lightboxOverlay.classList.contains('active-view')) {
+      if (event.key === 'Escape' && (lightboxOverlay.classList.contains('active-view') || lightboxOverlay.style.display === 'flex')) {
         clearAndDismissLightbox();
       }
     });
   }
 
   /* ==========================================================================
-     4. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
+     4. ENTRY ADVERTISEMENT MODAL CONTROLLER (With 3rdbmagcup.jpg Display)
+     ========================================================================== */
+  if (adModal) {
+    // Show advertisement modal on initial site launch (uncomment session check if desired)
+    if (!sessionStorage.getItem('adShown')) {
+      adModal.style.display = 'flex';
+      adModal.classList.add('active-view');
+    }
+
+    const dismissAd = () => {
+      adModal.classList.remove('active-view');
+      adModal.style.display = 'none';
+      sessionStorage.setItem('adShown', 'true');
+    };
+
+    if (closeAdBtn) closeAdBtn.addEventListener('click', dismissAd);
+
+    adModal.addEventListener('click', (e) => {
+      if (e.target === adModal) dismissAd();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && (adModal.classList.contains('active-view') || adModal.style.display === 'flex')) {
+        dismissAd();
+      }
+    });
+  }
+
+  /* ==========================================================================
+     5. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
      ========================================================================== */
   function setLanguage(lang) {
-    // We select localizable elements but EXCLUDE the header title. 
-    // Otherwise, the general translation loop overwrites the header title completely, breaking dynamic page title switches!
     const localizableElements = document.querySelectorAll('[data-en][data-np]:not(.header-title)');
 
     localizableElements.forEach(element => {
       const translation = lang === 'np' ? element.getAttribute('data-np') : element.getAttribute('data-en');
 
-      // If the localizable item is an image, translate its alternate (alt) attribute
       if (element.tagName.toLowerCase() === 'img') {
         element.setAttribute('alt', translation);
       } else {
@@ -254,7 +315,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     localStorage.setItem('preferredLang', lang);
 
-    // Update Header Title dynamically based on current selected page
     const currentActiveItem = document.querySelector('.menu-item.active');
     if (currentActiveItem && headerTitle) {
       const activeSpan = currentActiveItem.querySelector('span');
@@ -268,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnNp) btnNp.addEventListener('click', () => setLanguage('np'));
 
   /* ==========================================================================
-     5. INITIALIZE DEFAULT NAVIGATION ROUTE Safely
+     6. INITIALIZE DEFAULT NAVIGATION ROUTE
      ========================================================================== */
   const defaultLang = localStorage.getItem('preferredLang') || 'en';
   setLanguage(defaultLang);
@@ -279,11 +339,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (currentHash && validSections.includes(currentHash)) {
     switchView(currentHash);
   } else {
-    switchView('home'); // Automatically defaults to Home view on startup
+    switchView('home');
   }
 
   /* ==========================================================================
-     6. BACKGROUND TAB VISIBILITY MONITOR
+     7. BACKGROUND TAB VISIBILITY MONITOR
      ========================================================================== */
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && gallerySection) {
@@ -292,22 +352,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-
   /* ==========================================================================
-     8. FLOATING FACEBOOK SHARE CONTROLLER (Mobile / Deep-Link Optimization)
+     8. FLOATING FACEBOOK SHARE CONTROLLER
      ========================================================================== */
   if (fbShareBtn) {
     fbShareBtn.addEventListener('click', async () => {
       const currentUrl = window.location.href;
       const currentLang = localStorage.getItem('preferredLang') || 'en';
 
-      // Setup text variants based on system preference language
       const shareTitle = 'Bhimbadh Multipurpose Agro';
       const shareText = currentLang === 'np'
         ? 'आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सशक्त बनाउँदै।'
         : 'Empowering local agriculture through modern sustainable practices.';
 
-      // MOBILE OPTIMIZATION: Use Native System Web Share API if running on mobile device browsers
       if (navigator.share) {
         try {
           await navigator.share({
@@ -315,19 +372,13 @@ document.addEventListener('DOMContentLoaded', () => {
             text: shareText,
             url: currentUrl
           });
-          console.log('Successfully shared natively.');
-          return; // Stop implementation here if successful execution occurs
+          return;
         } catch (error) {
-          // Fall back gracefully if user cancels native sheet instead of throwing error breaker
-          if (error.name === 'AbortError') {
-            console.log('Share action cancelled by user.');
-            return;
-          }
+          if (error.name === 'AbortError') return;
           console.error('Native web share failed, launching fallback popup...', error);
         }
       }
 
-      // DESKTOP / FALLBACK MECHANICS: Centered Popup Context
       const encodedUrl = encodeURIComponent(currentUrl);
       const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
 
