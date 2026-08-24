@@ -470,7 +470,7 @@ body {
 }
 
 /* ==========================================================================
-   LIGHTBOX INTERACTIVE OVERLAY
+   LIGHTBOX INTERACTIVE OVERLAY & UNCONSTRAINED FULL-IMAGE FIT
    ========================================================================== */
 .product-lightbox-overlay {
   position: fixed;
@@ -498,16 +498,16 @@ body {
 
 .lightbox-content-box {
   background: var(--bg-card);
-  padding: 20px;
+  padding: 24px;
   border-radius: 16px;
-  max-width: 90vw;
-  width: auto;
+  width: min(92vw, 650px);
   max-height: 90vh;
   position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: auto;
 }
 
 .lightbox-close-btn {
@@ -529,39 +529,36 @@ body {
 }
 
 .lightbox-media-wrapper {
-  width: 100%;
-  height: auto;
-  max-height: 75vh;
-  display: flex;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  display: flex !important;
   flex-direction: column !important;
-  justify-content: center !important;
   align-items: center !important;
+  justify-content: center !important;
   background: transparent !important;
-  border-radius: 8px;
-  border: none;
-  overflow: hidden;
-  margin-top: 10px;
+  border: none !important;
+  overflow: visible !important;
+  margin-top: 8px;
 }
 
 .lightbox-media-wrapper img {
-  max-width: 100%;
-  max-height: 75vh;
-  width: auto;
-  height: auto;
-  object-fit: contain;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 70vh !important;
+  object-fit: contain !important;
   border-radius: 8px;
-  display: block;
+  display: block !important;
 }
 
 .lightbox-caption-text {
-  margin-top: 14px;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #ffffff;
-  text-align: center;
-  line-height: 1.6;
-  padding: 0 8px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  margin-top: 16px !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  color: var(--dark) !important;
+  text-align: center !important;
+  line-height: 1.5 !important;
+  text-shadow: none !important;
 }
 
 /* Force-remove white container backgrounds inside specific modal overlay IDs */
