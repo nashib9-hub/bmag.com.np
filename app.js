@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER (Full Dynamic Resizing)
+     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER (Fixed Height & Dynamic Fit)
      ========================================================================== */
   if (lightboxOverlay && mediaContainer && captionBox) {
 
@@ -136,14 +136,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const img = document.createElement('img');
       img.src = formatSrc(url);
       img.alt = 'Gallery Display Resource';
-      img.style.maxWidth = '100%';
-      img.style.maxHeight = '80vh';
-      img.style.width = 'auto';
-      img.style.height = 'auto';
-      img.style.objectFit = 'contain';
-      img.style.borderRadius = '8px';
-      img.style.display = 'block';
-      img.style.margin = '0 auto';
+      img.style.setProperty('max-width', '100%', 'important');
+      img.style.setProperty('max-height', '70vh', 'important');
+      img.style.setProperty('width', 'auto', 'important');
+      img.style.setProperty('height', 'auto', 'important');
+      img.style.setProperty('object-fit', 'contain', 'important');
+      img.style.setProperty('border-radius', '8px', 'important');
+      img.style.setProperty('display', 'block', 'important');
+      img.style.setProperty('margin', '0 auto', 'important');
       mediaContainer.appendChild(img);
     };
 
@@ -153,10 +153,12 @@ document.addEventListener('DOMContentLoaded', () => {
       video.autoplay = true;
       video.muted = true;
       video.playsInline = true;
-      video.style.maxWidth = '100%';
-      video.style.maxHeight = '80vh';
-      video.style.borderRadius = '8px';
-      video.style.backgroundColor = '#000';
+      video.style.setProperty('max-width', '100%', 'important');
+      video.style.setProperty('max-height', '70vh', 'important');
+      video.style.setProperty('width', 'auto', 'important');
+      video.style.setProperty('height', 'auto', 'important');
+      video.style.setProperty('border-radius', '8px', 'important');
+      video.style.setProperty('background-color', '#000', 'important');
 
       const source = document.createElement('source');
       source.src = formatSrc(url);
@@ -183,18 +185,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentLang = localStorage.getItem('preferredLang') || 'en';
       const chosenCaption = card.getAttribute(`data-${currentLang}-caption`) || card.getAttribute('data-en-caption') || '';
 
-      lightboxOverlay.style.display = 'flex';
-      lightboxOverlay.style.justifyContent = 'center';
-      lightboxOverlay.style.alignItems = 'center';
+      lightboxOverlay.style.setProperty('display', 'flex', 'important');
+      lightboxOverlay.style.setProperty('justify-content', 'center', 'important');
+      lightboxOverlay.style.setProperty('align-items', 'center', 'important');
 
       mediaContainer.innerHTML = '';
       mediaContainer.className = "lightbox-media-wrapper";
-      mediaContainer.style.display = 'flex';
-      mediaContainer.style.flexDirection = 'column';
-      mediaContainer.style.alignItems = 'center';
-      mediaContainer.style.justifyContent = 'center';
-      mediaContainer.style.width = 'auto';
-      mediaContainer.style.maxWidth = '90vw';
+      mediaContainer.style.setProperty('display', 'flex', 'important');
+      mediaContainer.style.setProperty('flex-direction', 'column', 'important');
+      mediaContainer.style.setProperty('align-items', 'center', 'important');
+      mediaContainer.style.setProperty('justify-content', 'center', 'important');
+      mediaContainer.style.setProperty('width', '100%', 'important');
+      mediaContainer.style.setProperty('height', 'auto', 'important');
+      mediaContainer.style.setProperty('max-height', '80vh', 'important');
+      mediaContainer.style.setProperty('overflow', 'visible', 'important');
 
       if (type === 'gallery') {
         const rawSources = card.getAttribute('data-sources');
@@ -225,10 +229,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       captionBox.textContent = chosenCaption || '';
-      captionBox.style.color = '#ffffff';
-      captionBox.style.textAlign = 'center';
-      captionBox.style.marginTop = '12px';
-      captionBox.style.fontSize = '1rem';
+      captionBox.style.setProperty('color', '#263238', 'important');
+      captionBox.style.setProperty('text-align', 'center', 'important');
+      captionBox.style.setProperty('margin-top', '12px', 'important');
+      captionBox.style.setProperty('font-size', '1rem', 'important');
+      captionBox.style.setProperty('font-weight', '600', 'important');
       mediaContainer.appendChild(captionBox);
 
       lightboxOverlay.classList.add('active-view');
