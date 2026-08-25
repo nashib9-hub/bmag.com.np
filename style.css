@@ -470,7 +470,7 @@ body {
 }
 
 /* ==========================================================================
-   LIGHTBOX INTERACTIVE OVERLAY & UNCONSTRAINED FULL-IMAGE FIT
+   LIGHTBOX INTERACTIVE OVERLAY & RESPONSIVE FIT
    ========================================================================== */
 .product-lightbox-overlay {
   position: fixed;
@@ -484,7 +484,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 24px;
   box-sizing: border-box;
   opacity: 0;
   pointer-events: none;
@@ -496,6 +496,21 @@ body {
   pointer-events: auto;
 }
 
+.lightbox-content-box {
+  background: var(--bg-card) !important;
+  padding: 24px !important;
+  border-radius: 16px !important;
+  width: max-content !important;
+  max-width: 90vw !important;
+  max-height: 85vh !important;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
 
 .lightbox-close-btn {
   position: absolute;
@@ -514,35 +529,9 @@ body {
 .lightbox-close-btn:hover {
   color: var(--dark);
 }
-/* Update these two classes in your CSS */
 
-.lightbox-content-box {
-  background: var(--bg-card) !important;
-  padding: 24px !important;
-  border-radius: 16px !important;
-  width: min(92vw, 650px) !important;
-  max-height: 90vh !important;
-  position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  overflow: hidden !important; /* Prevents card clipping & unwanted scrollbars */
-}
-
-.lightbox-media-wrapper img,
-.lightbox-media-wrapper video {
-  max-width: 100% !important;
-  max-height: 65vh !important; /* Caps image height to leave space for caption & card padding */
-  height: auto !important;
-  width: auto !important;
-  object-fit: contain !important;
-  border-radius: 8px;
-  display: block !important;
-  margin: 0 auto !important;
-}
 .lightbox-media-wrapper {
-  width: 100% !important;
+  width: auto !important;
   height: auto !important;
   display: flex !important;
   flex-direction: column !important;
@@ -551,16 +540,27 @@ body {
   background: transparent !important;
   border: none !important;
   overflow: visible !important;
-  margin-top: 8px;
+}
+
+.lightbox-media-wrapper img,
+.lightbox-media-wrapper video {
+  max-width: 85vw !important;
+  max-height: 68vh !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  border-radius: 8px;
+  display: block !important;
+  margin: 0 auto !important;
 }
 
 .lightbox-caption-text {
-  margin-top: 16px !important;
-  font-size: 1.05rem !important;
+  margin-top: 14px !important;
+  font-size: 1rem !important;
   font-weight: 600 !important;
   color: var(--dark) !important;
   text-align: center !important;
-  line-height: 1.5 !important;
+  line-height: 1.4 !important;
   text-shadow: none !important;
 }
 
