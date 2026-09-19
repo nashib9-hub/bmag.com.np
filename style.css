@@ -3,20 +3,16 @@
    ========================================================================== */
 :root {
   --primary: #2e7d32;
-  --primary-hover: #226226;
   --primary-light: #e8f5e9;
   --dark: #263238;
   --muted: #607d8b;
   --bg-main: #f4f6f7;
   --bg-card: #ffffff;
-  --border-color: #e2e8f0;
   --sidebar-width: 260px;
   --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-*,
-*::before,
-*::after {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -28,7 +24,6 @@ body {
   color: var(--dark);
   overflow-x: hidden;
   display: flex;
-  min-height: 100vh;
 }
 
 /* ==========================================================================
@@ -41,7 +36,7 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  border-right: 1px solid var(--border-color);
+  border-right: 1px solid #e2e8f0;
   transition: var(--transition);
   z-index: 1000;
   display: flex;
@@ -76,7 +71,7 @@ body {
   padding: 16px 0;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  height: calc(100vh - 75px);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
@@ -117,21 +112,18 @@ body {
   color: var(--primary);
 }
 
-/* Sidebar Social Links Container */
+/* Sidebar Social Links Container Fix */
 .sidebar-social-wrapper {
   margin-top: auto;
   border-top: 1px solid #f1f5f9;
-  padding: 16px 24px;
 }
 
 .sidebar-social-link {
-  color: var(--muted);
   transition: color 0.2s ease;
-  text-decoration: none;
 }
 
 .sidebar-social-link:hover {
-  color: var(--primary);
+  color: var(--primary) !important;
 }
 
 /* ==========================================================================
@@ -155,7 +147,7 @@ body {
 .top-header {
   height: 70px;
   background: var(--bg-card);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -184,9 +176,6 @@ body {
   color: var(--dark);
   cursor: pointer;
   padding: 4px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* RUNNING TICKER MARQUEE */
@@ -223,6 +212,7 @@ body {
   0% {
     transform: translate3d(0, 0, 0);
   }
+
   100% {
     transform: translate3d(-50%, 0, 0);
   }
@@ -261,7 +251,7 @@ body {
   padding: 32px;
 }
 
-/* Router Layout Fix: Handles smooth content switching without dynamic visual shifts */
+/* Strict Layout Fix: Prevents hidden sections from overlapping on dynamic router shifts */
 .content-section {
   display: none;
   opacity: 0;
@@ -283,6 +273,7 @@ body {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -325,7 +316,7 @@ body {
   background: var(--bg-card);
   padding: 24px;
   border-radius: 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #e2e8f0;
 }
 
 .card-icon {
@@ -344,7 +335,7 @@ body {
   background: var(--bg-card);
   padding: 32px;
   border-radius: 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #e2e8f0;
   line-height: 1.75;
 }
 
@@ -402,7 +393,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border-color);
+  border: 1px solid #e2e8f0;
 }
 
 .product-img {
@@ -412,9 +403,9 @@ body {
 }
 
 .product-pricing {
-  margin-top: 14px;
+  margin: 14px 0 0 0;
   padding-top: 14px;
-  border-top: 1px dashed var(--border-color);
+  border-top: 1px dashed #e2e8f0;
   font-size: 0.9rem;
   color: var(--dark);
 }
@@ -425,9 +416,7 @@ body {
 
 /* GALLERY OVERRIDES */
 .gallery-grid {
-  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
 }
 
 .gallery-card .avatar-placeholder {
@@ -460,30 +449,8 @@ body {
   color: var(--primary);
 }
 
-/* Circular Avatar Setup */
-.avatar-circle-wrapper {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 10px;
-  border: 2px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  background: #f7f7f7;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.committee-circle-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
 /* ==========================================================================
-   LIGHTBOX INTERACTIVE OVERLAY & RESPONSIVE FIT
+   LIGHTBOX INTERACTIVE OVERLAY
    ========================================================================== */
 .product-lightbox-overlay {
   position: fixed;
@@ -491,14 +458,12 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(4px);
   z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
-  box-sizing: border-box;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -513,16 +478,13 @@ body {
   background: var(--bg-card);
   padding: 24px;
   border-radius: 16px;
-  width: max-content;
-  max-width: 90vw;
-  max-height: 85vh;
+  max-width: 460px;
+  width: 90%;
   position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  overflow: hidden;
 }
 
 .lightbox-close-btn {
@@ -544,145 +506,32 @@ body {
 }
 
 .lightbox-media-wrapper {
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 240px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  background: transparent;
-  border: none;
-  overflow: visible;
+  align-items: center;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  margin-top: 16px;
 }
 
-.lightbox-media-wrapper img,
-.lightbox-media-wrapper video {
-  max-width: 85vw;
-  max-height: 68vh;
-  width: auto;
-  height: auto;
+.lightbox-media-wrapper img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  border-radius: 8px;
-  display: block;
-  margin: 0 auto;
 }
 
 .lightbox-caption-text {
-  margin-top: 14px;
-  font-size: 1rem;
-  font-weight: 600;
+  margin-top: 18px;
+  font-size: 0.95rem;
+  font-weight: 500;
   color: var(--dark);
   text-align: center;
-  line-height: 1.4;
-  text-shadow: none;
-}
-
-/* ==========================================================================
-   POPUP ADVERTISEMENT MODAL STYLES
-   ========================================================================== */
-.ad-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 3000;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-.ad-modal-container {
-  position: relative;
-  max-width: 90%;
-  max-height: 90vh;
-  background: #ffffff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.ad-close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #ffffff;
-  border: none;
-  font-size: 2rem;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  line-height: 1;
-  z-index: 10;
-  transition: background 0.2s;
-}
-
-.ad-close-btn:hover {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-.ad-modal-content img.ad-image {
-  display: block;
-  max-width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
-}
-
-/* ==========================================================================
-   FLOATING UNIVERSAL SHARE BUTTON
-   ========================================================================== */
-.fb-share-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 999;
-  background-color: var(--primary);
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: var(--transition);
-  backface-visibility: hidden;
-  white-space: nowrap;
-}
-
-.fb-share-btn:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(46, 125, 50, 0.28), 0 2px 4px rgba(0, 0, 0, 0.12);
-}
-
-.fb-share-btn:active {
-  transform: translateY(-0.5px);
-  box-shadow: 0 2px 6px rgba(46, 125, 50, 0.2);
-}
-
-.fb-share-btn:focus-visible {
-  outline: 2px solid rgba(46, 125, 50, 0.5);
-  outline-offset: 2px;
-}
-
-.fb-share-btn i {
-  font-size: 0.95rem;
-  line-height: 1;
+  line-height: 1.6;
+  padding: 0 8px;
 }
 
 /* ==========================================================================
@@ -713,7 +562,85 @@ body {
   .content-container {
     padding: 20px 16px;
   }
+}
 
+/* Circular Avatar Setup */
+.avatar-circle-wrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: #f7f7f7;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.committee-circle-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ==========================================================================
+   FLOATING UNIVERSAL SHARE BUTTON
+   ========================================================================== */
+.fb-share-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  background-color: var(--primary);
+  /* Integrated with your main site color */
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+  padding: 8px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  backface-visibility: hidden;
+  white-space: nowrap;
+}
+
+.fb-share-btn:hover {
+  background-color: #226226;
+  /* Darker green fallback match for interactive hover state */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(46, 125, 50, 0.28), 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.fb-share-btn:active {
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 6px rgba(46, 125, 50, 0.2);
+}
+
+.fb-share-btn:focus-visible {
+  outline: 2px solid rgba(46, 125, 50, 0.5);
+  outline-offset: 2px;
+}
+
+.fb-share-btn i {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
   .fb-share-btn {
     bottom: 20px;
     right: 20px;
@@ -724,4 +651,96 @@ body {
   .fb-share-btn i {
     font-size: 0.85rem;
   }
+}
+
+/* Force-remove white container backgrounds inside the modal overlay */
+#productMediaOverlay * {
+  box-shadow: none !important;
+}
+
+#productMediaOverlay > div,
+.lightbox-content-box,
+.lightbox-modal-card,
+.modal-content {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  max-width: none !important;
+  width: auto !important;
+}
+
+/* Flex setup to keep caption right under the uncropped image */
+#lightboxMediaWrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+}
+
+/* Formatting for caption below poster */
+#lightboxCaptionText {
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  text-align: center !important;
+  margin-top: 12px !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+/* Popup Advertisement Modal Styles */
+.ad-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.ad-modal-container {
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.ad-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.ad-close-btn:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.ad-modal-content img.ad-image {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
 }
