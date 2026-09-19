@@ -22,11 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Gallery Video Reference
   const gallerySection = document.getElementById('gallery');
 
+  // Entry Advertisement Modal Elements
+  const adModal = document.getElementById('entryAdModal') || document.getElementById('adModalOverlay');
+  const closeAdBtn = document.getElementById('closeAdBtn');
+
   // Floating Facebook Share Button
   const fbShareBtn = document.getElementById('fbShareBtn');
 
   /* ==========================================================================
-     1. SIDEBAR TOGGLE MECHANICS
+     1. SIDEBAR TOGGLE MECHANICS (Defensive Check)
      ========================================================================== */
   if (sidebarToggle && sidebar) {
     sidebarToggle.addEventListener('click', () => {
@@ -46,14 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE
+     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE (Fixed Display Stack)
      ========================================================================== */
   function switchView(targetSectionId) {
     if (!targetSectionId) return;
 
+    // Pause gallery video if switching away from the gallery section
     if (targetSectionId !== 'gallery' && gallerySection) {
       const galleryVideo = gallerySection.querySelector('video');
-      if (galleryVideo) galleryVideo.pause();
+      if (galleryVideo) {
+        galleryVideo.pause();
+      }
     }
 
     // 1. Synchronize Menu Selection States
@@ -90,12 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Update URL hash safely without triggering page reloads
-    if (window.location.hash !== `#${targetSectionId}`) {
-      if (history.pushState) {
-        history.pushState(null, null, `#${targetSectionId}`);
-      } else {
-        window.location.hash = targetSectionId;
-      }
+    if (history.pushState) {
+      history.pushState(null, null, `#${targetSectionId}`);
+    } else {
+      window.location.hash = targetSectionId;
     }
 
     // 4. Hide Mobile Sidebar Upon Selection
@@ -118,27 +123,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER
+     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER (Full Uncropped Image)
      ========================================================================== */
-  if (lightboxOverlay && mediaContainer) {
+  if (lightboxOverlay && mediaContainer && captionBox) {
 
-    const formatSrc = (src) => {
-      if (!src) return '';
-      return (src.startsWith('./') || src.startsWith('http') || src.startsWith('/')) ? src : `./${src}`;
-    };
-
+    // Append full image bounded by viewport height so the whole poster fits
     const appendImageNode = (url) => {
       const img = document.createElement('img');
-      img.src = formatSrc(url);
+      img.src = url;
       img.alt = 'Gallery Display Resource';
-      img.style.setProperty('max-width', '100%', 'important');
-      img.style.setProperty('max-height', '70vh', 'important');
-      img.style.setProperty('width', 'auto', 'important');
-      img.style.setProperty('height', 'auto', 'important');
-      img.style.setProperty('object-fit', 'contain', 'important');
-      img.style.setProperty('border-radius', '8px', 'important');
-      img.style.setProperty('display', 'block', 'important');
-      img.style.setProperty('margin', '0 auto', 'important');
+      img.style.maxWidth = '90vw';
+      img.style.maxHeight = '75vh';
+      img.style.width = 'auto';
+      img.style.height = 'auto';
+      img.style.objectFit = 'contain';
+      img.style.borderRadius = '6px';
+      img.style.display = 'block';
+      img.style.margin = '0 auto';
       mediaContainer.appendChild(img);
     };
 
@@ -148,15 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
       video.autoplay = true;
       video.muted = true;
       video.playsInline = true;
-      video.style.setProperty('max-width', '100%', 'important');
-      video.style.setProperty('max-height', '70vh', 'important');
-      video.style.setProperty('width', 'auto', 'important');
-      video.style.setProperty('height', 'auto', 'important');
-      video.style.setProperty('border-radius', '8px', 'important');
-      video.style.setProperty('background-color', '#000', 'important');
+      video.style.maxWidth = '90vw';
+      video.style.maxHeight = '75vh';
+      video.style.borderRadius = '6px';
+      video.style.backgroundColor = '#000';
 
       const source = document.createElement('source');
-      source.src = formatSrc(url);
+      source.src = url;
       source.type = url.endsWith('.webm') ? 'video/webm' : 'video/mp4';
 
       video.appendChild(source);
@@ -169,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
       lightboxOverlay.style.display = 'none';
       mediaContainer.innerHTML = '';
       mediaContainer.classList.remove('gallery-layout-active');
-      if (captionBox) captionBox.textContent = '';
     };
 
     // Event Delegation
@@ -179,28 +177,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const type = card.getAttribute('data-type');
       const currentLang = localStorage.getItem('preferredLang') || 'en';
-      
-      // Dynamic Caption Fallback Check
-      const chosenCaption = 
-        card.getAttribute(`data-${currentLang}-caption`) || 
-        card.getAttribute(`data-${currentLang}`) || 
-        card.getAttribute('data-en-caption') || 
-        card.getAttribute('data-en') || '';
+      const chosenCaption = card.getAttribute(`data-${currentLang}-caption`) || card.getAttribute('data-en-caption') || '';
 
-      lightboxOverlay.style.setProperty('display', 'flex', 'important');
-      lightboxOverlay.style.setProperty('justify-content', 'center', 'important');
-      lightboxOverlay.style.setProperty('align-items', 'center', 'important');
+      // Clean lightbox overlay wrapper styles
+      lightboxOverlay.style.display = 'flex';
+      lightboxOverlay.style.justifyContent = 'center';
+      lightboxOverlay.style.alignItems = 'center';
 
+      // Strip container boxes, fixed sizes, borders, and shadows from all parent cards inside overlay
+      const allModalContainers = lightboxOverlay.querySelectorAll('div');
+      allModalContainers.forEach(container => {
+        container.style.background = 'transparent';
+        container.style.backgroundColor = 'transparent';
+        container.style.boxShadow = 'none';
+        container.style.border = 'none';
+        container.style.padding = '0';
+        container.style.margin = '0';
+        container.style.width = 'auto';
+        container.style.maxWidth = 'none';
+        container.style.height = 'auto';
+        container.style.maxHeight = 'none';
+        container.style.overflow = 'visible';
+      });
+
+      // Clear previous media and setup layout wrapper
       mediaContainer.innerHTML = '';
       mediaContainer.className = "lightbox-media-wrapper";
-      mediaContainer.style.setProperty('display', 'flex', 'important');
-      mediaContainer.style.setProperty('flex-direction', 'column', 'important');
-      mediaContainer.style.setProperty('align-items', 'center', 'important');
-      mediaContainer.style.setProperty('justify-content', 'center', 'important');
-      mediaContainer.style.setProperty('width', '100%', 'important');
-      mediaContainer.style.setProperty('height', 'auto', 'important');
-      mediaContainer.style.setProperty('max-height', '80vh', 'important');
-      mediaContainer.style.setProperty('overflow', 'visible', 'important');
+      mediaContainer.style.display = 'flex';
+      mediaContainer.style.flexDirection = 'column';
+      mediaContainer.style.alignItems = 'center';
+      mediaContainer.style.justifyContent = 'center';
 
       if (type === 'gallery') {
         const rawSources = card.getAttribute('data-sources');
@@ -225,14 +231,16 @@ document.addEventListener('DOMContentLoaded', () => {
           appendImageNode(singleSource);
         } else if (type === 'video' && singleSource) {
           appendVideoNode(singleSource);
-        } else if (singleSource) {
-          appendImageNode(singleSource);
         }
       }
 
-      if (captionBox) {
-        captionBox.textContent = chosenCaption || '';
-      }
+      // Append caption element directly beneath media
+      captionBox.textContent = chosenCaption || '';
+      captionBox.style.color = '#ffffff';
+      captionBox.style.textAlign = 'center';
+      captionBox.style.marginTop = '12px';
+      captionBox.style.fontSize = '1rem';
+      mediaContainer.appendChild(captionBox);
 
       lightboxOverlay.classList.add('active-view');
     });
@@ -251,7 +259,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     4. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
+     4. ENTRY ADVERTISEMENT MODAL CONTROLLER (With 3rdbmagcup.jpg Display)
+     ========================================================================== */
+  if (adModal) {
+    // Show advertisement modal on initial site launch (uncomment session check if desired)
+    if (!sessionStorage.getItem('adShown')) {
+      adModal.style.display = 'flex';
+      adModal.classList.add('active-view');
+    }
+
+    const dismissAd = () => {
+      adModal.classList.remove('active-view');
+      adModal.style.display = 'none';
+      sessionStorage.setItem('adShown', 'true');
+    };
+
+    if (closeAdBtn) closeAdBtn.addEventListener('click', dismissAd);
+
+    adModal.addEventListener('click', (e) => {
+      if (e.target === adModal) dismissAd();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && (adModal.classList.contains('active-view') || adModal.style.display === 'flex')) {
+        dismissAd();
+      }
+    });
+  }
+
+  /* ==========================================================================
+     5. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
      ========================================================================== */
   function setLanguage(lang) {
     const localizableElements = document.querySelectorAll('[data-en][data-np]:not(.header-title)');
@@ -291,27 +328,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnNp) btnNp.addEventListener('click', () => setLanguage('np'));
 
   /* ==========================================================================
-     5. INITIALIZE DEFAULT NAVIGATION ROUTE & HASH LISTENER
+     6. INITIALIZE DEFAULT NAVIGATION ROUTE
      ========================================================================== */
   const defaultLang = localStorage.getItem('preferredLang') || 'en';
   setLanguage(defaultLang);
 
+  const currentHash = window.location.hash.replace('#', '');
   const validSections = Array.from(contentSections).map(s => s.id);
 
-  function handleInitialOrHashRoute() {
-    const currentHash = window.location.hash.replace('#', '');
-    if (currentHash && validSections.includes(currentHash)) {
-      switchView(currentHash);
-    } else {
-      switchView('home');
-    }
+  if (currentHash && validSections.includes(currentHash)) {
+    switchView(currentHash);
+  } else {
+    switchView('home');
   }
 
-  handleInitialOrHashRoute();
-  window.addEventListener('hashchange', handleInitialOrHashRoute);
-
   /* ==========================================================================
-     6. BACKGROUND TAB VISIBILITY MONITOR
+     7. BACKGROUND TAB VISIBILITY MONITOR
      ========================================================================== */
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && gallerySection) {
@@ -321,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     7. FLOATING FACEBOOK SHARE CONTROLLER
+     8. FLOATING FACEBOOK SHARE CONTROLLER
      ========================================================================== */
   if (fbShareBtn) {
     fbShareBtn.addEventListener('click', async () => {
