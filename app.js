@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const fbShareBtn = document.getElementById('fbShareBtn');
 
   /* ==========================================================================
-     1. SIDEBAR TOGGLE MECHANICS (Defensive Check)
+     1. SIDEBAR TOGGLE MECHANICS
      ========================================================================== */
   if (sidebarToggle && sidebar) {
     sidebarToggle.addEventListener('click', () => {
@@ -46,17 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE (Fixed Display Stack)
+     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE
      ========================================================================== */
   function switchView(targetSectionId) {
     if (!targetSectionId) return;
 
-    // Pause gallery video if switching away from the gallery section
     if (targetSectionId !== 'gallery' && gallerySection) {
       const galleryVideo = gallerySection.querySelector('video');
-      if (galleryVideo) {
-        galleryVideo.pause();
-      }
+      if (galleryVideo) galleryVideo.pause();
     }
 
     // 1. Synchronize Menu Selection States
@@ -93,10 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Update URL hash safely without triggering page reloads
-    if (history.pushState) {
-      history.pushState(null, null, `#${targetSectionId}`);
-    } else {
-      window.location.hash = targetSectionId;
+    if (window.location.hash !== `#${targetSectionId}`) {
+      if (history.pushState) {
+        history.pushState(null, null, `#${targetSectionId}`);
+      } else {
+        window.location.hash = targetSectionId;
+      }
     }
 
     // 4. Hide Mobile Sidebar Upon Selection
@@ -119,9 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER (Fixed Height & Dynamic Fit)
+     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER
      ========================================================================== */
-  if (lightboxOverlay && mediaContainer && captionBox) {
+  if (lightboxOverlay && mediaContainer) {
 
     const formatSrc = (src) => {
       if (!src) return '';
@@ -170,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
       lightboxOverlay.style.display = 'none';
       mediaContainer.innerHTML = '';
       mediaContainer.classList.remove('gallery-layout-active');
+      if (captionBox) captionBox.textContent = '';
     };
 
     // Event Delegation
@@ -179,7 +179,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const type = card.getAttribute('data-type');
       const currentLang = localStorage.getItem('preferredLang') || 'en';
-      const chosenCaption = card.getAttribute(`data-${currentLang}-caption`) || card.getAttribute('data-en-caption') || '';
+      
+      // Dynamic Caption Fallback Check
+      const chosenCaption = 
+        card.getAttribute(`data-${currentLang}-caption`) || 
+        card.getAttribute(`data-${currentLang}`) || 
+        card.getAttribute('data-en-caption') || 
+        card.getAttribute('data-en') || '';
 
       lightboxOverlay.style.setProperty('display', 'flex', 'important');
       lightboxOverlay.style.setProperty('justify-content', 'center', 'important');
@@ -224,13 +230,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      captionBox.textContent = chosenCaption || '';
-      captionBox.style.setProperty('color', '#263238', 'important');
-      captionBox.style.setProperty('text-align', 'center', 'important');
-      captionBox.style.setProperty('margin-top', '12px', 'important');
-      captionBox.style.setProperty('font-size', '1rem', 'important');
-      captionBox.style.setProperty('font-weight', '600', 'important');
-      mediaContainer.appendChild(captionBox);
+      if (captionBox) {
+        captionBox.textContent = chosenCaption || '';
+      }
 
       lightboxOverlay.classList.add('active-view');
     });
@@ -289,19 +291,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnNp) btnNp.addEventListener('click', () => setLanguage('np'));
 
   /* ==========================================================================
-     5. INITIALIZE DEFAULT NAVIGATION ROUTE
+     5. INITIALIZE DEFAULT NAVIGATION ROUTE & HASH LISTENER
      ========================================================================== */
   const defaultLang = localStorage.getItem('preferredLang') || 'en';
   setLanguage(defaultLang);
 
-  const currentHash = window.location.hash.replace('#', '');
   const validSections = Array.from(contentSections).map(s => s.id);
 
-  if (currentHash && validSections.includes(currentHash)) {
-    switchView(currentHash);
-  } else {
-    switchView('home');
+  function handleInitialOrHashRoute() {
+    const currentHash = window.location.hash.replace('#', '');
+    if (currentHash && validSections.includes(currentHash)) {
+      switchView(currentHash);
+    } else {
+      switchView('home');
+    }
   }
+
+  handleInitialOrHashRoute();
+  window.addEventListener('hashchange', handleInitialOrHashRoute);
 
   /* ==========================================================================
      6. BACKGROUND TAB VISIBILITY MONITOR
