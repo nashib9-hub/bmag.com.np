@@ -9,12 +9,13 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
@@ -49,20 +50,15 @@
             </a>
 
             <!-- Centered row wrapper containing Facebook, with YouTube placed immediately to its right -->
-            <div class="sidebar-social-wrapper"
-                style="display: flex; justify-content: center; align-items: center; gap: 24px; padding-top: 25px; width: 100%;">
+            <div class="sidebar-social-wrapper" style="display: flex; justify-content: center; align-items: center; gap: 24px; padding-top: 25px; width: 100%;">
 
                 <!-- Left Icon: Facebook -->
-                <a href="https://www.facebook.com/profile.php?id=61579631073984" class="sidebar-social-link"
-                    target="_blank" rel="noopener noreferrer"
-                    style="font-size: 1.5rem; color: inherit; text-decoration: none; display: inline-flex;">
+                <a href="https://www.facebook.com/profile.php?id=61579631073984" class="sidebar-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook Page" style="font-size: 1.5rem; color: inherit; text-decoration: none; display: inline-flex;">
                     <i class="ri-facebook-box-line"></i>
                 </a>
 
                 <!-- Right Icon: YouTube -->
-                <a href="https://www.youtube.com/watch?v=T1ogWaJdfFA" class="sidebar-social-link" target="_blank"
-                    rel="noopener noreferrer"
-                    style="font-size: 1.5rem; color: inherit; text-decoration: none; display: inline-flex;">
+                <a href="https://www.youtube.com/watch?v=T1ogWaJdfFA" class="sidebar-social-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Channel" style="font-size: 1.5rem; color: inherit; text-decoration: none; display: inline-flex;">
                     <i class="ri-youtube-line"></i>
                 </a>
 
@@ -83,26 +79,14 @@
             <div class="marquee-container">
                 <div class="marquee-content">
                     <div class="marquee-track">
-                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd."
-                                data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group
-                                Pvt. Ltd.</span></span>
-                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd."
-                                data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group
-                                Pvt. Ltd.</span></span>
-                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd."
-                                data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group
-                                Pvt. Ltd.</span></span>
+                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd." data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group Pvt. Ltd.</span></span>
+                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd." data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group Pvt. Ltd.</span></span>
+                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd." data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group Pvt. Ltd.</span></span>
                     </div>
                     <div class="marquee-track" aria-hidden="true">
-                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd."
-                                data-np="भिम्वाँद बहुउद्देश्यीय एग्रो GROUP प्रा. लि.">Bhimbadh Multipurpose Agro Group
-                                Pvt. Ltd.</span></span>
-                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd."
-                                data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group
-                                Pvt. Ltd.</span></span>
-                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd."
-                                data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group
-                                Pvt. Ltd.</span></span>
+                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd." data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group Pvt. Ltd.</span></span>
+                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd." data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group Pvt. Ltd.</span></span>
+                        <span><i class="ri-leaf-fill"></i> <span data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd." data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि.">Bhimbadh Multipurpose Agro Group Pvt. Ltd.</span></span>
                     </div>
                 </div>
             </div>
@@ -117,11 +101,8 @@
 
             <!-- Initial Active View: Home (Visible) -->
             <section id="home" class="content-section active" style="display: block;">
-                <h2 data-en="Welcome to Bhimbadh Multipurpose Agro" data-np="भिम्वाँद बहुउद्देश्यीय एग्रोमा स्वागत छ">
-                    Welcome to Bhimbadh Multipurpose Agro</h2>
-                <p class="subtitle" data-en="Empowering local agriculture through modern sustainable practices."
-                    data-np="आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सबलीकरण गर्दै।">Empowering local agriculture
-                    through modern sustainable practices.</p>
+                <h2 data-en="Welcome to Bhimbadh Multipurpose Agro" data-np="भिम्वाँद बहुउद्देश्यीय एग्रोमा स्वागत छ">Welcome to Bhimbadh Multipurpose Agro</h2>
+                <p class="subtitle" data-en="Empowering local agriculture through modern sustainable practices." data-np="आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सबलीकरण गर्दै।">Empowering local agriculture through modern sustainable practices.</p>
 
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -146,11 +127,8 @@
             <section id="about" class="content-section" style="display: none;">
                 <h2 data-en="About Our Organization" data-np="हाम्रो संस्थाको बारेमा">About Our Organization</h2>
                 <div class="card-large">
-                    <p data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd. is dedicated to elevating Nepal's agricultural standard. We unify traditional organic methods with progressive agro-tech to optimize crop lifecycles and increase economic independence for our rural cooperative farming groups."
-                        data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि. नेपालको कृषि क्षेत्रको स्तर उकास्न समर्पित छ। हामी बालीचक्रलाई सुधार्न र हाम्रा ग्रामीण सहकारी खेती समूहहरूको आर्थिक आत्मनिर्भरता बढाउन परम्परागत जैविक विधिलाई आधुनिक कृषि-प्रविधिसँग जोड्छौं।">
-                        Bhimbadh Multipurpose Agro Group Pvt. Ltd. is dedicated to elevating Nepal's agricultural
-                        standard. We unify traditional organic methods with progressive agro-tech to optimize crop
-                        lifecycles and increase economic independence for our rural cooperative farming groups.
+                    <p data-en="Bhimbadh Multipurpose Agro Group Pvt. Ltd. is dedicated to elevating Nepal's agricultural standard. We unify traditional organic methods with progressive agro-tech to optimize crop lifecycles and increase economic independence for our rural cooperative farming groups." data-np="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप प्रा. लि. नेपालको कृषि क्षेत्रको स्तर उकास्न समर्पित छ। हामी बालीचक्रलाई सुधार्न र हाम्रा ग्रामीण सहकारी खेती समूहहरूको आर्थिक आत्मनिर्भरता बढाउन परम्परागत जैविक विधिलाई आधुनिक कृषि-प्रविधिसँग जोड्छौं।">
+                        Bhimbadh Multipurpose Agro Group Pvt. Ltd. is dedicated to elevating Nepal's agricultural standard. We unify traditional organic methods with progressive agro-tech to optimize crop lifecycles and increase economic independence for our rural cooperative farming groups.
                     </p>
                 </div>
             </section>
@@ -160,29 +138,22 @@
                 <h2 data-en="Executive Committee" data-np="कार्यसमिति सदस्यहरू">Executive Committee</h2>
 
                 <!-- President Card -->
-                <div class="info-card"
-                    style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 24px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; font-family: sans-serif;">
-                    <div class="avatar-circle-wrapper"
-                        style="margin-bottom: 16px; display: inline-flex; justify-content: center; align-items: center; width: 100px; height: 100px;">
-                        <img src="djan.png" alt="Dijan Rana" class="committee-circle-img"
-                            style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                <div class="info-card" style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 24px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; font-family: sans-serif;">
+                    <div class="avatar-circle-wrapper" style="margin-bottom: 16px; display: inline-flex; justify-content: center; align-items: center; width: 100px; height: 100px;">
+                        <img src="djan.png" alt="Dijan Rana" class="committee-circle-img" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                     </div>
-                    <h3 data-en="Dijan Rana" data-np="डिजन राना"
-                        style="font-size: 1.35rem; color: #1a252c; margin: 0 0 12px 0; font-weight: 600;">
+                    <h3 data-en="Dijan Rana" data-np="डिजन राना" style="font-size: 1.35rem; color: #1a252c; margin: 0 0 12px 0; font-weight: 600;">
                         Dijan Rana
                     </h3>
                     <div style="margin-bottom: 24px; display: flex; justify-content: center; width: 100%;">
-                        <span class="role-badge" data-en="President" data-np="अध्यक्ष"
-                            style="background-color: #e8f5e9; color: #2e7d32; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
+                        <span class="role-badge" data-en="President" data-np="अध्यक्ष" style="background-color: #e8f5e9; color: #2e7d32; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
                             President
                         </span>
                     </div>
-                    <div class="member-contact-details"
-                        style="border-top: 1px solid #f0f0f0; padding-top: 16px; text-align: left; width: 100%; max-width: 290px; margin: 0 auto;">
+                    <div class="member-contact-details" style="border-top: 1px solid #f0f0f0; padding-top: 16px; text-align: left; width: 100%; max-width: 290px; margin: 0 auto;">
                         <p style="margin: 6px 0; color: #555; display: flex; align-items: center; font-size: 0.9rem;">
                             <i class="ri-mail-line" style="margin-right: 10px; color: #2e7d32; font-size: 1.1rem;"></i>
-                            <a href="mailto:Dijanido666@gmail.com"
-                                style="text-decoration: none; color: inherit; word-break: break-all;">
+                            <a href="mailto:Dijanido666@gmail.com" style="text-decoration: none; color: inherit; word-break: break-all;">
                                 Dijanido666@gmail.com
                             </a>
                         </p>
@@ -194,29 +165,22 @@
                 </div>
 
                 <!-- Secretary Card -->
-                <div class="info-card"
-                    style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 24px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; font-family: sans-serif;">
-                    <div class="avatar-circle-wrapper"
-                        style="margin-bottom: 16px; display: inline-flex; justify-content: center; align-items: center; width: 100px; height: 100px;">
-                        <img src="surendra.png" alt="Er. Surendra Thapa" class="committee-circle-img"
-                            style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                <div class="info-card" style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 24px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; font-family: sans-serif;">
+                    <div class="avatar-circle-wrapper" style="margin-bottom: 16px; display: inline-flex; justify-content: center; align-items: center; width: 100px; height: 100px;">
+                        <img src="surendra.png" alt="Er. Surendra Thapa" class="committee-circle-img" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                     </div>
-                    <h3 data-en="Er. Surendra Thapa" data-np="इ. सुरेन्द्र थापा"
-                        style="font-size: 1.35rem; color: #1a252c; margin: 0 0 12px 0; font-weight: 600;">
+                    <h3 data-en="Er. Surendra Thapa" data-np="इ. सुरेन्द्र थापा" style="font-size: 1.35rem; color: #1a252c; margin: 0 0 12px 0; font-weight: 600;">
                         Er. Surendra Thapa
                     </h3>
                     <div style="margin-bottom: 24px; display: flex; justify-content: center; width: 100%;">
-                        <span class="role-badge" data-en="Secretary" data-np="सचिव"
-                            style="background-color: #e8f5e9; color: #2e7d32; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
+                        <span class="role-badge" data-en="Secretary" data-np="सचिव" style="background-color: #e8f5e9; color: #2e7d32; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
                             Secretary
                         </span>
                     </div>
-                    <div class="member-contact-details"
-                        style="border-top: 1px solid #f0f0f0; padding-top: 16px; text-align: left; width: 100%; max-width: 290px; margin: 0 auto;">
+                    <div class="member-contact-details" style="border-top: 1px solid #f0f0f0; padding-top: 16px; text-align: left; width: 100%; max-width: 290px; margin: 0 auto;">
                         <p style="margin: 6px 0; color: #555; display: flex; align-items: center; font-size: 0.9rem;">
                             <i class="ri-mail-line" style="margin-right: 10px; color: #2e7d32; font-size: 1.1rem;"></i>
-                            <a href="mailto:surendrathapa180@gmail.com"
-                                style="text-decoration: none; color: inherit; word-break: break-all;">
+                            <a href="mailto:surendrathapa180@gmail.com" style="text-decoration: none; color: inherit; word-break: break-all;">
                                 surendrathapa180@gmail.com
                             </a>
                         </p>
@@ -228,29 +192,22 @@
                 </div>
 
                 <!-- Vice-Secretary Card -->
-                <div class="info-card"
-                    style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 24px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; font-family: sans-serif;">
-                    <div class="avatar-circle-wrapper"
-                        style="margin-bottom: 16px; display: inline-flex; justify-content: center; align-items: center; width: 100px; height: 100px;">
-                        <img src="suraj.png" alt="Suraj B.K" class="committee-circle-img"
-                            style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                <div class="info-card" style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 24px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; font-family: sans-serif;">
+                    <div class="avatar-circle-wrapper" style="margin-bottom: 16px; display: inline-flex; justify-content: center; align-items: center; width: 100px; height: 100px;">
+                        <img src="suraj.png" alt="Suraj B.K" class="committee-circle-img" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                     </div>
-                    <h3 data-en="Suraj B.K" data-np="सुरज बि.क."
-                        style="font-size: 1.35rem; color: #1a252c; margin: 0 0 12px 0; font-weight: 600;">
+                    <h3 data-en="Suraj B.K" data-np="सुरज बि.क." style="font-size: 1.35rem; color: #1a252c; margin: 0 0 12px 0; font-weight: 600;">
                         Suraj B.K
                     </h3>
                     <div style="margin-bottom: 24px; display: flex; justify-content: center; width: 100%;">
-                        <span class="role-badge" data-en="Vice-Secretary" data-np="सह-सचिव"
-                            style="background-color: #e8f5e9; color: #2e7d32; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
+                        <span class="role-badge" data-en="Vice-Secretary" data-np="सह-सचिव" style="background-color: #e8f5e9; color: #2e7d32; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
                             Vice-Secretary
                         </span>
                     </div>
-                    <div class="member-contact-details"
-                        style="border-top: 1px solid #f0f0f0; padding-top: 16px; text-align: left; width: 100%; max-width: 290px; margin: 0 auto;">
+                    <div class="member-contact-details" style="border-top: 1px solid #f0f0f0; padding-top: 16px; text-align: left; width: 100%; max-width: 290px; margin: 0 auto;">
                         <p style="margin: 6px 0; color: #555; display: flex; align-items: center; font-size: 0.9rem;">
                             <i class="ri-mail-line" style="margin-right: 10px; color: #2e7d32; font-size: 1.1rem;"></i>
-                            <a href="mailto:suraj.bk@example.com"
-                                style="text-decoration: none; color: inherit; word-break: break-all;">
+                            <a href="mailto:suraj.bk@example.com" style="text-decoration: none; color: inherit; word-break: break-all;">
                                 suraj.bk@example.com
                             </a>
                         </p>
@@ -268,14 +225,11 @@
                 <div class="info-grid">
 
                     <!-- Yarshagumba -->
-                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="yarsa.jpg"
-                        data-en-caption="Premium Dolpa Yarshagumba - High-quality wild cordyceps hand-picked from the Himalayan slopes. (25 kg Available in Stock)"
-                        data-np-caption="प्रिमियम डोल्पा यार्सागुम्बा - हिमाली भेगबाट टिपिएको उच्च गुणस्तरको प्राकृतिक यार्सागुम्बा। (२५ केजी स्टकमा उपलब्ध छ)">
+                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="yarsa.jpg" data-en-caption="Premium Dolpa Yarshagumba - High-quality wild cordyceps hand-picked from the Himalayan slopes. (25 kg Available in Stock)" data-np-caption="प्रिमियम डोल्पा यार्सागुम्बा - हिमाली भेगबाट टिपिएको उच्च गुणस्तरको प्राकृतिक यार्सागुम्बा। (२५ केजी स्टकमा उपलब्ध छ)">
                         <div class="product-image-wrapper">
                             <img src="yarsa.jpg" alt="Premium Dolpa Yarshagumba" class="product-img">
                         </div>
-                        <h3 data-en="Premium Dolpa Yarshagumba" data-np="प्रिमियम डोल्पा यार्सागुम्बा">Premium Dolpa
-                            Yarshagumba</h3>
+                        <h3 data-en="Premium Dolpa Yarshagumba" data-np="प्रिमियम डोल्पा यार्सागुम्बा">Premium Dolpa Yarshagumba</h3>
                         <div class="product-pricing">
                             <p>
                                 <strong data-en="Standard Grade:" data-np="साधारण ग्रेड:">Standard Grade:</strong>
@@ -291,14 +245,11 @@
                                 <span data-en="25 kg Available" data-np="२५ केजी उपलब्ध छ">25 kg Available</span>
                             </p>
                         </div>
-                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click
-                            Preview</span>
+                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click Preview</span>
                     </div>
 
                     <!-- Apples -->
-                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="apple.jpg"
-                        data-en-caption="Premium Dolpa Apples - Fresh organic harvest directly from high-altitude orchards. (5 Tons Available in Stock)"
-                        data-np-caption="प्रिमियम डोल्पा स्याउ - उच्च हिमाली भेगको बगैंचाबाट टिपिएका ताजा जैविक स्याउ। (५ टन स्टकमा उपलब्ध छ)">
+                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="apple.jpg" data-en-caption="Premium Dolpa Apples - Fresh organic harvest directly from high-altitude orchards. (5 Tons Available in Stock)" data-np-caption="प्रिमियम डोल्पा स्याउ - उच्च हिमाली भेगको बगैंचाबाट टिपिएका ताजा जैविक स्याउ। (५ टन स्टकमा उपलब्ध छ)">
                         <div class="product-image-wrapper">
                             <img src="apple.jpg" alt="Organic Dolpa Apples" class="product-img">
                         </div>
@@ -309,8 +260,7 @@
                                 <span data-en="Rs. 400 / kg" data-np="रु. ४०० / केजी">Rs. 400 / kg</span>
                             </p>
                             <p>
-                                <strong data-en="Premium (with Delivery):" data-np="प्रिमियम (डेलिभरी सहित):">Premium
-                                    (with Delivery):</strong>
+                                <strong data-en="Premium (with Delivery):" data-np="प्रिमियम (डेलिभरी सहित):">Premium (with Delivery):</strong>
                                 <span data-en="Rs. 500 / kg" data-np="रु. ५०० / केजी">Rs. 500 / kg</span>
                             </p>
                             <p class="product-stock" style="margin-top: 8px; color: #2e7d32; font-weight: 600;">
@@ -319,14 +269,11 @@
                                 <span data-en="5 Tons Available" data-np="५ टन उपलब्ध छ">5 Tons Available</span>
                             </p>
                         </div>
-                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click
-                            Preview</span>
+                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click Preview</span>
                     </div>
 
                     <!-- Ginger -->
-                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="adhuwa.jpg"
-                        data-en-caption="Nashe Adhuwa - High quality local ginger harvest. 180 Tons successfully produced and entirely sold out!"
-                        data-np-caption="नासे अदुवा - उच्च गुणस्तरको स्थानीय अदुवा बाली। १८० टन सफलतापूर्वक उत्पादन भई सम्पूर्ण बिक्री भइसकेको।">
+                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="adhuwa.jpg" data-en-caption="Nashe Adhuwa - High quality local ginger harvest. 180 Tons successfully produced and entirely sold out!" data-np-caption="नासे अदुवा - उच्च गुणस्तरको स्थानीय अदुवा बाली। १८० टन सफलतापूर्वक उत्पादन भई सम्पूर्ण बिक्री भइसकेको।">
                         <div class="product-image-wrapper">
                             <img src="adhuwa.jpg" alt="Nashe Adhuwa" class="product-img">
                         </div>
@@ -342,14 +289,11 @@
                                 <span data-en="Sold Out" data-np="सबै बिक्री भयो">Sold Out</span>
                             </p>
                         </div>
-                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click
-                            Preview</span>
+                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click Preview</span>
                     </div>
 
                     <!-- Cayenne Chili -->
-                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="cayenne.jpg"
-                        data-en-caption="Cayenne Khursani - Premium fiery local chili harvest. 1 Ton successfully produced and entirely sold out!"
-                        data-np-caption="कायेन खुर्सानी - प्रिमियम पिरो स्थानीय खुर्सानी बाली। १ टन सफलतापूर्वक उत्पादन भई सम्पूर्ण बिक्री भइसकेको।">
+                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="cayenne.jpg" data-en-caption="Cayenne Khursani - Premium fiery local chili harvest. 1 Ton successfully produced and entirely sold out!" data-np-caption="कायेन खुर्सानी - प्रिमियम पिरो स्थानीय खुर्सानी बाली। १ टन सफलतापूर्वक उत्पादन भई सम्पूर्ण बिक्री भइसकेको।">
                         <div class="product-image-wrapper">
                             <img src="cayenne.jpg" alt="Cayenne Khursani" class="product-img">
                         </div>
@@ -365,14 +309,11 @@
                                 <span data-en="Sold Out" data-np="सबै बिक्री भयो">Sold Out</span>
                             </p>
                         </div>
-                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click
-                            Preview</span>
+                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click Preview</span>
                     </div>
 
                     <!-- Round Chili -->
-                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="akhabare.png"
-                        data-en-caption="Akabare Khursani - Authentic local round hot chili harvest. 1 Ton successfully produced and entirely sold out!"
-                        data-np-caption="अकबरे खुर्सानी - प्रख्यात स्थानीय डल्ले खुर्सानी बाली। १ टन सफलतापूर्वक उत्पादन भई सम्पूर्ण बिक्री भइसकेको।">
+                    <div class="info-card product-card product-modal-trigger" data-type="image" data-src="akhabare.png" data-en-caption="Akabare Khursani - Authentic local round hot chili harvest. 1 Ton successfully produced and entirely sold out!" data-np-caption="अकबरे खुर्सानी - प्रख्यात स्थानीय डल्ले खुर्सानी बाली। १ टन सफलतापूर्वक उत्पादन भई सम्पूर्ण बिक्री भइसकेको।">
                         <div class="product-image-wrapper">
                             <img src="akhabare.png" alt="Akabare Khursani" class="product-img">
                         </div>
@@ -388,8 +329,7 @@
                                 <span data-en="Sold Out" data-np="सबै बिक्री भयो">Sold Out</span>
                             </p>
                         </div>
-                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click
-                            Preview</span>
+                        <span class="role-badge" data-en="Click Preview" data-np="प्रिभ्यू हेर्नुहोस्">Click Preview</span>
                     </div>
 
                 </div>
@@ -400,57 +340,41 @@
                 <h2 data-en="Photo & Video Gallery" data-np="फोटो तथा भिडियो ग्यालेरी">Photo & Video Gallery</h2>
                 <div class="info-grid gallery-grid">
                     <!-- Tournament Card 1 -->
-                    <div class="info-card gallery-card product-modal-trigger" data-type="image"
-                        data-src="3rdbmagcup.jpg"
-                        data-en-caption="3rd Bhimbadh Multipurpose Cup-2083 Ward Level Male Volleyball Cup"
-                        data-np-caption="तेस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८३वडा स्तरीय पुरुष भलिबल प्रतियोगिता  "
-                        style="cursor: pointer;">
+                    <div class="info-card gallery-card product-modal-trigger" data-type="image" data-src="3rdbmagcup.jpg" data-en-caption="3rd Bhimbadh Multipurpose Cup-2083 Ward Level Male Volleyball Cup" data-np-caption="तेस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८३ वडा स्तरीय पुरुष भलिबल प्रतियोगिता" style="cursor: pointer;">
                         <div class="product-image-wrapper">
-                            <img src="3rdbmagcup.jpg" alt="3rd BMAG Volleyball" class="product-img"
-                                style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
+                            <img src="3rdbmagcup.jpg" alt="3rd BMAG Volleyball" class="product-img" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
                         </div>
-                        <h3 style="margin-top: 12px;" data-en="3rd Bhimbadh Multipurpose Cup-2083"
-                            data-np="तेस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८३ ">
+                        <h3 style="margin-top: 12px;" data-en="3rd Bhimbadh Multipurpose Cup-2083" data-np="तेस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८३">
                             3rd Bhimbadh Volleyball Cup
                         </h3>
                     </div>
 
                     <!-- Tournament Card 2 -->
-                    <div class="info-card gallery-card product-modal-trigger" data-type="image"
-                        data-src="footballbmag.jpg"
-                        data-en-caption="Bhimbadh Multipurpose Agro Group U14 Football Tournament"
-                        data-np-caption="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप यु-१४ फुटबल प्रतियोगिता"
-                        style="cursor: pointer;">
+                    <div class="info-card gallery-card product-modal-trigger" data-type="image" data-src="footballbmag.jpg" data-en-caption="Bhimbadh Multipurpose Agro Group U14 Football Tournament" data-np-caption="भिम्वाँद बहुउद्देश्यीय एग्रो ग्रुप यु-१४ फुटबल प्रतियोगिता" style="cursor: pointer;">
                         <div class="product-image-wrapper">
-                            <img src="footballbmag.jpg" alt="U14 Football" class="product-img"
-                                style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
+                            <img src="footballbmag.jpg" alt="U14 Football" class="product-img" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
                         </div>
-                        <h3 style="margin-top: 12px;" data-en="U14 Football Tournament"
-                            data-np="यु-१४ फुटबल प्रतियोगिता">
+                        <h3 style="margin-top: 12px;" data-en="U14 Football Tournament" data-np="यु-१४ फुटबल प्रतियोगिता">
                             U14 Football Tournament
                         </h3>
                     </div>
+
                     <!-- Video Card Element -->
                     <div class="info-card gallery-card video-card">
                         <div class="video-container" style="margin-bottom: 15px;">
-                            <video controls width="100%"
-                                style="border-radius: 8px; max-height: 250px; background: #000;">
+                            <video controls width="100%" style="border-radius: 8px; max-height: 250px; background: #000;">
                                 <source src="2ndBMAGcup.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
-                        <h3 data-en="Interview - Volleyball Tournament Preparation"
-                            data-np="अन्तर्वार्ता - दोस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८२ वडा स्तरीय पुरुष  भलिबल प्रतियोगिता तयारी">
+                        <h3 data-en="Interview - Volleyball Tournament Preparation" data-np="अन्तर्वार्ता - दोस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८२ वडा स्तरीय पुरुष भलिबल प्रतियोगिता तयारी">
                             Interview - 2nd Bhimbadh Multipurpose Agro Cup-2082 Male Volleyball Tournament Preparation
                         </h3>
-                        <p class="video-caption"
-                            style="font-size: 0.9rem; color: #555; margin-top: 8px; text-align: justify; line-height: 1.4;">
-                            भिम्वाँद बहुउद्देश्यीय एग्रो समुह द्वारा वि.स २०८२ भाद्र २९ गतेदेखि असोज ०३ गते सम्म आयोजना
-                            गरियको दोस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८२ वडा स्तरीय पुरुष भलिबल प्रतियोगिताको तयारीको
-                            विषयमा एग्रो समुहका अध्यक्ष डिजन राना, सहसचिव सुरज विकसँगको भिमाद एफ.एम १००.९ मेगाहर्ज सग
-                            कुराकानि ।
+                        <p class="video-caption" style="font-size: 0.9rem; color: #555; margin-top: 8px; text-align: justify; line-height: 1.4;">
+                            भिम्वाँद बहुउद्देश्यीय एग्रो समुह द्वारा वि.स २०८२ भाद्र २९ गतेदेखि असोज ०३ गते सम्म आयोजना गरियको दोस्रो भिम्वाँद बहुउद्देश्यीय कप-२०८२ वडा स्तरीय पुरुष भलिबल प्रतियोगिताको तयारीको विषयमा एग्रो समुहका अध्यक्ष डिजन राना, सहसचिव सुरज विकसँगको भिमाद एफ.एम १००.९ मेगाहर्ज सग कुराकानि ।
                         </p>
                     </div>
+                </div>
             </section>
 
             <!-- Contact Section (Hidden by default) -->
@@ -463,9 +387,7 @@
                                 <i class="ri-map-pin-line"></i>
                                 <span data-en="Location:" data-np="स्थान:">Location:</span>
                             </strong>
-                            <span data-en="Subedi Chowk 6, Bhimad Municipality Tanahun, Gandaki Province, Nepal"
-                                data-np="सुवेदी चोक ६, भिमाद नगरपालिका तनहुँ, गण्डकी प्रदेश, नेपाल">Subedi Chowk 6,
-                                Bhimad Municipality Tanahun, Gandaki Province, Nepal</span>
+                            <span data-en="Subedi Chowk 6, Bhimad Municipality Tanahun, Gandaki Province, Nepal" data-np="सुवेदी चोक ६, भिमाद नगरपालिका तनहुँ, गण्डकी प्रदेश, नेपाल">Subedi Chowk 6, Bhimad Municipality Tanahun, Gandaki Province, Nepal</span>
                         </p>
                         <p>
                             <strong>
@@ -473,17 +395,8 @@
                                 <span data-en="Email:" data-np="इमेल:">Email:</span>
                             </strong>
                             <a href="mailto:surendrathapa180@gmail.com">
-                                <span data-en="surendrathapa180@gmail.com"
-                                    data-np="surendrathapa180@gmail.com">surendrathapa180@gmail.com</span>
+                                <span data-en="surendrathapa180@gmail.com" data-np="surendrathapa180@gmail.com">surendrathapa180@gmail.com</span>
                             </a>
-                        </p>
-                        <p>
-                            <strong>
-                                <i class="ri-phone-line"></i>
-                                <span data-en="Phone:" data-np="फोन:">Phone:</span>
-                            </strong>
-                            <span data-en="+977-9766610415, +977-9805811275"
-                                data-np="+९७त्-९७६६६१०४१५, +९७७-९८०५८११२७५">+977-9766610415, +977-9805811275</span>
                         </p>
                     </div>
                 </div>
@@ -492,21 +405,7 @@
         </main>
     </div>
 
-    <!-- Product Lightbox Overlay Wrapper -->
-    <div id="productMediaOverlay" class="product-lightbox-overlay">
-        <button class="lightbox-close-btn" id="closeLightboxBtn" aria-label="Close Preview">&times;</button>
-        <div class="lightbox-content-box">
-            <div id="lightboxMediaWrapper" class="lightbox-media-wrapper"></div>
-            <div id="lightboxCaptionText" class="lightbox-caption-text"></div>
-        </div>
-    </div>
-
-    <!-- Floating Universal Share Button -->
-    <button id="fbShareBtn" class="fb-share-btn" aria-label="Share this page">
-        <i class="ri-share-forward-line"></i>
-    </button>
-
-    <script src="./app.js"></script>
+    <script src="./script.js"></script>
 </body>
 
 </html>
