@@ -22,10 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Gallery Video Reference
   const gallerySection = document.getElementById('gallery');
 
-  // Entry Advertisement Modal Elements
-  const adModal = document.getElementById('entryAdModal') || document.getElementById('adModalOverlay');
-  const closeAdBtn = document.getElementById('closeAdBtn');
-
   // Floating Facebook Share Button
   const fbShareBtn = document.getElementById('fbShareBtn');
 
@@ -253,35 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     4. ENTRY ADVERTISEMENT MODAL CONTROLLER
-     ========================================================================== */
-  if (adModal) {
-    if (!sessionStorage.getItem('adShown')) {
-      adModal.style.display = 'flex';
-      adModal.classList.add('active-view');
-    }
-
-    const dismissAd = () => {
-      adModal.classList.remove('active-view');
-      adModal.style.display = 'none';
-      sessionStorage.setItem('adShown', 'true');
-    };
-
-    if (closeAdBtn) closeAdBtn.addEventListener('click', dismissAd);
-
-    adModal.addEventListener('click', (e) => {
-      if (e.target === adModal) dismissAd();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && (adModal.classList.contains('active-view') || adModal.style.display === 'flex')) {
-        dismissAd();
-      }
-    });
-  }
-
-  /* ==========================================================================
-     5. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
+     4. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
      ========================================================================== */
   function setLanguage(lang) {
     const localizableElements = document.querySelectorAll('[data-en][data-np]:not(.header-title)');
@@ -321,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnNp) btnNp.addEventListener('click', () => setLanguage('np'));
 
   /* ==========================================================================
-     6. INITIALIZE DEFAULT NAVIGATION ROUTE
+     5. INITIALIZE DEFAULT NAVIGATION ROUTE
      ========================================================================== */
   const defaultLang = localStorage.getItem('preferredLang') || 'en';
   setLanguage(defaultLang);
@@ -336,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     7. BACKGROUND TAB VISIBILITY MONITOR
+     6. BACKGROUND TAB VISIBILITY MONITOR
      ========================================================================== */
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && gallerySection) {
@@ -346,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     8. FLOATING FACEBOOK SHARE CONTROLLER
+     7. FLOATING FACEBOOK SHARE CONTROLLER
      ========================================================================== */
   if (fbShareBtn) {
     fbShareBtn.addEventListener('click', async () => {
