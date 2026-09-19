@@ -3,16 +3,20 @@
    ========================================================================== */
 :root {
   --primary: #2e7d32;
+  --primary-hover: #226226;
   --primary-light: #e8f5e9;
   --dark: #263238;
   --muted: #607d8b;
   --bg-main: #f4f6f7;
   --bg-card: #ffffff;
+  --border-color: #e2e8f0;
   --sidebar-width: 260px;
   --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -24,6 +28,7 @@ body {
   color: var(--dark);
   overflow-x: hidden;
   display: flex;
+  min-height: 100vh;
 }
 
 /* ==========================================================================
@@ -36,7 +41,7 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  border-right: 1px solid #e2e8f0;
+  border-right: 1px solid var(--border-color);
   transition: var(--transition);
   z-index: 1000;
   display: flex;
@@ -71,7 +76,7 @@ body {
   padding: 16px 0;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 75px);
+  flex: 1;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
@@ -112,18 +117,21 @@ body {
   color: var(--primary);
 }
 
-/* Sidebar Social Links Container Fix */
+/* Sidebar Social Links Container */
 .sidebar-social-wrapper {
   margin-top: auto;
   border-top: 1px solid #f1f5f9;
+  padding: 16px 24px;
 }
 
 .sidebar-social-link {
+  color: var(--muted);
   transition: color 0.2s ease;
+  text-decoration: none;
 }
 
 .sidebar-social-link:hover {
-  color: var(--primary) !important;
+  color: var(--primary);
 }
 
 /* ==========================================================================
@@ -147,7 +155,7 @@ body {
 .top-header {
   height: 70px;
   background: var(--bg-card);
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -176,6 +184,9 @@ body {
   color: var(--dark);
   cursor: pointer;
   padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* RUNNING TICKER MARQUEE */
@@ -250,7 +261,7 @@ body {
   padding: 32px;
 }
 
-/* Strict Layout Fix: Prevents hidden sections from overlapping on dynamic router shifts */
+/* Router Layout Fix: Handles smooth content switching without dynamic visual shifts */
 .content-section {
   display: none;
   opacity: 0;
@@ -314,7 +325,7 @@ body {
   background: var(--bg-card);
   padding: 24px;
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
 }
 
 .card-icon {
@@ -333,7 +344,7 @@ body {
   background: var(--bg-card);
   padding: 32px;
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   line-height: 1.75;
 }
 
@@ -391,7 +402,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
 }
 
 .product-img {
@@ -401,9 +412,9 @@ body {
 }
 
 .product-pricing {
-  margin: 14px 0 0 0;
+  margin-top: 14px;
   padding-top: 14px;
-  border-top: 1px dashed #e2e8f0;
+  border-top: 1px dashed var(--border-color);
   font-size: 0.9rem;
   color: var(--dark);
 }
@@ -414,7 +425,9 @@ body {
 
 /* GALLERY OVERRIDES */
 .gallery-grid {
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
 }
 
 .gallery-card .avatar-placeholder {
@@ -497,19 +510,19 @@ body {
 }
 
 .lightbox-content-box {
-  background: var(--bg-card) !important;
-  padding: 24px !important;
-  border-radius: 16px !important;
-  width: max-content !important;
-  max-width: 90vw !important;
-  max-height: 85vh !important;
+  background: var(--bg-card);
+  padding: 24px;
+  border-radius: 16px;
+  width: max-content;
+  max-width: 90vw;
+  max-height: 85vh;
   position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow: hidden !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .lightbox-close-btn {
@@ -531,37 +544,37 @@ body {
 }
 
 .lightbox-media-wrapper {
-  width: auto !important;
-  height: auto !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: transparent !important;
-  border: none !important;
-  overflow: visible !important;
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  overflow: visible;
 }
 
 .lightbox-media-wrapper img,
 .lightbox-media-wrapper video {
-  max-width: 85vw !important;
-  max-height: 68vh !important;
-  width: auto !important;
-  height: auto !important;
-  object-fit: contain !important;
+  max-width: 85vw;
+  max-height: 68vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   border-radius: 8px;
-  display: block !important;
-  margin: 0 auto !important;
+  display: block;
+  margin: 0 auto;
 }
 
 .lightbox-caption-text {
-  margin-top: 14px !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  color: var(--dark) !important;
-  text-align: center !important;
-  line-height: 1.4 !important;
-  text-shadow: none !important;
+  margin-top: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark);
+  text-align: center;
+  line-height: 1.4;
+  text-shadow: none;
 }
 
 /* ==========================================================================
@@ -577,7 +590,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 3000;
   opacity: 1;
   transition: opacity 0.3s ease;
 }
@@ -586,7 +599,7 @@ body {
   position: relative;
   max-width: 90%;
   max-height: 90vh;
-  background: #fff;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -597,7 +610,7 @@ body {
   top: 10px;
   right: 15px;
   background: rgba(0, 0, 0, 0.6);
-  color: #fff;
+  color: #ffffff;
   border: none;
   font-size: 2rem;
   width: 36px;
@@ -635,9 +648,6 @@ body {
   color: #ffffff;
   border: none;
   border-radius: 6px;
-  width: auto;
-  height: auto;
-  aspect-ratio: auto;
   padding: 8px 16px;
   font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
@@ -655,7 +665,7 @@ body {
 }
 
 .fb-share-btn:hover {
-  background-color: #226226;
+  background-color: var(--primary-hover);
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(46, 125, 50, 0.28), 0 2px 4px rgba(0, 0, 0, 0.12);
 }
