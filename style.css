@@ -112,7 +112,7 @@ body {
   color: var(--primary);
 }
 
-/* Sidebar Social Links Container Fix */
+/* Sidebar Social Links Container */
 .sidebar-social-wrapper {
   margin-top: auto;
   border-top: 1px solid #f1f5f9;
@@ -212,7 +212,6 @@ body {
   0% {
     transform: translate3d(0, 0, 0);
   }
-
   100% {
     transform: translate3d(-50%, 0, 0);
   }
@@ -251,7 +250,7 @@ body {
   padding: 32px;
 }
 
-/* Strict Layout Fix: Prevents hidden sections from overlapping on dynamic router shifts */
+/* Strict Router Visibility Setup */
 .content-section {
   display: none;
   opacity: 0;
@@ -268,12 +267,24 @@ body {
   animation: activeSectionFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Committee specific layout rule only when active */
+#committee.active-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#committee .info-card {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 @keyframes activeSectionFade {
   from {
     opacity: 0;
     transform: translateY(8px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -296,19 +307,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
-}
-
-/* COMMITTEE CARDS CONTAINER */
-#committee {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-#committee .info-card {
-  max-width: 500px;
-  width: 100%;
-  margin: 0 auto;
 }
 
 .stat-card,
@@ -458,7 +456,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(4px);
   z-index: 2000;
   display: flex;
@@ -475,13 +473,11 @@ body {
 }
 
 .lightbox-content-box {
-  background: var(--bg-card);
-  padding: 24px;
-  border-radius: 16px;
-  max-width: 460px;
-  width: 90%;
+  background: transparent;
+  padding: 0;
+  max-width: 90vw;
+  width: auto;
   position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -489,12 +485,12 @@ body {
 
 .lightbox-close-btn {
   position: absolute;
-  top: 12px;
-  right: 16px;
+  top: -40px;
+  right: 0;
   background: none;
   border: none;
-  color: var(--muted);
-  font-size: 1.75rem;
+  color: #ffffff;
+  font-size: 2rem;
   cursor: pointer;
   line-height: 1;
   transition: color 0.2s;
@@ -502,69 +498,29 @@ body {
 }
 
 .lightbox-close-btn:hover {
-  color: var(--dark);
+  color: var(--primary-light);
 }
 
-.lightbox-media-wrapper {
-  width: 100%;
-  height: 240px;
+#lightboxMediaWrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  background: #f8fafc;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-  margin-top: 16px;
-}
-
-.lightbox-media-wrapper img {
+  justify-content: center;
+  background: transparent;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 
-.lightbox-caption-text {
-  margin-top: 18px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--dark);
+#lightboxCaptionText {
+  color: #ffffff;
+  font-size: 1rem;
   text-align: center;
-  line-height: 1.6;
-  padding: 0 8px;
+  margin-top: 12px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* ==========================================================================
-   SYSTEM SCREEN RESPONSIVENESS
+   CIRCULAR AVATAR SETUP
    ========================================================================== */
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .sidebar.mobile-show {
-    transform: translateX(0);
-  }
-
-  .main-wrapper {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  .top-header {
-    padding: 0 16px;
-  }
-
-  .marquee-container {
-    display: none;
-  }
-
-  .content-container {
-    padding: 20px 16px;
-  }
-}
-
-/* Circular Avatar Setup */
 .avatar-circle-wrapper {
   width: 100px;
   height: 100px;
@@ -595,13 +551,11 @@ body {
   right: 24px;
   z-index: 999;
   background-color: var(--primary);
-  /* Integrated with your main site color */
   color: #ffffff;
   border: none;
   border-radius: 6px;
   width: auto;
   height: auto;
-  aspect-ratio: auto;
   padding: 8px 16px;
   font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
@@ -614,13 +568,11 @@ body {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: var(--transition);
-  backface-visibility: hidden;
   white-space: nowrap;
 }
 
 .fb-share-btn:hover {
   background-color: #226226;
-  /* Darker green fallback match for interactive hover state */
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(46, 125, 50, 0.28), 0 2px 4px rgba(0, 0, 0, 0.12);
 }
@@ -640,7 +592,94 @@ body {
   line-height: 1;
 }
 
+/* ==========================================================================
+   POPUP ADVERTISEMENT MODAL STYLES
+   ========================================================================== */
+.ad-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.ad-modal-container {
+  position: relative;
+  max-width: 90%;
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.ad-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.ad-close-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.ad-modal-content img.ad-image {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   SYSTEM SCREEN RESPONSIVENESS
+   ========================================================================== */
 @media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.mobile-show {
+    transform: translateX(0);
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .top-header {
+    padding: 0 16px;
+  }
+
+  .marquee-container {
+    display: none;
+  }
+
+  .content-container {
+    padding: 20px 16px;
+  }
+
   .fb-share-btn {
     bottom: 20px;
     right: 20px;
@@ -651,96 +690,4 @@ body {
   .fb-share-btn i {
     font-size: 0.85rem;
   }
-}
-
-/* Force-remove white container backgrounds inside the modal overlay */
-#productMediaOverlay * {
-  box-shadow: none !important;
-}
-
-#productMediaOverlay > div,
-.lightbox-content-box,
-.lightbox-modal-card,
-.modal-content {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  max-width: none !important;
-  width: auto !important;
-}
-
-/* Flex setup to keep caption right under the uncropped image */
-#lightboxMediaWrapper {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: transparent !important;
-}
-
-/* Formatting for caption below poster */
-#lightboxCaptionText {
-  color: #ffffff !important;
-  font-size: 1rem !important;
-  text-align: center !important;
-  margin-top: 12px !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-}
-/* Popup Advertisement Modal Styles */
-.ad-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.75);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-.ad-modal-container {
-    position: relative;
-    max-width: 90%;
-    max-height: 90vh;
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.ad-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    border: none;
-    font-size: 2rem;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1;
-    z-index: 10;
-    transition: background 0.2s;
-}
-
-.ad-close-btn:hover {
-    background: rgba(0, 0, 0, 0.9);
-}
-
-.ad-modal-content img.ad-image {
-    display: block;
-    max-width: 100%;
-    max-height: 80vh;
-    object-fit: contain;
 }
