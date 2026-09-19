@@ -50,9 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE (Fixed Display Stack)
+     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE
      ========================================================================== */
-  function switchView(targetSectionId) {
+  function switchView(targetSectionId, updateHistory = true) {
     if (!targetSectionId) return;
 
     // Pause gallery video if switching away from the gallery section
@@ -96,16 +96,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Update URL hash safely without triggering page reloads
-    if (history.pushState) {
-      history.pushState(null, null, `#${targetSectionId}`);
-    } else {
-      window.location.hash = targetSectionId;
+    // Update URL hash safely without triggering infinite history loops
+    if (updateHistory) {
+      if (history.pushState) {
+        history.pushState(null, null, `#${targetSectionId}`);
+      } else {
+        window.location.hash = targetSectionId;
+      }
     }
 
     // 4. Hide Mobile Sidebar Upon Selection
     if (window.innerWidth <= 768 && sidebar) {
       sidebar.classList.remove('mobile-show');
+    }
+  }
+
+  // Handle route based on current URL hash
+  function handleHashRouting() {
+    const rawHash = window.location.hash.replace('#', '');
+    const validSections = Array.from(contentSections).map(s => s.id);
+
+    if (rawHash && validSections.includes(rawHash)) {
+      switchView(rawHash, false);
+    } else {
+      switchView('home', false);
     }
   }
 
@@ -117,17 +131,20 @@ document.addEventListener('DOMContentLoaded', () => {
       item.addEventListener('click', (e) => {
         e.preventDefault();
         const targetSectionId = item.getAttribute('data-target');
-        switchView(targetSectionId);
+        switchView(targetSectionId, true);
       });
     });
   }
 
+  // Listen for browser navigation (Back / Forward / Hash change)
+  window.addEventListener('hashchange', handleHashRouting);
+  window.addEventListener('popstate', handleHashRouting);
+
   /* ==========================================================================
-     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER (Full Uncropped Image)
+     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER
      ========================================================================== */
   if (lightboxOverlay && mediaContainer && captionBox) {
 
-    // Append full image bounded by viewport height so the whole poster fits
     const appendImageNode = (url) => {
       const img = document.createElement('img');
       img.src = url;
@@ -170,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
       mediaContainer.classList.remove('gallery-layout-active');
     };
 
-    // Event Delegation
     document.addEventListener('click', (event) => {
       const card = event.target.closest('.product-modal-trigger');
       if (!card) return;
@@ -179,12 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentLang = localStorage.getItem('preferredLang') || 'en';
       const chosenCaption = card.getAttribute(`data-${currentLang}-caption`) || card.getAttribute('data-en-caption') || '';
 
-      // Clean lightbox overlay wrapper styles
       lightboxOverlay.style.display = 'flex';
       lightboxOverlay.style.justifyContent = 'center';
       lightboxOverlay.style.alignItems = 'center';
 
-      // Strip container boxes, fixed sizes, borders, and shadows from all parent cards inside overlay
       const allModalContainers = lightboxOverlay.querySelectorAll('div');
       allModalContainers.forEach(container => {
         container.style.background = 'transparent';
@@ -200,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.style.overflow = 'visible';
       });
 
-      // Clear previous media and setup layout wrapper
       mediaContainer.innerHTML = '';
       mediaContainer.className = "lightbox-media-wrapper";
       mediaContainer.style.display = 'flex';
@@ -234,7 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Append caption element directly beneath media
       captionBox.textContent = chosenCaption || '';
       captionBox.style.color = '#ffffff';
       captionBox.style.textAlign = 'center';
@@ -259,10 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     4. ENTRY ADVERTISEMENT MODAL CONTROLLER (With 3rdbmagcup.jpg Display)
+     4. ENTRY ADVERTISEMENT MODAL CONTROLLER
      ========================================================================== */
   if (adModal) {
-    // Show advertisement modal on initial site launch (uncomment session check if desired)
     if (!sessionStorage.getItem('adShown')) {
       adModal.style.display = 'flex';
       adModal.classList.add('active-view');
@@ -328,19 +339,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnNp) btnNp.addEventListener('click', () => setLanguage('np'));
 
   /* ==========================================================================
-     6. INITIALIZE DEFAULT NAVIGATION ROUTE
+     6. INITIALIZE DEFAULT NAVIGATION ROUTE AND LANGUAGE
      ========================================================================== */
   const defaultLang = localStorage.getItem('preferredLang') || 'en';
   setLanguage(defaultLang);
-
-  const currentHash = window.location.hash.replace('#', '');
-  const validSections = Array.from(contentSections).map(s => s.id);
-
-  if (currentHash && validSections.includes(currentHash)) {
-    switchView(currentHash);
-  } else {
-    switchView('home');
-  }
+  
+  // Perform routing check on page load
+  handleHashRouting();
 
   /* ==========================================================================
      7. BACKGROUND TAB VISIBILITY MONITOR
