@@ -1,304 +1,105 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-  /* ==========================================================================
-     DOM ELEMENT SELECTORS
-     ========================================================================== */
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const sidebar = document.getElementById('sidebar');
-  const mainWrapper = document.getElementById('mainWrapper');
+  // Select DOM elements
   const menuItems = document.querySelectorAll('.menu-item');
-  const contentSections = document.querySelectorAll('.content-section');
+  const sections = document.querySelectorAll('.content-section');
   const headerTitle = document.querySelector('.header-title');
+  const toggleBtn = document.querySelector('.toggle-btn');
+  const sidebar = document.querySelector('.sidebar');
+  const mainWrapper = document.querySelector('.main-wrapper');
 
-  const btnEn = document.getElementById('btnEn');
-  const btnNp = document.getElementById('btnNp');
+  /**
+   * Router / Tab Switching Logic
+   * Displays the target section and hides all others.
+   */
+  function switchTab(targetId) {
+    if (!targetId) return;
 
-  // Product & Gallery Lightbox Elements
-  const previewModal = document.getElementById('previewModal');
-  const modalOverlay = document.getElementById('modalOverlay');
-  const modalClose = document.getElementById('modalClose');
-  const modalImg = document.getElementById('modalImg');
-  const modalCaption = document.getElementById('modalCaption');
+    // Clean up hashtag if present in href (e.g., "#about" -> "about")
+    const cleanId = targetId.replace('#', '');
+    const targetSection = document.getElementById(cleanId);
+    const activeMenuLink = document.querySelector(`.menu-item[href="#${cleanId}"]`);
 
-  // Gallery Video Reference
-  const gallerySection = document.getElementById('gallery');
+    // 1. Hide all content sections and remove active class
+    sections.forEach(section => {
+      section.classList.remove('active-section');
+      section.style.display = 'none'; // Force display none to override CSS ambiguities
+    });
 
-  // Entry Advertisement Modal Elements
-  const adModal = document.getElementById('entryAdModal') || document.getElementById('adModalOverlay');
-  const closeAdBtn = document.getElementById('closeAdBtn');
+    // 2. Remove active state from all sidebar menu links
+    menuItems.forEach(item => item.classList.remove('active'));
 
-  // Floating Facebook Share Button
-  const fbShareBtn = document.getElementById('fbShareBtn');
+    // 3. Show the selected section if it exists
+    if (targetSection) {
+      targetSection.classList.add('active-section');
 
-  /* ==========================================================================
-     1. SIDEBAR TOGGLE MECHANICS
-     ========================================================================== */
-  if (sidebarToggle && sidebar) {
-    sidebarToggle.addEventListener('click', () => {
-      if (window.innerWidth > 768) {
-        sidebar.classList.toggle('collapsed');
-        if (mainWrapper) mainWrapper.classList.toggle('expanded');
+      // Layout exception handling (Flex layout for committee section, block for others)
+      if (cleanId === 'committee') {
+        targetSection.style.display = 'flex';
       } else {
-        sidebar.classList.toggle('mobile-show');
+        targetSection.style.display = 'block';
       }
-    });
 
-    window.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-        sidebar.classList.remove('mobile-show');
-      }
-    });
-  }
-
-  /* ==========================================================================
-     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE
-     ========================================================================== */
-  function switchView(targetSectionId, updateHistory = true) {
-    if (!targetSectionId) return;
-
-    // Pause gallery video if switching away from the gallery section
-    if (targetSectionId !== 'gallery' && gallerySection) {
-      const galleryVideo = gallerySection.querySelector('video');
-      if (galleryVideo) galleryVideo.pause();
-    }
-
-    // 1. Synchronize Menu Selection States
-    menuItems.forEach(link => {
-      if (link.getAttribute('data-target') === targetSectionId) {
-        link.classList.add('active');
-      } else {
-        link.classList.remove('active');
-      }
-    });
-
-    // 2. Toggle Visibility of Sections
-    contentSections.forEach(section => {
-      if (section.id === targetSectionId) {
-        section.classList.add('active-section');
-        section.style.display = 'block';
-      } else {
-        section.classList.remove('active-section');
-        section.style.display = 'none';
-      }
-    });
-
-    // 3. Update Header Text Safely
-    const activeItem = document.querySelector(`.menu-item[data-target="${targetSectionId}"]`);
-    if (activeItem && headerTitle) {
-      const itemTextSpan = activeItem.querySelector('span');
-      if (itemTextSpan) {
-        headerTitle.setAttribute('data-en', itemTextSpan.getAttribute('data-en') || '');
-        headerTitle.setAttribute('data-np', itemTextSpan.getAttribute('data-np') || '');
-
-        const currentLang = localStorage.getItem('preferredLang') || 'en';
-        headerTitle.textContent = itemTextSpan.getAttribute(`data-${currentLang}`) || '';
+      // Update Top Header Title to reflect active page title
+      if (activeMenuLink && headerTitle) {
+        headerTitle.textContent = activeMenuLink.textContent.trim();
       }
     }
 
-    // Update URL hash safely
-    if (updateHistory) {
-      if (history.pushState) {
-        history.pushState(null, null, `#${targetSectionId}`);
-      } else {
-        window.location.hash = targetSectionId;
-      }
-    }
-
-    // 4. Hide Mobile Sidebar Upon Selection
-    if (window.innerWidth <= 768 && sidebar) {
-      sidebar.classList.remove('mobile-show');
+    // 4. Set active state on the clicked sidebar menu link
+    if (activeMenuLink) {
+      activeMenuLink.classList.add('active');
     }
   }
 
-  function handleHashRouting() {
-    const rawHash = window.location.hash.replace('#', '');
-    const validSections = Array.from(contentSections).map(s => s.id);
+  /**
+   * Click Event Handlers for Sidebar Navigation Links
+   */
+  menuItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = item.getAttribute('href');
 
-    if (rawHash && validSections.includes(rawHash)) {
-      switchView(rawHash, false);
-    } else {
-      switchView('home', false);
-    }
-  }
+      if (targetId) {
+        switchTab(targetId);
 
-  if (menuItems.length > 0) {
-    menuItems.forEach(item => {
-      if (item.getAttribute('target') === '_blank') return;
+        // Update URL hash without forcing jump scroll
+        history.pushState(null, null, targetId);
 
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetSectionId = item.getAttribute('data-target');
-        switchView(targetSectionId, true);
-      });
-    });
-  }
-
-  window.addEventListener('hashchange', handleHashRouting);
-  window.addEventListener('popstate', handleHashRouting);
-
-  /* ==========================================================================
-     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER
-     ========================================================================== */
-  if (previewModal && modalImg && modalCaption) {
-
-    const dismissModal = () => {
-      previewModal.style.display = 'none';
-      previewModal.setAttribute('aria-hidden', 'true');
-      modalImg.src = '';
-      modalCaption.textContent = '';
-    };
-
-    document.addEventListener('click', (event) => {
-      const card = event.target.closest('.product-modal-trigger');
-      if (!card) return;
-
-      const singleSource = card.getAttribute('data-src');
-      const currentLang = localStorage.getItem('preferredLang') || 'en';
-      const chosenCaption = card.getAttribute(`data-${currentLang}-caption`) || card.getAttribute('data-en-caption') || '';
-
-      if (singleSource) {
-        modalImg.src = singleSource;
-        modalCaption.textContent = chosenCaption;
-        previewModal.style.display = 'flex';
-        previewModal.setAttribute('aria-hidden', 'false');
-      }
-    });
-
-    if (modalClose) modalClose.addEventListener('click', dismissModal);
-    if (modalOverlay) modalOverlay.addEventListener('click', dismissModal);
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && previewModal.style.display === 'flex') {
-        dismissModal();
-      }
-    });
-  }
-
-  /* ==========================================================================
-     4. ENTRY ADVERTISEMENT MODAL CONTROLLER
-     ========================================================================== */
-  if (adModal) {
-    if (!sessionStorage.getItem('adShown')) {
-      adModal.style.display = 'flex';
-      adModal.classList.add('active-view');
-    }
-
-    const dismissAd = () => {
-      adModal.classList.remove('active-view');
-      adModal.style.display = 'none';
-      sessionStorage.setItem('adShown', 'true');
-    };
-
-    if (closeAdBtn) closeAdBtn.addEventListener('click', dismissAd);
-
-    adModal.addEventListener('click', (e) => {
-      if (e.target === adModal) dismissAd();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && (adModal.classList.contains('active-view') || adModal.style.display === 'flex')) {
-        dismissAd();
-      }
-    });
-  }
-
-  /* ==========================================================================
-     5. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
-     ========================================================================== */
-  function setLanguage(lang) {
-    const localizableElements = document.querySelectorAll('[data-en][data-np]:not(.header-title)');
-
-    localizableElements.forEach(element => {
-      const translation = lang === 'np' ? element.getAttribute('data-np') : element.getAttribute('data-en');
-
-      if (element.tagName.toLowerCase() === 'img') {
-        element.setAttribute('alt', translation);
-      } else {
-        element.textContent = translation;
-      }
-    });
-
-    if (lang === 'np') {
-      if (btnNp) btnNp.classList.add('active');
-      if (btnEn) btnEn.classList.remove('active');
-      document.documentElement.lang = 'ne';
-    } else {
-      if (btnEn) btnEn.classList.add('active');
-      if (btnNp) btnNp.classList.remove('active');
-      document.documentElement.lang = 'en';
-    }
-
-    localStorage.setItem('preferredLang', lang);
-
-    const currentActiveItem = document.querySelector('.menu-item.active');
-    if (currentActiveItem && headerTitle) {
-      const activeSpan = currentActiveItem.querySelector('span');
-      if (activeSpan) {
-        headerTitle.textContent = activeSpan.getAttribute(`data-${lang}`) || '';
-      }
-    }
-  }
-
-  if (btnEn) btnEn.addEventListener('click', () => setLanguage('en'));
-  if (btnNp) btnNp.addEventListener('click', () => setLanguage('np'));
-
-  /* ==========================================================================
-     6. INITIALIZE DEFAULT NAVIGATION ROUTE AND LANGUAGE
-     ========================================================================== */
-  const defaultLang = localStorage.getItem('preferredLang') || 'en';
-  setLanguage(defaultLang);
-  handleHashRouting();
-
-  /* ==========================================================================
-     7. BACKGROUND TAB VISIBILITY MONITOR
-     ========================================================================== */
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && gallerySection) {
-      const galleryVideo = gallerySection.querySelector('video');
-      if (galleryVideo) galleryVideo.pause();
-    }
-  });
-
-  /* ==========================================================================
-     8. FLOATING FACEBOOK SHARE CONTROLLER
-     ========================================================================== */
-  if (fbShareBtn) {
-    fbShareBtn.addEventListener('click', async () => {
-      const currentUrl = window.location.href;
-      const currentLang = localStorage.getItem('preferredLang') || 'en';
-
-      const shareTitle = 'Bhimbadh Multipurpose Agro';
-      const shareText = currentLang === 'np'
-        ? 'आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सशक्त बनाउँदै।'
-        : 'Empowering local agriculture through modern sustainable practices.';
-
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: shareTitle,
-            text: shareText,
-            url: currentUrl
-          });
-          return;
-        } catch (error) {
-          if (error.name === 'AbortError') return;
-          console.error('Native web share failed, launching fallback popup...', error);
+        // Auto-close sidebar drawer on mobile after clicking a navigation link
+        if (sidebar && sidebar.classList.contains('mobile-show')) {
+          sidebar.classList.remove('mobile-show');
         }
       }
+    });
+  });
 
-      const encodedUrl = encodeURIComponent(currentUrl);
-      const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
-
-      const width = 626;
-      const height = 436;
-      const left = (screen.width / 2) - (width / 2);
-      const top = (screen.height / 2) - (height / 2);
-
-      window.open(
-        facebookShareUrl,
-        'facebook-share-dialog',
-        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
-      );
+  /**
+   * Responsive Sidebar Toggle Button Logic
+   */
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('mobile-show');
+      } else {
+        sidebar.classList.toggle('collapsed');
+        if (mainWrapper) {
+          mainWrapper.classList.toggle('expanded');
+        }
+      }
     });
   }
+
+  /**
+   * Handle Browser Back / Forward Button Navigation
+   */
+  window.addEventListener('popstate', () => {
+    const currentHash = window.location.hash || '#home';
+    switchTab(currentHash);
+  });
+
+  /**
+   * Initial Load: Load section based on current URL hash or default to home
+   */
+  const initialHash = window.location.hash || '#home';
+  switchTab(initialHash);
 });
