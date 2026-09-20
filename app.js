@@ -14,10 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnNp = document.getElementById('btnNp');
 
   // Product & Gallery Lightbox Elements
-  const lightboxOverlay = document.getElementById('productMediaOverlay');
-  const closeBtn = document.getElementById('closeLightboxBtn');
-  const mediaContainer = document.getElementById('lightboxMediaWrapper');
-  const captionBox = document.getElementById('lightboxCaptionText');
+  const previewModal = document.getElementById('previewModal');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalClose = document.getElementById('modalClose');
+  const modalImg = document.getElementById('modalImg');
+  const modalCaption = document.getElementById('modalCaption');
 
   // Gallery Video Reference
   const gallerySection = document.getElementById('gallery');
@@ -30,12 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const fbShareBtn = document.getElementById('fbShareBtn');
 
   /* ==========================================================================
-     1. SIDEBAR TOGGLE MECHANICS (Defensive Check)
+     1. SIDEBAR TOGGLE MECHANICS
      ========================================================================== */
   if (sidebarToggle && sidebar) {
     sidebarToggle.addEventListener('click', () => {
       if (window.innerWidth > 768) {
-        if (sidebar) sidebar.classList.toggle('collapsed');
+        sidebar.classList.toggle('collapsed');
         if (mainWrapper) mainWrapper.classList.toggle('expanded');
       } else {
         sidebar.classList.toggle('mobile-show');
@@ -58,9 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Pause gallery video if switching away from the gallery section
     if (targetSectionId !== 'gallery' && gallerySection) {
       const galleryVideo = gallerySection.querySelector('video');
-      if (galleryVideo) {
-        galleryVideo.pause();
-      }
+      if (galleryVideo) galleryVideo.pause();
     }
 
     // 1. Synchronize Menu Selection States
@@ -96,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Update URL hash safely without triggering infinite history loops
+    // Update URL hash safely
     if (updateHistory) {
       if (history.pushState) {
         history.pushState(null, null, `#${targetSectionId}`);
@@ -111,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Handle route based on current URL hash
   function handleHashRouting() {
     const rawHash = window.location.hash.replace('#', '');
     const validSections = Array.from(contentSections).map(s => s.id);
@@ -123,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Attach click listeners to menu items
   if (menuItems.length > 0) {
     menuItems.forEach(item => {
       if (item.getAttribute('target') === '_blank') return;
@@ -136,136 +133,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Listen for browser navigation (Back / Forward / Hash change)
   window.addEventListener('hashchange', handleHashRouting);
   window.addEventListener('popstate', handleHashRouting);
 
   /* ==========================================================================
      3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER
      ========================================================================== */
-  if (lightboxOverlay && mediaContainer && captionBox) {
+  if (previewModal && modalImg && modalCaption) {
 
-    const appendImageNode = (url) => {
-      const img = document.createElement('img');
-      img.src = url;
-      img.alt = 'Gallery Display Resource';
-      img.style.maxWidth = '90vw';
-      img.style.maxHeight = '75vh';
-      img.style.width = 'auto';
-      img.style.height = 'auto';
-      img.style.objectFit = 'contain';
-      img.style.borderRadius = '6px';
-      img.style.display = 'block';
-      img.style.margin = '0 auto';
-      mediaContainer.appendChild(img);
-    };
-
-    const appendVideoNode = (url) => {
-      const video = document.createElement('video');
-      video.controls = true;
-      video.autoplay = true;
-      video.muted = true;
-      video.playsInline = true;
-      video.style.maxWidth = '90vw';
-      video.style.maxHeight = '75vh';
-      video.style.borderRadius = '6px';
-      video.style.backgroundColor = '#000';
-
-      const source = document.createElement('source');
-      source.src = url;
-      source.type = url.endsWith('.webm') ? 'video/webm' : 'video/mp4';
-
-      video.appendChild(source);
-      mediaContainer.appendChild(video);
-      video.load();
-    };
-
-    const clearAndDismissLightbox = () => {
-      lightboxOverlay.classList.remove('active-view');
-      lightboxOverlay.style.display = 'none';
-      mediaContainer.innerHTML = '';
-      mediaContainer.classList.remove('gallery-layout-active');
+    const dismissModal = () => {
+      previewModal.style.display = 'none';
+      previewModal.setAttribute('aria-hidden', 'true');
+      modalImg.src = '';
+      modalCaption.textContent = '';
     };
 
     document.addEventListener('click', (event) => {
       const card = event.target.closest('.product-modal-trigger');
       if (!card) return;
 
-      const type = card.getAttribute('data-type');
+      const singleSource = card.getAttribute('data-src');
       const currentLang = localStorage.getItem('preferredLang') || 'en';
       const chosenCaption = card.getAttribute(`data-${currentLang}-caption`) || card.getAttribute('data-en-caption') || '';
 
-      lightboxOverlay.style.display = 'flex';
-      lightboxOverlay.style.justifyContent = 'center';
-      lightboxOverlay.style.alignItems = 'center';
-
-      const allModalContainers = lightboxOverlay.querySelectorAll('div');
-      allModalContainers.forEach(container => {
-        container.style.background = 'transparent';
-        container.style.backgroundColor = 'transparent';
-        container.style.boxShadow = 'none';
-        container.style.border = 'none';
-        container.style.padding = '0';
-        container.style.margin = '0';
-        container.style.width = 'auto';
-        container.style.maxWidth = 'none';
-        container.style.height = 'auto';
-        container.style.maxHeight = 'none';
-        container.style.overflow = 'visible';
-      });
-
-      mediaContainer.innerHTML = '';
-      mediaContainer.className = "lightbox-media-wrapper";
-      mediaContainer.style.display = 'flex';
-      mediaContainer.style.flexDirection = 'column';
-      mediaContainer.style.alignItems = 'center';
-      mediaContainer.style.justifyContent = 'center';
-
-      if (type === 'gallery') {
-        const rawSources = card.getAttribute('data-sources');
-        if (rawSources) {
-          try {
-            const mediaAssets = JSON.parse(rawSources);
-            mediaContainer.classList.add('gallery-layout-active');
-            mediaAssets.forEach(sourceUrl => {
-              if (sourceUrl.endsWith('.mp4') || sourceUrl.endsWith('.webm')) {
-                appendVideoNode(sourceUrl);
-              } else {
-                appendImageNode(sourceUrl);
-              }
-            });
-          } catch (error) {
-            console.error("Error parsing gallery data-sources JSON:", error);
-          }
-        }
-      } else {
-        const singleSource = card.getAttribute('data-src');
-        if (type === 'image' && singleSource) {
-          appendImageNode(singleSource);
-        } else if (type === 'video' && singleSource) {
-          appendVideoNode(singleSource);
-        }
+      if (singleSource) {
+        modalImg.src = singleSource;
+        modalCaption.textContent = chosenCaption;
+        previewModal.style.display = 'flex';
+        previewModal.setAttribute('aria-hidden', 'false');
       }
-
-      captionBox.textContent = chosenCaption || '';
-      captionBox.style.color = '#ffffff';
-      captionBox.style.textAlign = 'center';
-      captionBox.style.marginTop = '12px';
-      captionBox.style.fontSize = '1rem';
-      mediaContainer.appendChild(captionBox);
-
-      lightboxOverlay.classList.add('active-view');
     });
 
-    if (closeBtn) closeBtn.addEventListener('click', clearAndDismissLightbox);
-
-    lightboxOverlay.addEventListener('click', (event) => {
-      if (event.target === lightboxOverlay) clearAndDismissLightbox();
-    });
+    if (modalClose) modalClose.addEventListener('click', dismissModal);
+    if (modalOverlay) modalOverlay.addEventListener('click', dismissModal);
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && (lightboxOverlay.classList.contains('active-view') || lightboxOverlay.style.display === 'flex')) {
-        clearAndDismissLightbox();
+      if (event.key === 'Escape' && previewModal.style.display === 'flex') {
+        dismissModal();
       }
     });
   }
@@ -343,8 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   const defaultLang = localStorage.getItem('preferredLang') || 'en';
   setLanguage(defaultLang);
-  
-  // Perform routing check on page load
   handleHashRouting();
 
   /* ==========================================================================
