@@ -668,15 +668,44 @@ body {
   }
 
   .top-header {
-    padding: 0 16px;
+    padding: 0 12px;
+    gap: 8px;
   }
 
+  /* Marquee visible on mobile */
   .marquee-container {
-    display: none;
+    display: block;
+    margin: 0 8px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+
+  .marquee-track {
+    gap: 30px;
+    padding-right: 30px;
+    font-size: 0.75rem;
+  }
+
+  .header-title {
+    font-size: 1.1rem;
+    white-space: nowrap;
   }
 
   .content-container {
     padding: 20px 16px;
+  }
+
+  /* Sidebar Social Links visible in mobile drawer */
+  .sidebar-social-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 16px 24px;
+    background: var(--bg-card);
+  }
+
+  .sidebar-social-link {
+    font-size: 1.25rem;
   }
 
   .fb-share-btn {
