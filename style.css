@@ -253,13 +253,16 @@ body {
 /* Router Visibility Setup - Synchronized with JavaScript inline styles */
 .content-section {
   display: none;
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .content-section.active-section {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
   animation: activeSectionFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -672,7 +675,6 @@ body {
     gap: 8px;
   }
 
-  /* Marquee visible on mobile */
   .marquee-container {
     display: block;
     margin: 0 8px;
@@ -695,7 +697,6 @@ body {
     padding: 20px 16px;
   }
 
-  /* Sidebar Social Links visible in mobile drawer */
   .sidebar-social-wrapper {
     display: flex;
     justify-content: space-around;
