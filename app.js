@@ -1,105 +1,402 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Select DOM elements
-  const menuItems = document.querySelectorAll('.menu-item');
-  const sections = document.querySelectorAll('.content-section');
-  const headerTitle = document.querySelector('.header-title');
-  const toggleBtn = document.querySelector('.toggle-btn');
-  const sidebar = document.querySelector('.sidebar');
-  const mainWrapper = document.querySelector('.main-wrapper');
 
-  /**
-   * Router / Tab Switching Logic
-   * Displays the target section and hides all others.
-   */
-  function switchTab(targetId) {
-    if (!targetId) return;
+  /* ==========================================================================
+     DOM ELEMENT SELECTORS
+     ========================================================================== */
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.getElementById('sidebar');
+  const mainWrapper = document.getElementById('mainWrapper');
+  const menuItems = document.querySelectorAll('.menu-item');
+  const contentSections = document.querySelectorAll('.content-section');
+  const headerTitle = document.querySelector('.header-title');
 
-    // Clean up hashtag if present in href (e.g., "#about" -> "about")
-    const cleanId = targetId.replace('#', '');
-    const targetSection = document.getElementById(cleanId);
-    const activeMenuLink = document.querySelector(`.menu-item[href="#${cleanId}"]`);
+  const btnEn = document.getElementById('btnEn');
+  const btnNp = document.getElementById('btnNp');
 
-    // 1. Hide all content sections and remove active class
-    sections.forEach(section => {
-      section.classList.remove('active-section');
-      section.style.display = 'none'; // Force display none to override CSS ambiguities
-    });
+  // Product & Gallery Lightbox Elements
+  const lightboxOverlay = document.getElementById('productMediaOverlay');
+  const closeBtn = document.getElementById('closeLightboxBtn');
+  const mediaContainer = document.getElementById('lightboxMediaWrapper');
+  const captionBox = document.getElementById('lightboxCaptionText');
 
-    // 2. Remove active state from all sidebar menu links
-    menuItems.forEach(item => item.classList.remove('active'));
+  // Gallery Video Reference
+  const gallerySection = document.getElementById('gallery');
 
-    // 3. Show the selected section if it exists
-    if (targetSection) {
-      targetSection.classList.add('active-section');
+  // Entry Advertisement Modal Elements
+  const adModal = document.getElementById('entryAdModal') || document.getElementById('adModalOverlay');
+  const closeAdBtn = document.getElementById('closeAdBtn');
 
-      // Layout exception handling (Flex layout for committee section, block for others)
-      if (cleanId === 'committee') {
-        targetSection.style.display = 'flex';
-      } else {
-        targetSection.style.display = 'block';
-      }
+  // Floating Facebook Share Button
+  const fbShareBtn = document.getElementById('fbShareBtn');
 
-      // Update Top Header Title to reflect active page title
-      if (activeMenuLink && headerTitle) {
-        headerTitle.textContent = activeMenuLink.textContent.trim();
-      }
-    }
+  /* ==========================================================================
+     1. SIDEBAR TOGGLE MECHANICS (Defensive Check)
+     ========================================================================== */
+  if (sidebarToggle && sidebar) {
+    sidebarToggle.addEventListener('click', () => {
+      if (window.innerWidth > 768) {
+        if (sidebar) sidebar.classList.toggle('collapsed');
+        if (mainWrapper) mainWrapper.classList.toggle('expanded');
+      } else {
+        sidebar.classList.toggle('mobile-show');
+      }
+    });
 
-    // 4. Set active state on the clicked sidebar menu link
-    if (activeMenuLink) {
-      activeMenuLink.classList.add('active');
-    }
-  }
+    window.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+        sidebar.classList.remove('mobile-show');
+      }
+    });
+  }
 
-  /**
-   * Click Event Handlers for Sidebar Navigation Links
-   */
-  menuItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetId = item.getAttribute('href');
+  /* ==========================================================================
+     2. ROUTING / VIEW SWITCHING INTERACTION ENGINE
+     ========================================================================== */
+  function switchView(targetSectionId, updateHistory = true) {
+    if (!targetSectionId) return;
 
-      if (targetId) {
-        switchTab(targetId);
+    // Pause gallery video if switching away from the gallery section
+    if (targetSectionId !== 'gallery' && gallerySection) {
+      const galleryVideo = gallerySection.querySelector('video');
+      if (galleryVideo) {
+        galleryVideo.pause();
+      }
+    }
 
-        // Update URL hash without forcing jump scroll
-        history.pushState(null, null, targetId);
+    // 1. Synchronize Menu Selection States
+    menuItems.forEach(link => {
+      if (link.getAttribute('data-target') === targetSectionId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
 
-        // Auto-close sidebar drawer on mobile after clicking a navigation link
-        if (sidebar && sidebar.classList.contains('mobile-show')) {
-          sidebar.classList.remove('mobile-show');
-        }
-      }
-    });
-  });
+    // 2. Toggle Visibility of Sections
+    contentSections.forEach(section => {
+      if (section.id === targetSectionId) {
+        section.classList.add('active-section');
+        section.style.display = 'block';
+      } else {
+        section.classList.remove('active-section');
+        section.style.display = 'none';
+      }
+    });
 
-  /**
-   * Responsive Sidebar Toggle Button Logic
-   */
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('mobile-show');
-      } else {
-        sidebar.classList.toggle('collapsed');
-        if (mainWrapper) {
-          mainWrapper.classList.toggle('expanded');
-        }
-      }
-    });
-  }
+    // 3. Update Header Text Safely
+    const activeItem = document.querySelector(`.menu-item[data-target="${targetSectionId}"]`);
+    if (activeItem && headerTitle) {
+      const itemTextSpan = activeItem.querySelector('span');
+      if (itemTextSpan) {
+        headerTitle.setAttribute('data-en', itemTextSpan.getAttribute('data-en') || '');
+        headerTitle.setAttribute('data-np', itemTextSpan.getAttribute('data-np') || '');
 
-  /**
-   * Handle Browser Back / Forward Button Navigation
-   */
-  window.addEventListener('popstate', () => {
-    const currentHash = window.location.hash || '#home';
-    switchTab(currentHash);
-  });
+        const currentLang = localStorage.getItem('preferredLang') || 'en';
+        headerTitle.textContent = itemTextSpan.getAttribute(`data-${currentLang}`) || '';
+      }
+    }
 
-  /**
-   * Initial Load: Load section based on current URL hash or default to home
-   */
-  const initialHash = window.location.hash || '#home';
-  switchTab(initialHash);
+    // Update URL hash safely without triggering infinite history loops
+    if (updateHistory) {
+      if (history.pushState) {
+        history.pushState(null, null, `#${targetSectionId}`);
+      } else {
+        window.location.hash = targetSectionId;
+      }
+    }
+
+    // 4. Hide Mobile Sidebar Upon Selection
+    if (window.innerWidth <= 768 && sidebar) {
+      sidebar.classList.remove('mobile-show');
+    }
+  }
+
+  // Handle route based on current URL hash
+  function handleHashRouting() {
+    const rawHash = window.location.hash.replace('#', '');
+    const validSections = Array.from(contentSections).map(s => s.id);
+
+    if (rawHash && validSections.includes(rawHash)) {
+      switchView(rawHash, false);
+    } else {
+      switchView('home', false);
+    }
+  }
+
+  // Attach click listeners to menu items
+  if (menuItems.length > 0) {
+    menuItems.forEach(item => {
+      if (item.getAttribute('target') === '_blank') return;
+
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetSectionId = item.getAttribute('data-target');
+        switchView(targetSectionId, true);
+      });
+    });
+  }
+
+  // Listen for browser navigation (Back / Forward / Hash change)
+  window.addEventListener('hashchange', handleHashRouting);
+  window.addEventListener('popstate', handleHashRouting);
+
+  /* ==========================================================================
+     3. PRODUCT & GALLERY LIGHTBOX OVERLAY CONTROLLER
+     ========================================================================== */
+  if (lightboxOverlay && mediaContainer && captionBox) {
+
+    const appendImageNode = (url) => {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = 'Gallery Display Resource';
+      img.style.maxWidth = '90vw';
+      img.style.maxHeight = '75vh';
+      img.style.width = 'auto';
+      img.style.height = 'auto';
+      img.style.objectFit = 'contain';
+      img.style.borderRadius = '6px';
+      img.style.display = 'block';
+      img.style.margin = '0 auto';
+      mediaContainer.appendChild(img);
+    };
+
+    const appendVideoNode = (url) => {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.style.maxWidth = '90vw';
+      video.style.maxHeight = '75vh';
+      video.style.borderRadius = '6px';
+      video.style.backgroundColor = '#000';
+
+      const source = document.createElement('source');
+      source.src = url;
+      source.type = url.endsWith('.webm') ? 'video/webm' : 'video/mp4';
+
+      video.appendChild(source);
+      mediaContainer.appendChild(video);
+      video.load();
+    };
+
+    const clearAndDismissLightbox = () => {
+      lightboxOverlay.classList.remove('active-view');
+      lightboxOverlay.style.display = 'none';
+      mediaContainer.innerHTML = '';
+      mediaContainer.classList.remove('gallery-layout-active');
+    };
+
+    document.addEventListener('click', (event) => {
+      const card = event.target.closest('.product-modal-trigger');
+      if (!card) return;
+
+      const type = card.getAttribute('data-type');
+      const currentLang = localStorage.getItem('preferredLang') || 'en';
+      const chosenCaption = card.getAttribute(`data-${currentLang}-caption`) || card.getAttribute('data-en-caption') || '';
+
+      lightboxOverlay.style.display = 'flex';
+      lightboxOverlay.style.justifyContent = 'center';
+      lightboxOverlay.style.alignItems = 'center';
+
+      const allModalContainers = lightboxOverlay.querySelectorAll('div');
+      allModalContainers.forEach(container => {
+        container.style.background = 'transparent';
+        container.style.backgroundColor = 'transparent';
+        container.style.boxShadow = 'none';
+        container.style.border = 'none';
+        container.style.padding = '0';
+        container.style.margin = '0';
+        container.style.width = 'auto';
+        container.style.maxWidth = 'none';
+        container.style.height = 'auto';
+        container.style.maxHeight = 'none';
+        container.style.overflow = 'visible';
+      });
+
+      mediaContainer.innerHTML = '';
+      mediaContainer.className = "lightbox-media-wrapper";
+      mediaContainer.style.display = 'flex';
+      mediaContainer.style.flexDirection = 'column';
+      mediaContainer.style.alignItems = 'center';
+      mediaContainer.style.justifyContent = 'center';
+
+      if (type === 'gallery') {
+        const rawSources = card.getAttribute('data-sources');
+        if (rawSources) {
+          try {
+            const mediaAssets = JSON.parse(rawSources);
+            mediaContainer.classList.add('gallery-layout-active');
+            mediaAssets.forEach(sourceUrl => {
+              if (sourceUrl.endsWith('.mp4') || sourceUrl.endsWith('.webm')) {
+                appendVideoNode(sourceUrl);
+              } else {
+                appendImageNode(sourceUrl);
+              }
+            });
+          } catch (error) {
+            console.error("Error parsing gallery data-sources JSON:", error);
+          }
+        }
+      } else {
+        const singleSource = card.getAttribute('data-src');
+        if (type === 'image' && singleSource) {
+          appendImageNode(singleSource);
+        } else if (type === 'video' && singleSource) {
+          appendVideoNode(singleSource);
+        }
+      }
+
+      captionBox.textContent = chosenCaption || '';
+      captionBox.style.color = '#ffffff';
+      captionBox.style.textAlign = 'center';
+      captionBox.style.marginTop = '12px';
+      captionBox.style.fontSize = '1rem';
+      mediaContainer.appendChild(captionBox);
+
+      lightboxOverlay.classList.add('active-view');
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', clearAndDismissLightbox);
+
+    lightboxOverlay.addEventListener('click', (event) => {
+      if (event.target === lightboxOverlay) clearAndDismissLightbox();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && (lightboxOverlay.classList.contains('active-view') || lightboxOverlay.style.display === 'flex')) {
+        clearAndDismissLightbox();
+      }
+    });
+  }
+
+  /* ==========================================================================
+     4. ENTRY ADVERTISEMENT MODAL CONTROLLER
+     ========================================================================== */
+  if (adModal) {
+    if (!sessionStorage.getItem('adShown')) {
+      adModal.style.display = 'flex';
+      adModal.classList.add('active-view');
+    }
+
+    const dismissAd = () => {
+      adModal.classList.remove('active-view');
+      adModal.style.display = 'none';
+      sessionStorage.setItem('adShown', 'true');
+    };
+
+    if (closeAdBtn) closeAdBtn.addEventListener('click', dismissAd);
+
+    adModal.addEventListener('click', (e) => {
+      if (e.target === adModal) dismissAd();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && (adModal.classList.contains('active-view') || adModal.style.display === 'flex')) {
+        dismissAd();
+      }
+    });
+  }
+
+  /* ==========================================================================
+     5. DOM TRANSLATION ENGINE (ENGLISH / NEPALI)
+     ========================================================================== */
+  function setLanguage(lang) {
+    const localizableElements = document.querySelectorAll('[data-en][data-np]:not(.header-title)');
+
+    localizableElements.forEach(element => {
+      const translation = lang === 'np' ? element.getAttribute('data-np') : element.getAttribute('data-en');
+
+      if (element.tagName.toLowerCase() === 'img') {
+        element.setAttribute('alt', translation);
+      } else {
+        element.textContent = translation;
+      }
+    });
+
+    if (lang === 'np') {
+      if (btnNp) btnNp.classList.add('active');
+      if (btnEn) btnEn.classList.remove('active');
+      document.documentElement.lang = 'ne';
+    } else {
+      if (btnEn) btnEn.classList.add('active');
+      if (btnNp) btnNp.classList.remove('active');
+      document.documentElement.lang = 'en';
+    }
+
+    localStorage.setItem('preferredLang', lang);
+
+    const currentActiveItem = document.querySelector('.menu-item.active');
+    if (currentActiveItem && headerTitle) {
+      const activeSpan = currentActiveItem.querySelector('span');
+      if (activeSpan) {
+        headerTitle.textContent = activeSpan.getAttribute(`data-${lang}`) || '';
+      }
+    }
+  }
+
+  if (btnEn) btnEn.addEventListener('click', () => setLanguage('en'));
+  if (btnNp) btnNp.addEventListener('click', () => setLanguage('np'));
+
+  /* ==========================================================================
+     6. INITIALIZE DEFAULT NAVIGATION ROUTE AND LANGUAGE
+     ========================================================================== */
+  const defaultLang = localStorage.getItem('preferredLang') || 'en';
+  setLanguage(defaultLang);
+  
+  // Perform routing check on page load
+  handleHashRouting();
+
+  /* ==========================================================================
+     7. BACKGROUND TAB VISIBILITY MONITOR
+     ========================================================================== */
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && gallerySection) {
+      const galleryVideo = gallerySection.querySelector('video');
+      if (galleryVideo) galleryVideo.pause();
+    }
+  });
+
+  /* ==========================================================================
+     8. FLOATING FACEBOOK SHARE CONTROLLER
+     ========================================================================== */
+  if (fbShareBtn) {
+    fbShareBtn.addEventListener('click', async () => {
+      const currentUrl = window.location.href;
+      const currentLang = localStorage.getItem('preferredLang') || 'en';
+
+      const shareTitle = 'Bhimbadh Multipurpose Agro';
+      const shareText = currentLang === 'np'
+        ? 'आधुनिक दिगो अभ्यासहरू मार्फत स्थानीय कृषिलाई सशक्त बनाउँदै।'
+        : 'Empowering local agriculture through modern sustainable practices.';
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: shareTitle,
+            text: shareText,
+            url: currentUrl
+          });
+          return;
+        } catch (error) {
+          if (error.name === 'AbortError') return;
+          console.error('Native web share failed, launching fallback popup...', error);
+        }
+      }
+
+      const encodedUrl = encodeURIComponent(currentUrl);
+      const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+
+      const width = 626;
+      const height = 436;
+      const left = (screen.width / 2) - (width / 2);
+      const top = (screen.height / 2) - (height / 2);
+
+      window.open(
+        facebookShareUrl,
+        'facebook-share-dialog',
+        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+      );
+    });
+  }
 });
