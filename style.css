@@ -250,26 +250,22 @@ body {
   padding: 32px;
 }
 
-/* Strict Router Visibility Setup */
+/* Router Visibility Setup - Synchronized with JavaScript inline styles */
 .content-section {
   display: none;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(8px);
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .content-section.active-section {
-  display: block;
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
   animation: activeSectionFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Committee specific layout rule only when active */
+/* Committee specific layout rule */
 #committee.active-section {
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   gap: 20px;
 }
@@ -450,6 +446,7 @@ body {
 /* ==========================================================================
    LIGHTBOX INTERACTIVE OVERLAY
    ========================================================================== */
+#previewModal,
 .product-lightbox-overlay {
   position: fixed;
   top: 0;
@@ -459,23 +456,20 @@ body {
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(4px);
   z-index: 2000;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  pointer-events: none;
+  opacity: 1;
+  pointer-events: auto;
   transition: opacity 0.25s ease;
 }
 
-.product-lightbox-overlay.active-view {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.lightbox-content-box {
+.lightbox-content-box,
+.modal-content-box {
   background: transparent;
   padding: 0;
   max-width: 90vw;
+  max-height: 90vh;
   width: auto;
   position: relative;
   display: flex;
@@ -483,7 +477,15 @@ body {
   align-items: center;
 }
 
-.lightbox-close-btn {
+#modalImg {
+  max-width: 80vw;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.lightbox-close-btn,
+#modalClose {
   position: absolute;
   top: -40px;
   right: 0;
@@ -497,20 +499,13 @@ body {
   z-index: 10;
 }
 
-.lightbox-close-btn:hover {
+.lightbox-close-btn:hover,
+#modalClose:hover {
   color: var(--primary-light);
 }
 
-#lightboxMediaWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  width: 100%;
-}
-
-#lightboxCaptionText {
+#lightboxCaptionText,
+#modalCaption {
   color: #ffffff;
   font-size: 1rem;
   text-align: center;
@@ -595,6 +590,8 @@ body {
 /* ==========================================================================
    POPUP ADVERTISEMENT MODAL STYLES
    ========================================================================== */
+#entryAdModal,
+#adModalOverlay,
 .ad-modal-overlay {
   position: fixed;
   top: 0;
@@ -602,7 +599,7 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 9999;
@@ -620,7 +617,8 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-.ad-close-btn {
+.ad-close-btn,
+#closeAdBtn {
   position: absolute;
   top: 10px;
   right: 15px;
@@ -640,7 +638,8 @@ body {
   transition: background 0.2s;
 }
 
-.ad-close-btn:hover {
+.ad-close-btn:hover,
+#closeAdBtn:hover {
   background: rgba(0, 0, 0, 0.9);
 }
 
