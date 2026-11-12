@@ -2,9 +2,9 @@
    1. CODER-CONFIGURED ACCOUNT CREDENTIALS (NO SIGN-UP OPTION)
    ========================================================================== */
 const AUTHORIZED_ACCOUNTS = [
-  { userId: 'admin', password: 'agro2026', displayName: 'Agro Admin' },
-  { userId: 'dijan', password: 'president123', displayName: 'Dijan Rana (President)' },
-  { userId: 'surendra', password: 'secretary123', displayName: 'Er. Surendra Thapa' }
+  { userId: 'admin', password: 'agro2026bhim', displayName: 'Agro Admin' },
+  { userId: 'dijan', password: 'president123bhim', displayName: 'Dijan Rana (President)' },
+  { userId: 'surendra', password: 'secretary123bhim', displayName: 'Er. Surendra Thapa' }
 ];
 
 /* ==========================================================================
