@@ -466,22 +466,13 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 8. Reset Default Data Button
-  if (e.target.closest('#resetDefaultDataBtn')) {
-    if (confirm('Restore all original products, gallery, and committee items?')) {
-      siteData = JSON.parse(JSON.stringify(DEFAULT_SITE_DATA));
-      saveSiteData();
-    }
-    return;
-  }
-
-  // 9. Close CRUD Modal
+  // 8. Close CRUD Modal
   if (e.target.closest('#closeCrudModalBtn') || e.target.closest('#cancelCrudBtn') || e.target.id === 'crudModalOverlay') {
     closeCrudModal();
     return;
   }
 
-  // 10. Close Lightbox Overlay
+  // 9. Close Lightbox Overlay
   if (e.target.closest('#closeLightboxBtn') || e.target.id === 'productMediaOverlay') {
     setOverlayVisible('productMediaOverlay', false);
     const wrapper = document.getElementById('lightboxMediaWrapper');
@@ -489,7 +480,7 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 11. Share Button
+  // 10. Share Button
   if (e.target.closest('#fbShareBtn')) {
     const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
     window.open(shareUrl, 'facebook-share', 'width=600,height=420');
