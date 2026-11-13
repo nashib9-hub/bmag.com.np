@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Bhimbadh Multipurpose Agro Group Pvt. Ltd.</title>
-    <link rel="stylesheet" href="./style.css?v=5">
+    <link rel="stylesheet" href="./style.css?v=6">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,7 +72,7 @@
                 <h1 class="header-title" data-en="Dashboard" data-np="ड्यासबोर्ड">Dashboard</h1>
             </div>
 
-            <!-- Running Ticker Marquee (Visible on Desktop & Mobile) -->
+            <!-- Running Ticker Marquee -->
             <div class="marquee-container">
                 <div class="marquee-content">
                     <div class="marquee-track">
@@ -117,7 +117,7 @@
             </div>
         </header>
 
-        <!-- Admin Mode Banner (Visible Only When Logged In) -->
+        <!-- Admin Mode Banner -->
         <div class="admin-control-banner is-hidden" id="adminBanner" style="display: none;">
             <div class="admin-banner-text">
                 <i class="ri-edit-box-line"></i>
@@ -148,9 +148,7 @@
                     </button>
                 </div>
 
-                <div class="stats-grid" id="statsGridContainer">
-                    <!-- Rendered dynamically via app.js -->
-                </div>
+                <div class="stats-grid" id="statsGridContainer"></div>
             </section>
 
             <!-- 2. ABOUT SECTION -->
@@ -165,9 +163,7 @@
                     </button>
                 </div>
 
-                <div class="card-large" id="aboutContentContainer">
-                    <!-- Rendered dynamically via app.js -->
-                </div>
+                <div class="card-large" id="aboutContentContainer"></div>
             </section>
 
             <!-- 3. COMMITTEE SECTION -->
@@ -182,9 +178,7 @@
                     </button>
                 </div>
 
-                <div class="committee-grid" id="committeeGridContainer">
-                    <!-- Rendered dynamically via app.js -->
-                </div>
+                <div class="committee-grid" id="committeeGridContainer"></div>
             </section>
 
             <!-- 4. PRODUCTS SECTION -->
@@ -199,9 +193,7 @@
                     </button>
                 </div>
 
-                <div class="info-grid" id="productsGridContainer">
-                    <!-- Rendered dynamically via app.js -->
-                </div>
+                <div class="info-grid" id="productsGridContainer"></div>
             </section>
 
             <!-- 5. GALLERY SECTION -->
@@ -216,9 +208,7 @@
                     </button>
                 </div>
 
-                <div id="galleryCategoriesContainer">
-                    <!-- Rendered dynamically via app.js -->
-                </div>
+                <div id="galleryCategoriesContainer"></div>
             </section>
 
             <!-- 6. CONTACT SECTION -->
@@ -233,15 +223,13 @@
                     </button>
                 </div>
 
-                <div class="info-grid" id="contactContainer">
-                    <!-- Rendered dynamically via app.js -->
-                </div>
+                <div class="info-grid" id="contactContainer"></div>
             </section>
 
         </main>
     </div>
 
-    <!-- LIGHTBOX OVERLAY FOR IMAGE/VIDEO PREVIEW -->
+    <!-- LIGHTBOX OVERLAY -->
     <div id="productMediaOverlay" class="product-lightbox-overlay is-hidden" style="display: none;">
         <div class="lightbox-content-box">
             <button id="closeLightboxBtn" class="lightbox-close-btn" aria-label="Close Preview">×</button>
@@ -250,9 +238,7 @@
         </div>
     </div>
 
-    <!-- ======================================================================
-         ADMIN LOGIN MODAL (NO SIGN-UP BUTTON)
-         ====================================================================== -->
+    <!-- ADMIN LOGIN MODAL WITH PASSWORD TOGGLE -->
     <div id="loginModalOverlay" class="custom-modal-overlay is-hidden" style="display: none;">
         <div class="custom-modal-card login-card">
             <div class="modal-header">
@@ -282,9 +268,12 @@
 
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
-                    <div class="input-with-icon">
+                    <div class="input-with-icon password-wrapper">
                         <i class="ri-key-2-line"></i>
                         <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+                        <button type="button" id="togglePasswordBtn" class="password-toggle-btn" aria-label="Toggle password visibility">
+                            <i class="ri-eye-off-line" id="toggleEyeIcon"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -295,9 +284,7 @@
         </div>
     </div>
 
-    <!-- ======================================================================
-         UNIVERSAL CRUD MODAL (FOR PRODUCTS, GALLERY, COMMITTEE, STATS, ETC.)
-         ====================================================================== -->
+    <!-- UNIVERSAL CRUD MODAL -->
     <div id="crudModalOverlay" class="custom-modal-overlay is-hidden" style="display: none;">
         <div class="custom-modal-card">
             <div class="modal-header">
@@ -330,7 +317,7 @@
         <span data-en="Share" data-np="सेयर">Share</span>
     </button>
 
-    <script src="./app.js?v=5"></script>
+    <script src="./app.js?v=6"></script>
 </body>
 
 </html>
