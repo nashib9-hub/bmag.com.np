@@ -1146,3 +1146,57 @@ body {
     grid-template-columns: 1fr;
   }
 }
+@media (max-width: 768px) {
+  html, body {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    position: relative;
+  }
+
+  .main-wrapper {
+    width: 100% !important;
+    max-width: 100vw !important;
+    margin-left: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .top-header {
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: auto !important;
+    padding: 10px 12px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .header-left {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
+  .header-actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .admin-logged-bar {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    max-width: 100% !important;
+    flex-wrap: wrap !important;
+  }
+
+  .admin-user-pill {
+    max-width: 150px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 0.75rem !important;
+    padding: 4px 8px !important;
+  }
+}
