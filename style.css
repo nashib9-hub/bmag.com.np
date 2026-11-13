@@ -229,7 +229,7 @@ body {
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
-/* HEADER RIGHT ACTIONS (LANGUAGE + LOGIN/LOGOUT) */
+/* HEADER RIGHT ACTIONS */
 .header-actions {
   display: flex;
   align-items: center;
@@ -404,7 +404,7 @@ body {
   font-size: 0.95rem;
 }
 
-/* HERO BANNER ON HOME */
+/* HERO BANNER */
 .hero-banner {
   background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 60%, #43a047 100%);
   color: #ffffff;
@@ -440,7 +440,7 @@ body {
   margin: 0;
 }
 
-/* ADMIN ACTION BUTTONS ON CARDS & SECTIONS */
+/* ADMIN ACTION BUTTONS */
 .admin-add-btn {
   background: var(--primary);
   color: #ffffff;
@@ -879,15 +879,45 @@ body {
   align-items: center;
 }
 
-.input-with-icon i {
+.input-with-icon > i:first-child {
   position: absolute;
   left: 12px;
   color: var(--muted);
   font-size: 1.1rem;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .input-with-icon input {
   padding-left: 38px !important;
+  padding-right: 38px !important;
+}
+
+/* Password Toggle Eye Button Styling */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  z-index: 5;
+  transition: color 0.2s ease;
+}
+
+.password-toggle-btn:hover {
+  color: var(--dark);
 }
 
 .modal-form input[type="text"],
@@ -1090,7 +1120,6 @@ body {
     gap: 8px;
   }
 
-  /* Marquee restored and optimized for mobile screens */
   .marquee-container {
     display: block;
     width: 100%;
