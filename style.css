@@ -338,25 +338,6 @@ body {
   gap: 8px;
 }
 
-.btn-reset-data {
-  background: rgba(255, 255, 255, 0.16);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  padding: 5px 12px;
-  border-radius: 6px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  transition: var(--transition);
-}
-
-.btn-reset-data:hover {
-  background: rgba(255, 255, 255, 0.28);
-}
-
 /* ==========================================================================
    CONTENT CONTAINERS & SECTIONS
    ========================================================================== */
