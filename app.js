@@ -262,6 +262,13 @@ function isAdminLoggedIn() {
   return Boolean(currentUser && currentUser.userId);
 }
 
+function setOverlayVisible(elementId, visible) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  el.classList.toggle('is-hidden', !visible);
+  el.style.display = visible ? 'flex' : 'none';
+}
+
 /* ==========================================================================
    3. GLOBAL VIEW SWITCHER & LANGUAGE ENGINE
    ========================================================================== */
@@ -344,14 +351,17 @@ function updateAuthUI() {
 
   if (loginBtn) {
     loginBtn.classList.toggle('is-hidden', loggedIn);
+    loginBtn.style.display = loggedIn ? 'none' : 'inline-flex';
   }
 
   if (loggedBar) {
     loggedBar.classList.toggle('is-hidden', !loggedIn);
+    loggedBar.style.display = loggedIn ? 'flex' : 'none';
   }
 
   if (adminBanner) {
     adminBanner.classList.toggle('is-hidden', !loggedIn);
+    adminBanner.style.display = loggedIn ? 'flex' : 'none';
   }
 
   if (loggedIn && currentUser && userDisplay) {
@@ -360,6 +370,7 @@ function updateAuthUI() {
 
   document.querySelectorAll('.admin-only').forEach(el => {
     el.classList.toggle('is-hidden', !loggedIn);
+    el.style.display = loggedIn ? 'inline-flex' : 'none';
   });
 }
 
@@ -402,19 +413,20 @@ document.addEventListener('click', (e) => {
 
   // 4. Open Login Modal
   if (e.target.closest('#openLoginModalBtn')) {
-    const loginModal = document.getElementById('loginModalOverlay');
     const errBox = document.getElementById('loginErrorMsg');
     const form = document.getElementById('adminLoginForm');
-    if (errBox) errBox.classList.add('is-hidden');
+    if (errBox) {
+      errBox.classList.add('is-hidden');
+      errBox.style.display = 'none';
+    }
     if (form) form.reset();
-    if (loginModal) loginModal.classList.remove('is-hidden');
+    setOverlayVisible('loginModalOverlay', true);
     return;
   }
 
   // 5. Close Login Modal
   if (e.target.closest('#closeLoginModalBtn') || e.target.id === 'loginModalOverlay') {
-    const loginModal = document.getElementById('loginModalOverlay');
-    if (loginModal) loginModal.classList.add('is-hidden');
+    setOverlayVisible('loginModalOverlay', false);
     return;
   }
 
@@ -445,9 +457,8 @@ document.addEventListener('click', (e) => {
 
   // 9. Close Lightbox Overlay
   if (e.target.closest('#closeLightboxBtn') || e.target.id === 'productMediaOverlay') {
-    const overlay = document.getElementById('productMediaOverlay');
+    setOverlayVisible('productMediaOverlay', false);
     const wrapper = document.getElementById('lightboxMediaWrapper');
-    if (overlay) overlay.classList.add('is-hidden');
     if (wrapper) wrapper.innerHTML = '';
     return;
   }
@@ -473,11 +484,15 @@ document.addEventListener('submit', (e) => {
     if (matchedAccount) {
       currentUser = { userId: matchedAccount.userId, displayName: matchedAccount.displayName };
       try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(currentUser)); } catch (err) { }
-      document.getElementById('loginModalOverlay').classList.add('is-hidden');
+      setOverlayVisible('loginModalOverlay', false);
       updateAuthUI();
       renderAllSections();
     } else {
-      document.getElementById('loginErrorMsg').classList.remove('is-hidden');
+      const errBox = document.getElementById('loginErrorMsg');
+      if (errBox) {
+        errBox.classList.remove('is-hidden');
+        errBox.style.display = 'flex';
+      }
     }
   }
 });
@@ -486,10 +501,9 @@ document.addEventListener('submit', (e) => {
    5. LIGHTBOX & SECTION RENDERERS
    ========================================================================== */
 function openLightbox(src, mediaType, caption) {
-  const overlay = document.getElementById('productMediaOverlay');
   const wrapper = document.getElementById('lightboxMediaWrapper');
   const captionEl = document.getElementById('lightboxCaptionText');
-  if (!overlay || !wrapper) return;
+  if (!wrapper) return;
 
   wrapper.innerHTML = '';
   if (mediaType === 'video') {
@@ -512,7 +526,7 @@ function openLightbox(src, mediaType, caption) {
   }
 
   if (captionEl) captionEl.textContent = caption || '';
-  overlay.classList.remove('is-hidden');
+  setOverlayVisible('productMediaOverlay', true);
 }
 
 function renderAllSections() {
@@ -740,12 +754,11 @@ function openCrudModal(title, subtitle, fieldsHtml, onSubmitCallback) {
     closeCrudModal();
   };
 
-  document.getElementById('crudModalOverlay').classList.remove('is-hidden');
+  setOverlayVisible('crudModalOverlay', true);
 }
 
 function closeCrudModal() {
-  const modal = document.getElementById('crudModalOverlay');
-  if (modal) modal.classList.add('is-hidden');
+  setOverlayVisible('crudModalOverlay', false);
 }
 
 function readUploadedFileAsDataURL(fileInput, callback) {
@@ -1119,6 +1132,10 @@ window.openContactModal = function () {
    7. BOOTSTRAP APPLICATION IMMEDIATELY ON LOAD
    ========================================================================== */
 function initAgroApp() {
+  setOverlayVisible('loginModalOverlay', false);
+  setOverlayVisible('crudModalOverlay', false);
+  setOverlayVisible('productMediaOverlay', false);
+
   updateAuthUI();
   renderAllSections();
   applyLanguage(currentLang);
