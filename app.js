@@ -375,7 +375,7 @@ function updateAuthUI() {
 }
 
 /* ==========================================================================
-   4. GLOBAL EVENT DELEGATION (GUARANTEES ALL CLICKS WORK RELIABLY)
+   4. GLOBAL EVENT DELEGATION
    ========================================================================== */
 document.addEventListener('click', (e) => {
   // 1. Sidebar Navigation Links
@@ -386,7 +386,7 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 2. Language Buttons (EN / नेपाली)
+  // 2. Language Buttons
   if (e.target.closest('#btnEn')) {
     applyLanguage('en');
     return;
@@ -420,6 +420,15 @@ document.addEventListener('click', (e) => {
       errBox.style.display = 'none';
     }
     if (form) form.reset();
+    
+    // Reset password eye toggle state on modal open
+    const passwordInput = document.getElementById('loginPassword');
+    const eyeIcon = document.getElementById('toggleEyeIcon');
+    if (passwordInput && eyeIcon) {
+      passwordInput.type = 'password';
+      eyeIcon.className = 'ri-eye-off-line';
+    }
+
     setOverlayVisible('loginModalOverlay', true);
     return;
   }
@@ -430,7 +439,24 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 6. Logout Button -> Redirects to Home Page
+  // 6. Toggle Password Visibility Button
+  const passwordToggle = e.target.closest('#togglePasswordBtn');
+  if (passwordToggle) {
+    const passwordInput = document.getElementById('loginPassword');
+    const eyeIcon = document.getElementById('toggleEyeIcon');
+    if (passwordInput && eyeIcon) {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.className = 'ri-eye-line';
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.className = 'ri-eye-off-line';
+      }
+    }
+    return;
+  }
+
+  // 7. Logout Button
   if (e.target.closest('#logoutBtn')) {
     currentUser = null;
     try { sessionStorage.removeItem(SESSION_KEY); } catch (err) { }
@@ -440,7 +466,7 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 7. Reset Default Data Button
+  // 8. Reset Default Data Button
   if (e.target.closest('#resetDefaultDataBtn')) {
     if (confirm('Restore all original products, gallery, and committee items?')) {
       siteData = JSON.parse(JSON.stringify(DEFAULT_SITE_DATA));
@@ -449,13 +475,13 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 8. Close CRUD Modal
+  // 9. Close CRUD Modal
   if (e.target.closest('#closeCrudModalBtn') || e.target.closest('#cancelCrudBtn') || e.target.id === 'crudModalOverlay') {
     closeCrudModal();
     return;
   }
 
-  // 9. Close Lightbox Overlay
+  // 10. Close Lightbox Overlay
   if (e.target.closest('#closeLightboxBtn') || e.target.id === 'productMediaOverlay') {
     setOverlayVisible('productMediaOverlay', false);
     const wrapper = document.getElementById('lightboxMediaWrapper');
@@ -463,7 +489,7 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 10. Share Button
+  // 11. Share Button
   if (e.target.closest('#fbShareBtn')) {
     const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
     window.open(shareUrl, 'facebook-share', 'width=600,height=420');
