@@ -224,7 +224,11 @@ let currentUser = null;
 let currentLang = 'en';
 
 try {
-  currentUser = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+  const rawUser = sessionStorage.getItem(SESSION_KEY);
+  const parsedUser = rawUser ? JSON.parse(rawUser) : null;
+  if (parsedUser && parsedUser.userId && parsedUser.displayName) {
+    currentUser = parsedUser;
+  }
   currentLang = localStorage.getItem('preferredLang') || 'en';
 } catch (e) {
   currentUser = null;
@@ -255,7 +259,7 @@ function saveSiteData() {
 }
 
 function isAdminLoggedIn() {
-  return currentUser !== null;
+  return Boolean(currentUser && currentUser.userId);
 }
 
 /* ==========================================================================
@@ -338,16 +342,24 @@ function updateAuthUI() {
   const adminBanner = document.getElementById('adminBanner');
   const userDisplay = document.getElementById('loggedUserDisplay');
 
-  if (loginBtn) loginBtn.style.display = loggedIn ? 'none' : 'inline-flex';
-  if (loggedBar) loggedBar.style.display = loggedIn ? 'flex' : 'none';
-  if (adminBanner) adminBanner.style.display = loggedIn ? 'flex' : 'none';
+  if (loginBtn) {
+    loginBtn.classList.toggle('is-hidden', loggedIn);
+  }
+
+  if (loggedBar) {
+    loggedBar.classList.toggle('is-hidden', !loggedIn);
+  }
+
+  if (adminBanner) {
+    adminBanner.classList.toggle('is-hidden', !loggedIn);
+  }
 
   if (loggedIn && currentUser && userDisplay) {
     userDisplay.textContent = currentUser.displayName;
   }
 
   document.querySelectorAll('.admin-only').forEach(el => {
-    el.style.display = loggedIn ? 'inline-flex' : 'none';
+    el.classList.toggle('is-hidden', !loggedIn);
   });
 }
 
@@ -393,16 +405,16 @@ document.addEventListener('click', (e) => {
     const loginModal = document.getElementById('loginModalOverlay');
     const errBox = document.getElementById('loginErrorMsg');
     const form = document.getElementById('adminLoginForm');
-    if (errBox) errBox.style.display = 'none';
+    if (errBox) errBox.classList.add('is-hidden');
     if (form) form.reset();
-    if (loginModal) loginModal.style.display = 'flex';
+    if (loginModal) loginModal.classList.remove('is-hidden');
     return;
   }
 
   // 5. Close Login Modal
   if (e.target.closest('#closeLoginModalBtn') || e.target.id === 'loginModalOverlay') {
     const loginModal = document.getElementById('loginModalOverlay');
-    if (loginModal) loginModal.style.display = 'none';
+    if (loginModal) loginModal.classList.add('is-hidden');
     return;
   }
 
@@ -435,7 +447,7 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('#closeLightboxBtn') || e.target.id === 'productMediaOverlay') {
     const overlay = document.getElementById('productMediaOverlay');
     const wrapper = document.getElementById('lightboxMediaWrapper');
-    if (overlay) overlay.style.display = 'none';
+    if (overlay) overlay.classList.add('is-hidden');
     if (wrapper) wrapper.innerHTML = '';
     return;
   }
@@ -461,11 +473,11 @@ document.addEventListener('submit', (e) => {
     if (matchedAccount) {
       currentUser = { userId: matchedAccount.userId, displayName: matchedAccount.displayName };
       try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(currentUser)); } catch (err) { }
-      document.getElementById('loginModalOverlay').style.display = 'none';
+      document.getElementById('loginModalOverlay').classList.add('is-hidden');
       updateAuthUI();
       renderAllSections();
     } else {
-      document.getElementById('loginErrorMsg').style.display = 'flex';
+      document.getElementById('loginErrorMsg').classList.remove('is-hidden');
     }
   }
 });
@@ -500,7 +512,7 @@ function openLightbox(src, mediaType, caption) {
   }
 
   if (captionEl) captionEl.textContent = caption || '';
-  overlay.style.display = 'flex';
+  overlay.classList.remove('is-hidden');
 }
 
 function renderAllSections() {
@@ -728,12 +740,12 @@ function openCrudModal(title, subtitle, fieldsHtml, onSubmitCallback) {
     closeCrudModal();
   };
 
-  document.getElementById('crudModalOverlay').style.display = 'flex';
+  document.getElementById('crudModalOverlay').classList.remove('is-hidden');
 }
 
 function closeCrudModal() {
   const modal = document.getElementById('crudModalOverlay');
-  if (modal) modal.style.display = 'none';
+  if (modal) modal.classList.add('is-hidden');
 }
 
 function readUploadedFileAsDataURL(fileInput, callback) {
