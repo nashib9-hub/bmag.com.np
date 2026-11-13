@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Bhimbadh Multipurpose Agro Group Pvt. Ltd.</title>
     <link rel="stylesheet" href="./style.css?v=3">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -103,7 +103,7 @@
                     <span data-en="Login" data-np="लगइन">Login</span>
                 </button>
 
-                <div class="admin-logged-bar" id="adminLoggedBar" style="display: none;">
+                <div class="admin-logged-bar is-hidden" id="adminLoggedBar">
                     <span class="admin-user-pill">
                         <i class="ri-verified-badge-fill"></i>
                         <span id="loggedUserDisplay">Admin</span>
@@ -117,7 +117,7 @@
         </header>
 
         <!-- Admin Mode Banner (Visible Only When Logged In) -->
-        <div class="admin-control-banner" id="adminBanner" style="display: none;">
+        <div class="admin-control-banner is-hidden" id="adminBanner">
             <div class="admin-banner-text">
                 <i class="ri-edit-box-line"></i>
                 <span><strong>Admin Mode Active:</strong> You can create, update, and delete items across all dashboard sections.</span>
@@ -142,7 +142,7 @@
                             Empowering local agriculture through modern sustainable practices.
                         </p>
                     </div>
-                    <button class="admin-add-btn admin-only" onclick="openStatModal()">
+                    <button class="admin-add-btn admin-only is-hidden" onclick="openStatModal()">
                         <i class="ri-add-line"></i> Add Stat Card
                     </button>
                 </div>
@@ -159,7 +159,7 @@
                         <h2 data-en="About Our Organization" data-np="हाम्रो संस्थाको बारेमा">About Our Organization</h2>
                         <p class="subtitle" data-en="Our mission, vision, and agricultural heritage." data-np="हाम्रो लक्ष्य, दृष्टि र कृषि सम्पदा।">Our mission, vision, and agricultural heritage.</p>
                     </div>
-                    <button class="admin-add-btn admin-only" onclick="openAboutModal()">
+                    <button class="admin-add-btn admin-only is-hidden" onclick="openAboutModal()">
                         <i class="ri-edit-2-line"></i> Edit About Info
                     </button>
                 </div>
@@ -176,7 +176,7 @@
                         <h2 data-en="Executive Committee" data-np="कार्यसमिति सदस्यहरू">Executive Committee</h2>
                         <p class="subtitle" data-en="Leadership team guiding Bhimbadh Multipurpose Agro." data-np="भिम्वाँद बहुउद्देश्यीय एग्रोको नेतृत्व टोली।">Leadership team guiding Bhimbadh Multipurpose Agro.</p>
                     </div>
-                    <button class="admin-add-btn admin-only" onclick="openCommitteeModal()">
+                    <button class="admin-add-btn admin-only is-hidden" onclick="openCommitteeModal()">
                         <i class="ri-user-add-line"></i> Add Member
                     </button>
                 </div>
@@ -193,7 +193,7 @@
                         <h2 data-en="Our Products" data-np="हाम्रा उत्पादनहरू">Our Products</h2>
                         <p class="subtitle" data-en="Fresh, organic, and high-altitude harvests directly from our farms." data-np="हाम्रा फार्महरूबाट सिधै ताजा, जैविक र उच्च हिमाली उत्पादनहरू।">Fresh, organic, and high-altitude harvests directly from our farms.</p>
                     </div>
-                    <button class="admin-add-btn admin-only" onclick="openProductModal()">
+                    <button class="admin-add-btn admin-only is-hidden" onclick="openProductModal()">
                         <i class="ri-add-circle-line"></i> Add New Product
                     </button>
                 </div>
@@ -210,7 +210,7 @@
                         <h2 data-en="Photo & Video Gallery" data-np="फोटो तथा भिडियो ग्यालेरी">Photo & Video Gallery</h2>
                         <p class="subtitle" data-en="Moments from our farms, harvests, and community tournaments." data-np="हाम्रा फार्म, बाली र सामुदायिक प्रतियोगिताका झलकहरू।">Moments from our farms, harvests, and community tournaments.</p>
                     </div>
-                    <button class="admin-add-btn admin-only" onclick="openGalleryModal()">
+                    <button class="admin-add-btn admin-only is-hidden" onclick="openGalleryModal()">
                         <i class="ri-image-add-line"></i> Add Gallery Item
                     </button>
                 </div>
@@ -227,7 +227,7 @@
                         <h2 data-en="Contact Us" data-np="सम्पर्क गर्नुहोस्">Contact Us</h2>
                         <p class="subtitle" data-en="Reach out to us for orders, partnerships, or inquiries." data-np="अर्डर, साझेदारी वा सोधपुछको लागि हामीलाई सम्पर्क गर्नुहोस्।">Reach out to us for orders, partnerships, or inquiries.</p>
                     </div>
-                    <button class="admin-add-btn admin-only" onclick="openContactModal()">
+                    <button class="admin-add-btn admin-only is-hidden" onclick="openContactModal()">
                         <i class="ri-edit-2-line"></i> Edit Contact Details
                     </button>
                 </div>
@@ -241,9 +241,9 @@
     </div>
 
     <!-- LIGHTBOX OVERLAY FOR IMAGE/VIDEO PREVIEW -->
-    <div id="productMediaOverlay" class="product-lightbox-overlay" style="display: none;">
+    <div id="productMediaOverlay" class="product-lightbox-overlay is-hidden">
         <div class="lightbox-content-box">
-            <button id="closeLightboxBtn" class="lightbox-close-btn" aria-label="Close Preview">&times;</button>
+            <button id="closeLightboxBtn" class="lightbox-close-btn" aria-label="Close Preview">×</button>
             <div id="lightboxMediaWrapper"></div>
             <p id="lightboxCaptionText"></p>
         </div>
@@ -252,7 +252,7 @@
     <!-- ======================================================================
          ADMIN LOGIN MODAL (NO SIGN-UP BUTTON)
          ====================================================================== -->
-    <div id="loginModalOverlay" class="custom-modal-overlay" style="display: none;">
+    <div id="loginModalOverlay" class="custom-modal-overlay is-hidden">
         <div class="custom-modal-card login-card">
             <div class="modal-header">
                 <div class="modal-title-group">
@@ -262,11 +262,11 @@
                         <p>Authorized Agro Group Administrators Only</p>
                     </div>
                 </div>
-                <button class="modal-close-x" id="closeLoginModalBtn">&times;</button>
+                <button class="modal-close-x" id="closeLoginModalBtn">×</button>
             </div>
 
             <form id="adminLoginForm" class="modal-form">
-                <div id="loginErrorMsg" class="login-error-alert" style="display: none;">
+                <div id="loginErrorMsg" class="login-error-alert is-hidden">
                     <i class="ri-error-warning-line"></i>
                     <span>Invalid Account ID or Password.</span>
                 </div>
@@ -297,7 +297,7 @@
     <!-- ======================================================================
          UNIVERSAL CRUD MODAL (FOR PRODUCTS, GALLERY, COMMITTEE, STATS, ETC.)
          ====================================================================== -->
-    <div id="crudModalOverlay" class="custom-modal-overlay" style="display: none;">
+    <div id="crudModalOverlay" class="custom-modal-overlay is-hidden">
         <div class="custom-modal-card">
             <div class="modal-header">
                 <div class="modal-title-group">
@@ -307,7 +307,7 @@
                         <p id="crudModalSubtitle">Update website content for visitors</p>
                     </div>
                 </div>
-                <button class="modal-close-x" id="closeCrudModalBtn">&times;</button>
+                <button class="modal-close-x" id="closeCrudModalBtn">×</button>
             </div>
 
             <form id="crudModalForm" class="modal-form">
@@ -329,7 +329,7 @@
         <span data-en="Share" data-np="सेयर">Share</span>
     </button>
 
-    <script src="./app.js"></script>
+    <script src="./app.js?v=3"></script>
 </body>
 
 </html>
