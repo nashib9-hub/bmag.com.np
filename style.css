@@ -200,6 +200,7 @@ body {
 /* RUNNING TICKER MARQUEE */
 .marquee-container {
   flex: 1;
+  min-width: 0;
   margin: 0 12px;
   overflow: hidden;
   background: var(--primary-light);
@@ -1089,8 +1090,12 @@ body {
     gap: 8px;
   }
 
+  /* Marquee restored and optimized for mobile screens */
   .marquee-container {
-    display: none;
+    display: block;
+    width: 100%;
+    margin: 4px 0;
+    padding: 6px 12px;
   }
 
   .header-left {
