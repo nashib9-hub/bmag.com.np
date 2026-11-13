@@ -23,11 +23,15 @@
   box-sizing: border-box;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Inter', 'Hind', sans-serif;
   background-color: var(--bg-main);
   color: var(--dark);
-  overflow-x: hidden;
   display: flex;
 }
 
@@ -142,13 +146,15 @@ body {
 }
 
 .top-header {
-  height: 72px;
+  min-height: 72px;
+  height: auto;
   background: var(--bg-card);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 28px;
+  flex-wrap: wrap;
+  padding: 8px 28px;
   position: sticky;
   top: 0;
   z-index: 900;
@@ -279,6 +285,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .admin-user-pill {
@@ -292,6 +299,10 @@ body {
   font-size: 0.82rem;
   font-weight: 600;
   border: 1px solid #bbf7d0;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .auth-nav-btn.logout-mode {
@@ -1043,12 +1054,95 @@ body {
    RESPONSIVE BREAKPOINTS
    ========================================================================== */
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.mobile-show { transform: translateX(0); }
-  .main-wrapper { margin-left: 0; width: 100%; }
-  .top-header { padding: 0 12px; gap: 8px; }
-  .marquee-container { display: none; }
-  .header-title { font-size: 1.05rem; }
-  .content-container { padding: 20px 14px; }
-  .form-row-2 { grid-template-columns: 1fr; }
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.mobile-show {
+    transform: translateX(0);
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  .top-header {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .marquee-container {
+    display: none;
+  }
+
+  .header-left {
+    gap: 8px;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .header-title {
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-actions {
+    gap: 6px;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .lang-btn {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+
+  .admin-logged-bar {
+    gap: 6px;
+  }
+
+  .admin-user-pill {
+    max-width: 115px;
+    padding: 5px 8px;
+    font-size: 0.74rem;
+  }
+
+  .auth-nav-btn {
+    padding: 6px 10px;
+    font-size: 0.76rem;
+    white-space: nowrap;
+  }
+
+  .admin-control-banner {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+  }
+
+  .content-container {
+    padding: 16px 12px;
+  }
+
+  .hero-banner {
+    padding: 24px 18px;
+  }
+
+  .hero-banner h2 {
+    font-size: 1.4rem;
+  }
+
+  .stats-grid,
+  .info-grid,
+  .committee-grid,
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
 }
