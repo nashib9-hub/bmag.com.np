@@ -503,6 +503,11 @@ body {
   gap: 24px;
 }
 
+.products-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  align-items: stretch;
+}
+
 .stat-card,
 .info-card {
   background: var(--bg-card);
@@ -613,27 +618,47 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.product-card-top {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.product-card-bottom {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: auto;
 }
 
 .product-clickable-area {
   cursor: pointer;
+  width: 100%;
 }
 
 .product-image-wrapper {
   width: 100%;
   height: 195px;
+  min-height: 195px;
+  max-height: 195px;
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 14px;
   background: #f8fafc;
   border: 1px solid var(--border-color);
   position: relative;
+  flex-shrink: 0;
 }
 
 .product-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
   transition: transform 0.3s ease;
 }
 
@@ -688,21 +713,46 @@ body {
 }
 
 .gallery-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  align-items: stretch;
 }
 
+.gallery-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-media-wrapper {
+  width: 100%;
+  height: 210px;
+  min-height: 210px;
+  max-height: 210px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid var(--border-color);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.gallery-media-wrapper video,
+.gallery-media-wrapper img,
 .gallery-card video,
 .gallery-card img {
   width: 100%;
-  height: 210px;
+  height: 100%;
   object-fit: cover;
+  display: block;
   border-radius: 8px;
   background: #000;
 }
 
 .gallery-highlight-badge {
   display: inline-block;
-  margin-top: 10px;
+  align-self: flex-start;
+  margin-top: 12px;
   background: var(--primary-light);
   color: var(--primary-dark);
   font-size: 0.78rem;
@@ -1177,6 +1227,7 @@ body {
   .stats-grid,
   .info-grid,
   .committee-grid,
+  .products-grid,
   .gallery-grid {
     grid-template-columns: 1fr;
   }
