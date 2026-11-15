@@ -8,7 +8,7 @@ const AUTHORIZED_ACCOUNTS = [
 ];
 
 /* ==========================================================================
-   2. DEFAULT SITE DATA
+   2. DEFAULT SITE DATA & RENDER API INTEGRATION
    ========================================================================== */
 const DEFAULT_SITE_DATA = {
   stats: [
@@ -216,10 +216,10 @@ const DEFAULT_SITE_DATA = {
   }
 };
 
-const STORAGE_KEY = 'bhimbadh_agro_cms_data_v1';
+const API_BASE_URL = 'https://bmagbackend.onrender.com';
 const SESSION_KEY = 'bhimbadh_agro_logged_user';
 
-let siteData = loadSiteData();
+let siteData = JSON.parse(JSON.stringify(DEFAULT_SITE_DATA));
 let currentUser = null;
 let currentLang = 'en';
 
@@ -234,26 +234,36 @@ try {
   currentUser = null;
 }
 
-function loadSiteData() {
+async function loadSiteData() {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed && parsed.stats && parsed.products && parsed.gallery) {
-        return parsed;
+    const response = await fetch(`${API_BASE_URL}/api/data`);
+    if (response.ok) {
+      const data = await response.json();
+      if (data && data.stats && data.products && data.gallery) {
+        siteData = data;
+        renderAllSections();
+        return;
       }
     }
   } catch (e) {
-    console.warn('Using default site data.');
+    console.warn('Could not connect to Render backend, using default site data.');
   }
-  return JSON.parse(JSON.stringify(DEFAULT_SITE_DATA));
+  siteData = JSON.parse(JSON.stringify(DEFAULT_SITE_DATA));
+  renderAllSections();
 }
 
-function saveSiteData() {
+async function saveSiteData() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
+    const response = await fetch(`${API_BASE_URL}/api/data`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(siteData)
+    });
+    if (!response.ok) {
+      throw new Error('Failed to save to server');
+    }
   } catch (e) {
-    alert('Storage limit reached! Please use smaller images or image URLs.');
+    alert('Failed to save changes to MongoDB Atlas database via Render.');
   }
   renderAllSections();
 }
@@ -1167,13 +1177,13 @@ window.openContactModal = function () {
 /* ==========================================================================
    7. BOOTSTRAP APPLICATION IMMEDIATELY ON LOAD
    ========================================================================== */
-function initAgroApp() {
+async function initAgroApp() {
   setOverlayVisible('loginModalOverlay', false);
   setOverlayVisible('crudModalOverlay', false);
   setOverlayVisible('productMediaOverlay', false);
 
   updateAuthUI();
-  renderAllSections();
+  await loadSiteData();
   applyLanguage(currentLang);
 
   const initialHash = window.location.hash.replace('#', '');
