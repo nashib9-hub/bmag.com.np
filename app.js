@@ -420,8 +420,7 @@ document.addEventListener('click', (e) => {
       errBox.style.display = 'none';
     }
     if (form) form.reset();
-    
-    // Reset password eye toggle state on modal open
+
     const passwordInput = document.getElementById('loginPassword');
     const eyeIcon = document.getElementById('toggleEyeIcon');
     if (passwordInput && eyeIcon) {
@@ -623,7 +622,7 @@ function renderProducts() {
 
     return `
       <div class="info-card product-card">
-        <div>
+        <div class="product-card-top">
           ${admin ? `
             <div class="card-admin-toolbar">
               <button class="btn-card-edit" onclick="openProductModal('${prod.id}')"><i class="ri-edit-line"></i> Update</button>
@@ -640,7 +639,7 @@ function renderProducts() {
           </div>
         </div>
 
-        <div>
+        <div class="product-card-bottom">
           <div class="product-pricing">
             ${priceInfo ? `<p><strong>${t('Details:', 'विवरण:')}</strong> ${priceInfo}</p>` : ''}
             ${status ? `
@@ -649,7 +648,7 @@ function renderProducts() {
               </p>
             ` : ''}
           </div>
-          <span class="role-badge" style="cursor:pointer;" onclick="openLightbox('${safeImg}', 'image', '${safeCap}')">
+          <span class="role-badge" style="cursor:pointer; align-self: flex-start;" onclick="openLightbox('${safeImg}', 'image', '${safeCap}')">
             ${t('Click Preview', 'प्रिभ्यू हेर्नुहोस्')}
           </span>
         </div>
@@ -698,13 +697,15 @@ function renderGallery() {
                   <button class="btn-card-delete" onclick="deleteGalleryItem('${item.id}')"><i class="ri-delete-bin-line"></i> Delete</button>
                 </div>
               ` : ''}
-              ${item.mediaType === 'video' ? `
-                <video controls src="${item.src}"></video>
-              ` : `
-                <img src="${item.src}" alt="${title}" style="cursor:pointer;"
-                     onclick="openLightbox('${safeSrc}', 'image', '${safeCap}')"
-                     onerror="this.src='https://via.placeholder.com/400x250?text=Gallery+Image'">
-              `}
+              <div class="gallery-media-wrapper">
+                ${item.mediaType === 'video' ? `
+                  <video controls src="${item.src}"></video>
+                ` : `
+                  <img src="${item.src}" alt="${title}" style="cursor:pointer;"
+                       onclick="openLightbox('${safeSrc}', 'image', '${safeCap}')"
+                       onerror="this.src='https://via.placeholder.com/400x250?text=Gallery+Image'">
+                `}
+              </div>
               ${highlight ? `<span class="gallery-highlight-badge"><i class="ri-star-smile-line"></i> ${highlight}</span>` : ''}
               <h3 style="margin-top: 10px;">${title}</h3>
               ${desc ? `<p class="gallery-desc-text">${desc}</p>` : ''}
@@ -819,12 +820,22 @@ window.openProductModal = function (id = null) {
     </div>
     <div class="form-row-2">
       <div class="form-group">
-        <label>Price / Yield Info (EN)</label>
+        <label>Price / Yield Info (English)</label>
         <input type="text" name="priceInfoEn" value="${existing ? existing.priceInfoEn : ''}">
       </div>
       <div class="form-group">
-        <label>Stock / Status (EN)</label>
+        <label>Price / Yield Info (Nepali)</label>
+        <input type="text" name="priceInfoNp" value="${existing ? (existing.priceInfoNp || '') : ''}">
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Stock / Status (English)</label>
         <input type="text" name="statusEn" value="${existing ? existing.statusEn : ''}">
+      </div>
+      <div class="form-group">
+        <label>Stock / Status (Nepali)</label>
+        <input type="text" name="statusNp" value="${existing ? (existing.statusNp || '') : ''}">
       </div>
     </div>
     <div class="form-group">
@@ -851,10 +862,10 @@ window.openProductModal = function (id = null) {
         descEn: fd.get('descEn'),
         descNp: fd.get('descNp') || fd.get('descEn'),
         priceInfoEn: fd.get('priceInfoEn'),
-        priceInfoNp: fd.get('priceInfoEn'),
+        priceInfoNp: fd.get('priceInfoNp') || fd.get('priceInfoEn'),
         statusEn: fd.get('statusEn'),
-        statusNp: fd.get('statusEn'),
-        statusColor: '#2e7d32',
+        statusNp: fd.get('statusNp') || fd.get('statusEn'),
+        statusColor: existing ? existing.statusColor : '#2e7d32',
         image: fd.get('image')
       };
       if (existing) {
@@ -909,8 +920,12 @@ window.openGalleryModal = function (id = null) {
       </div>
     </div>
     <div class="form-group">
-      <label>Description</label>
+      <label>Description (English)</label>
       <textarea name="descEn" rows="2">${existing ? existing.descEn : ''}</textarea>
+    </div>
+    <div class="form-group">
+      <label>Description (Nepali)</label>
+      <textarea name="descNp" rows="2">${existing ? (existing.descNp || '') : ''}</textarea>
     </div>
     <div class="form-group">
       <label>Media Type</label>
@@ -920,10 +935,10 @@ window.openGalleryModal = function (id = null) {
       </select>
     </div>
     <div class="form-group">
-      <label>Upload Image or Enter File/URL*</label>
+      <label>Upload Image/Video or Enter File/URL*</label>
       <div class="file-upload-box">
-        <div>Select image file from device:</div>
-        <input type="file" accept="image/*" onchange="readUploadedFileAsDataURL(this, (dataUrl) => document.getElementById('galSrcInput').value = dataUrl)">
+        <div>Select image or video file from device:</div>
+        <input type="file" accept="image/*,video/*" onchange="readUploadedFileAsDataURL(this, (dataUrl) => document.getElementById('galSrcInput').value = dataUrl)">
       </div>
       <input type="text" id="galSrcInput" name="src" style="margin-top:8px;" placeholder="kheti.jpg or https://..." value="${existing ? existing.src : ''}" required>
     </div>
@@ -943,7 +958,7 @@ window.openGalleryModal = function (id = null) {
         highlightEn: fd.get('highlightEn'),
         highlightNp: fd.get('highlightNp') || fd.get('highlightEn'),
         descEn: fd.get('descEn'),
-        descNp: fd.get('descEn'),
+        descNp: fd.get('descNp') || fd.get('descEn'),
         mediaType: fd.get('mediaType'),
         src: fd.get('src')
       };
@@ -1131,6 +1146,10 @@ window.openContactModal = function () {
       <label>Office Hours (English)</label>
       <input type="text" name="hoursEn" value="${c.hoursEn}">
     </div>
+    <div class="form-group">
+      <label>Office Hours (Nepali)</label>
+      <input type="text" name="hoursNp" value="${c.hoursNp || ''}">
+    </div>
   `;
   openCrudModal('Edit Contact Information', 'Update contact details displayed to visitors', html, (fd) => {
     siteData.contact = {
@@ -1139,7 +1158,7 @@ window.openContactModal = function () {
       phone: fd.get('phone'),
       email: fd.get('email'),
       hoursEn: fd.get('hoursEn'),
-      hoursNp: siteData.contact.hoursNp
+      hoursNp: fd.get('hoursNp') || fd.get('hoursEn')
     };
     saveSiteData();
   });
